@@ -1,0 +1,61 @@
+#Твои кастомные стили и анимации
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #06060a;
+    color: #f8fafc;
+}
+.font-display {
+    font-family: 'Unbounded', sans-serif;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0c0c14;
+}
+::-webkit-scrollbar-thumb {
+    background: #27273a;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a3e635;
+}
+.glass-dark {
+    background: rgba(12, 12, 20, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+.acid-glow {
+    box-shadow: 0 0 35px -5px rgba(163, 230, 53, 0.35);
+}
+.violet-glow {
+    box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.35);
+}
+.card-cyber {
+    background: linear-gradient(180deg, rgba(24, 24, 38, 0.9) 0%, rgba(12, 12, 20, 0.95) 100%);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-cyber:hover {
+    transform: translateY(-6px);
+    border-color: rgba(163, 230, 53, 0.5);
+    box-shadow: 0 20px 40px -15px rgba(163, 230, 53, 0.15);
+}
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+}
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+.grid-bg {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
