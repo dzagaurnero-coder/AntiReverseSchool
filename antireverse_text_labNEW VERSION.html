@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANTI.REVERSE // Текстовые мануалы и база арбитража</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Unbounded, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Unbounded', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        graphite: {
+                            950: '#1c1c1c',
+                            900: '#222222',
+                            800: '#292929', // Основной цвет #292929
+                            700: '#333333',
+                            600: '#3f3f3f',
+                        },
+                        roseaccent: {
+                            300: '#dfc0c8',
+                            400: '#d4a3ae',
+                            500: '#C88E9B', // Основной акцент #C88E9B
+                            600: '#b27583',
+                            700: '#965c69',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #292929;
+            --bg-deep: #1f1f1f;
+            --bg-card: #313131;
+            --accent-rose: #C88E9B;
+            --accent-rose-soft: rgba(200, 142, 155, 0.14);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #292929;
+            color: #F4EFF0;
+            overflow-x: hidden;
+        }
+
+        .font-display { font-family: 'Unbounded', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Минималистичный скроллбар в цветах #292929 и #C88E9B */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #222222; }
+        ::-webkit-scrollbar-thumb { background: #454545; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C88E9B; }
+
+        /* Стеклянные панели */
+        .glass-panel {
+            background: rgba(41, 41, 41, 0.86);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Карточки в стиле минимализма */
+        .bento-card {
+            background: #222222;
+            border: 1px solid rgba(200, 142, 155, 0.16);
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card:hover {
+            border-color: rgba(200, 142, 155, 0.48);
+            transform: translateY(-3px);
+            box-shadow: 0 18px 38px -15px rgba(0, 0, 0, 0.55), 0 0 25px -8px rgba(200, 142, 155, 0.22);
+        }
+
+        .rose-glow {
+            box-shadow: 0 0 28px -6px rgba(200, 142, 155, 0.45);
+        }
+
+        /* Плавная отрисовка графика профита */
+        @keyframes drawLine {
+            from { stroke-dashoffset: 600; }
+            to { stroke-dashoffset: 0; }
+        }
+        .animate-chart-line {
+            stroke-dasharray: 600;
+            animation: drawLine 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.06); }
+        }
+        .pulse-rose {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Текстовый ридер */
+        .reader-content h4 {
+            font-family: 'Unbounded', sans-serif;
+            color: #F4EFF0;
+            font-weight: 700;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .reader-content p {
+            color: #d6cfd1;
+            line-height: 1.75;
+            margin-bottom: 0.85rem;
+        }
+        .reader-content ul {
+            list-style-type: disc;
+            padding-left: 1.25rem;
+            color: #d6cfd1;
+            margin-bottom: 1rem;
+        }
+        .reader-content li {
+            margin-bottom: 0.35rem;
+        }
+
+        /* Кастомный ползунок */
+        input[type="range"] {
+            accent-color: #C88E9B;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-roseaccent-500 selection:text-graphite-950">
+
+    <!-- Контейнер для минималистичных уведомлений (Toasts) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[110] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ======================================================================= -->
+    <!-- МИНИМАЛИСТИЧНАЯ ШАПКА БЕЗ ВЕРХНЕЙ БЕГУЩЕЙ ПЛАШКИ                         -->
+    <!-- ======================================================================= -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-roseaccent-500/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Логотип -->
+            <button onclick="switchMainView('landing')" class="flex items-center gap-3 group focus:outline-none text-left">
+                <div class="w-10 h-10 rounded-xl bg-roseaccent-500 text-graphite-950 flex items-center justify-center font-display font-extrabold text-sm tracking-tighter rose-glow group-hover:scale-105 transition-transform">
+                    AR
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display text-sm sm:text-base font-bold tracking-tight text-white">ANTI.REVERSE</span>
+                        <span class="px-2 py-0.5 text-[10px] font-mono font-semibold bg-roseaccent-500/15 text-roseaccent-300 border border-roseaccent-500/30 rounded-md">TEXT LAB</span>
+                    </div>
+                    <span class="block text-[11px] text-stone-400">Приватные текстовые мануалы по арбитражу</span>
+                </div>
+            </button>
+
+            <!-- Навигация (Десктоп) -->
+            <nav class="hidden lg:flex items-center gap-7 text-xs font-medium tracking-wide text-stone-300">
+                <a href="#catalog" onclick="switchMainView('landing')" class="hover:text-roseaccent-500 transition-colors">Текстовые курсы</a>
+                <a href="#profit-lab" onclick="switchMainView('landing')" class="hover:text-roseaccent-500 transition-colors">Анимация профита & ROI</a>
+                <a href="#tools" onclick="switchMainView('landing')" class="hover:text-roseaccent-500 transition-colors">Тулбокс арбитражника</a>
+                <button onclick="openSupportModal()" class="hover:text-roseaccent-500 transition-colors flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-roseaccent-500"></span> Поддержка
+                </button>
+            </nav>
+
+            <!-- Правая часть: БД / Профиль / Корзина -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                
+                <!-- Быстрый вход в Базу Данных (Кто купил / продал) -->
+                <button 
+                    onclick="switchMainView('lk'); switchLkTab('database')" 
+                    class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl bg-graphite-900 hover:bg-graphite-700 border border-roseaccent-500/20 text-stone-300 hover:text-white text-xs font-medium transition-all"
+                    title="База данных покупок и продаж"
+                >
+                    <i class="fa-solid fa-database text-roseaccent-500 text-xs"></i>
+                    <span>База БД</span>
+                    <span id="header-db-count" class="px-1.5 py-0.2 rounded bg-roseaccent-500/15 text-roseaccent-300 font-mono text-[10px]">0</span>
+                </button>
+
+                <!-- Кнопка Личного кабинета / Профиля -->
+                <button 
+                    id="nav-lk-btn"
+                    onclick="switchMainView('lk')" 
+                    class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-graphite-900 hover:bg-graphite-700 border border-roseaccent-500/35 text-white text-xs font-semibold transition-all"
+                >
+                    <i class="fa-regular fa-user text-roseaccent-500"></i>
+                    <span id="nav-lk-label">Профиль & Ридер</span>
+                    <span id="lk-courses-count" class="px-1.5 py-0.5 rounded-md bg-roseaccent-500 text-graphite-950 font-mono text-[10px] font-bold">0</span>
+                </button>
+
+                <!-- Корзина -->
+                <button onclick="toggleCart(true)" class="relative p-2.5 rounded-xl bg-graphite-900 hover:bg-graphite-700 border border-roseaccent-500/20 text-stone-200 hover:text-roseaccent-400 transition-colors" aria-label="Корзина">
+                    <i class="fa-solid fa-bag-shopping text-sm"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-roseaccent-500 text-graphite-950 font-mono text-[10px] font-bold flex items-center justify-center transform scale-0 transition-transform duration-200">
+                        0
+                    </span>
+                </button>
+
+                <!-- Мобильное меню -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-graphite-900 border border-roseaccent-500/20 text-stone-200">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Выпадающее мобильное меню -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-roseaccent-500/15 bg-graphite-900 px-4 py-4 space-y-2">
+            <a href="#catalog" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-3.5 py-2.5 rounded-xl text-xs font-medium text-stone-200 hover:bg-graphite-800">📚 Текстовые курсы (1 000 – 2 540 ₽)</a>
+            <a href="#profit-lab" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-3.5 py-2.5 rounded-xl text-xs font-medium text-stone-200 hover:bg-graphite-800">📈 Симулятор профита и ROI</a>
+            <a href="#tools" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-3.5 py-2.5 rounded-xl text-xs font-medium text-stone-200 hover:bg-graphite-800">🛠 UTM & CPA Тулбокс</a>
+            <button onclick="switchMainView('lk'); switchLkTab('database'); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium text-roseaccent-300 hover:bg-graphite-800">🗄 База данных (Кто купил / продал)</button>
+            <button onclick="openSupportModal(); toggleMobileMenu()" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-medium text-stone-200 hover:bg-graphite-800">💬 Чат поддержки</button>
+        </div>
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- ОСНОВНАЯ ВИТРИНА (LANDING VIEW)                                         -->
+    <!-- ======================================================================= -->
+    <main id="landing-view">
+
+        <!-- HERO SECTION С ЖИВОЙ АНИМАЦИЕЙ ПРОФИТА -->
+        <section class="relative pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden">
+            <!-- Мягкое свечение #C88E9B на фоне #292929 -->
+            <div class="absolute top-10 left-1/4 w-96 h-96 bg-roseaccent-500/10 rounded-full blur-[130px] pointer-events-none pulse-rose"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                    
+                    <!-- Левая колонка (Минималистичный оффер) -->
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- Live-пилюля выплат с плавной сменой -->
+                        <div class="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-graphite-900 border border-roseaccent-500/25 text-xs">
+                            <span class="flex h-2 w-2 rounded-full bg-roseaccent-500 animate-ping"></span>
+                            <span class="text-stone-400 font-mono text-[11px]">LIVE ПРОФИТ:</span>
+                            <span id="live-payout-ticker" class="font-medium text-roseaccent-300 transition-opacity duration-300">
+                                @mark_cpa закрыл +14 200 ₽ на Базе Арбитража
+                            </span>
+                        </div>
+
+                        <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.14]">
+                            Чистая выжимка <span class="text-roseaccent-500">в тексте.</span> Без воды, видео на 3 часа и оверпрайса.
+                        </h1>
+
+                        <p class="text-stone-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                            Структурированные текстовые мануалы, готовые связки, таблицы расходников и скрипты с копированием в 1 клик. Открывай в встроенном минималистичном ридере, внедряй за вечер и забирай профит.
+                        </p>
+
+                        <!-- Кнопки действий -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1">
+                            <a href="#catalog" class="px-7 py-4 rounded-2xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-display font-bold text-xs uppercase tracking-wider rose-glow transition-all flex items-center justify-center gap-2.5">
+                                <span>Выбрать текстовик (от 1 000 ₽)</span>
+                                <i class="fa-solid fa-arrow-down-long"></i>
+                            </a>
+                            <button onclick="openCourseModal(201)" class="px-6 py-4 rounded-2xl bg-graphite-900 hover:bg-graphite-700 text-stone-200 border border-roseaccent-500/25 font-semibold text-xs transition-all flex items-center justify-center gap-2">
+                                <i class="fa-regular fa-file-lines text-roseaccent-500"></i>
+                                <span>Читать описание «Базы в Арбитраже» (1 000 ₽)</span>
+                            </button>
+                        </div>
+
+                        <!-- Минималистичные счетчики с анимацией накрутки -->
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-roseaccent-500/15 max-w-xl">
+                            <div>
+                                <div class="font-mono text-xl sm:text-2xl font-bold text-white">
+                                    <span id="counter-roi">0</span>%
+                                </div>
+                                <div class="text-[11px] text-stone-400 mt-0.5">Средний ROI связок</div>
+                            </div>
+                            <div>
+                                <div class="font-mono text-xl sm:text-2xl font-bold text-roseaccent-500">
+                                    1 000 – 2 540 ₽
+                                </div>
+                                <div class="text-[11px] text-stone-400 mt-0.5">Честный прайс на базу</div>
+                            </div>
+                            <div>
+                                <div class="font-mono text-xl sm:text-2xl font-bold text-white">
+                                    100% ТЕКСТ
+                                </div>
+                                <div class="text-[11px] text-stone-400 mt-0.5">Чек-листы + Скрипты</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка: Интерактивный терминал анимации профита -->
+                    <div class="lg:col-span-5">
+                        <div class="bento-card rounded-3xl p-6 sm:p-7 relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-roseaccent-400 block">РЕАЛ-ТАЙМ ТЕРМИНАЛ</span>
+                                    <h3 class="font-display text-base font-bold text-white mt-0.5">Динамика профита учеников</h3>
+                                </div>
+                                <div class="flex items-center gap-1.5 bg-graphite-800 px-2.5 py-1 rounded-lg border border-roseaccent-500/20">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span class="font-mono text-[11px] text-stone-300">CPA Sync</span>
+                                </div>
+                            </div>
+
+                            <!-- Сумма с анимацией -->
+                            <div class="bg-graphite-800/90 rounded-2xl p-4 border border-roseaccent-500/15 mb-4 flex items-baseline justify-between">
+                                <div>
+                                    <div class="text-[11px] text-stone-400">Выплаты за 30 дней по текстовым мануалам</div>
+                                    <div id="hero-animated-profit" class="font-mono text-2xl sm:text-3xl font-bold text-roseaccent-500 mt-1">
+                                        4 820 500 ₽
+                                    </div>
+                                </div>
+                                <button onclick="triggerProfitBoost()" class="px-2.5 py-1.5 rounded-lg bg-roseaccent-500/15 hover:bg-roseaccent-500/25 text-roseaccent-300 font-mono text-[11px] transition-colors" title="Обновить срез">
+                                    <i class="fa-solid fa-rotate mr-1"></i>Срез
+                                </button>
+                            </div>
+
+                            <!-- Анимированный SVG-график кривой профита -->
+                            <div class="relative h-36 w-full bg-graphite-950/60 rounded-2xl p-3 border border-white/5 overflow-hidden mb-4">
+                                <svg viewBox="0 0 360 110" class="w-full h-full overflow-visible">
+                                    <defs>
+                                        <linearGradient id="roseGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#C88E9B" stop-opacity="0.45"/>
+                                            <stop offset="100%" stop-color="#C88E9B" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Заливка под графиком -->
+                                    <path id="hero-chart-area" d="M 10 95 Q 70 85, 115 62 T 215 44 T 310 18 L 350 12 L 350 105 L 10 105 Z" fill="url(#roseGrad)"/>
+                                    <!-- Линия графика -->
+                                    <path id="hero-chart-path" class="animate-chart-line" d="M 10 95 Q 70 85, 115 62 T 215 44 T 310 18 L 350 12" fill="none" stroke="#C88E9B" stroke-width="3" stroke-linecap="round"/>
+                                    <!-- Точки на графике -->
+                                    <circle cx="115" cy="62" r="4" fill="#292929" stroke="#C88E9B" stroke-width="2.5"/>
+                                    <circle cx="215" cy="44" r="4" fill="#292929" stroke="#C88E9B" stroke-width="2.5"/>
+                                    <circle cx="350" cy="12" r="5" fill="#C88E9B"/>
+                                </svg>
+                                <div class="absolute bottom-2 left-3 right-3 flex justify-between text-[10px] font-mono text-stone-500">
+                                    <span>Неделя 1 (Тест)</span>
+                                    <span>Неделя 2 (Связка)</span>
+                                    <span class="text-roseaccent-400">Неделя 4 (Масштаб)</span>
+                                </div>
+                            </div>
+
+                            <!-- Выделенный флагманский текстовый курс за 1000 ₽ -->
+                            <div class="p-3.5 rounded-2xl bg-roseaccent-500/10 border border-roseaccent-500/30 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="px-2 py-0.5 rounded bg-roseaccent-500 text-graphite-950 font-mono text-[10px] font-bold">БАЗА 1 000 ₽</span>
+                                        <span class="text-xs font-semibold text-white truncate">База в Арбитраже Трафика (Текстовик)</span>
+                                    </div>
+                                    <p class="text-[11px] text-stone-400 truncate mt-0.5">Без видео • 5 глав • Термины, антидетект, офферы и залив</p>
+                                </div>
+                                <button onclick="buyCourseNow(201)" class="shrink-0 px-3.5 py-2 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs transition-all">
+                                    Забрать
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- КАТАЛОГ ТЕКСТОВЫХ МАНУАЛОВ (ЦЕНЫ СТРОГО ОТ 1 000 ДО 2 540 ₽)         -->
+        <!-- =================================================================== -->
+        <section id="catalog" class="py-16 lg:py-20 border-t border-roseaccent-500/15 bg-graphite-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <span class="font-mono text-roseaccent-500 text-xs uppercase tracking-widest">ФОРМАТ: ЧИСТЫЙ ТЕКСТ + ШАБЛОНЫ</span>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Каталог текстовых курсов</h2>
+                    </div>
+                    <p class="text-stone-400 max-w-md text-xs sm:text-sm">
+                        Все цены снижены до диапазона <strong class="text-roseaccent-400 font-mono">1 000 – 2 540 ₽</strong>. Никаких часовых видео — только конкретные текстовые регламенты, ссылки и схемы.
+                    </p>
+                </div>
+
+                <!-- Фильтры и Поиск -->
+                <div class="bento-card p-4 rounded-2xl mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div id="category-filters" class="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
+                        <button onclick="setCategory('Все')" data-cat="Все" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-roseaccent-500 text-graphite-950">
+                            Все мануалы (6)
+                        </button>
+                        <button onclick="setCategory('База Арбитража')" data-cat="База Арбитража" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap bg-graphite-800 text-stone-300 hover:text-white border border-roseaccent-500/15">
+                            База Арбитража
+                        </button>
+                        <button onclick="setCategory('РКО и Фин-офферы')" data-cat="РКО и Фин-офферы" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap bg-graphite-800 text-stone-300 hover:text-white border border-roseaccent-500/15">
+                            РКО и Фин-офферы
+                        </button>
+                        <button onclick="setCategory('УБТ и Трафик')" data-cat="УБТ и Трафик" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap bg-graphite-800 text-stone-300 hover:text-white border border-roseaccent-500/15">
+                            УБТ и Трафик
+                        </button>
+                        <button onclick="setCategory('Дроп и AI')" data-cat="Дроп и AI" class="cat-btn px-3.5 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap bg-graphite-800 text-stone-300 hover:text-white border border-roseaccent-500/15">
+                            Дропшиппинг и AI
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                        <div class="relative flex-grow sm:w-60">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 text-xs"></i>
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                oninput="handleSearch(this.value)"
+                                placeholder="Поиск по связкам..." 
+                                class="w-full pl-9 pr-8 py-2 bg-graphite-800 border border-roseaccent-500/20 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none focus:border-roseaccent-500"
+                            >
+                        </div>
+
+                        <select id="sort-select" onchange="handleSort(this.value)" class="px-3.5 py-2 bg-graphite-800 border border-roseaccent-500/20 rounded-xl text-xs font-medium text-stone-200 focus:outline-none focus:border-roseaccent-500 cursor-pointer">
+                            <option value="price-asc">По цене: от 1 000 ₽ до 2 540 ₽</option>
+                            <option value="popular">По популярности</option>
+                            <option value="price-desc">По цене: сначала полные</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Сетка текстовых курсов -->
+                <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- АНИМАЦИЯ ПРОФИТА: ИНТЕРАКТИВНЫЙ СИМУЛЯТОР СВЯЗКИ И ROI               -->
+        <!-- =================================================================== -->
+        <section id="profit-lab" class="py-16 lg:py-20 border-t border-roseaccent-500/15">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bento-card rounded-3xl p-6 sm:p-10">
+                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                        
+                        <div class="lg:col-span-7 space-y-6">
+                            <div>
+                                <span class="font-mono text-xs text-roseaccent-500 uppercase tracking-widest">PROFIT & ROI SIMULATOR</span>
+                                <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Декомпозиция профита по текстовой связке</h2>
+                                <p class="text-stone-400 text-xs sm:text-sm mt-1">
+                                    Подвигай ползунки и посмотри, как меняется чистая маржа и скорость окупаемости текстового мануала.
+                                </p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-stone-300 mb-1.5">1. Выбери модель из каталога:</label>
+                                    <select id="sim-niche" onchange="updateProfitSimulator()" class="w-full px-4 py-3 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white text-xs sm:text-sm font-medium focus:outline-none focus:border-roseaccent-500">
+                                        <option value="1800">База в Арбитраже Трафика — CPA-офферы (~1 800 ₽ чистыми с апрува)</option>
+                                        <option value="6500">РКО и Фин-Офферы (~6 500 ₽ за открытый счет ИП / карту)</option>
+                                        <option value="1400">УБТ-Трафик Reels / TikTok (~1 400 ₽ в день с перелива в ТГ)</option>
+                                        <option value="2400">Дропшиппинг & Poizon (~2 400 ₽ маржа с одного заказа)</option>
+                                    </select>
+                                </div>
+
+                                <div class="grid sm:grid-cols-2 gap-4">
+                                    <div class="bg-graphite-800/70 p-4 rounded-2xl border border-white/5">
+                                        <div class="flex justify-between text-xs mb-2">
+                                            <span class="text-stone-400">Конверсий (аппрувов) в месяц:</span>
+                                            <span id="sim-leads-val" class="font-mono font-bold text-roseaccent-400">25 лидов</span>
+                                        </div>
+                                        <input type="range" id="sim-leads" min="5" max="80" value="25" oninput="updateProfitSimulator()" class="w-full cursor-pointer">
+                                    </div>
+
+                                    <div class="bg-graphite-800/70 p-4 rounded-2xl border border-white/5">
+                                        <div class="flex justify-between text-xs mb-2">
+                                            <span class="text-stone-400">Расход на прокси / расходники:</span>
+                                            <span id="sim-spend-val" class="font-mono font-bold text-stone-200">2 500 ₽</span>
+                                        </div>
+                                        <input type="range" id="sim-spend" min="0" max="15000" step="500" value="2500" oninput="updateProfitSimulator()" class="w-full cursor-pointer">
+                                    </div>
+                                </div>
+
+                                <!-- Анимированные столбики прогресса по неделям -->
+                                <div class="pt-2">
+                                    <div class="text-[11px] font-mono text-stone-400 mb-2">ПРОГНОЗ РОСТА ПО НЕДЕЛЯМ МЕСЯЦА:</div>
+                                    <div class="grid grid-cols-4 gap-3 h-24 items-end bg-graphite-800/50 p-3 rounded-2xl border border-white/5">
+                                        <div class="flex flex-col items-center gap-1 h-full justify-end">
+                                            <div id="bar-w1" class="w-full bg-roseaccent-500/40 rounded-lg transition-all duration-500" style="height: 30%"></div>
+                                            <span class="text-[10px] font-mono text-stone-400">Нед 1</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1 h-full justify-end">
+                                            <div id="bar-w2" class="w-full bg-roseaccent-500/60 rounded-lg transition-all duration-500" style="height: 52%"></div>
+                                            <span class="text-[10px] font-mono text-stone-400">Нед 2</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1 h-full justify-end">
+                                            <div id="bar-w3" class="w-full bg-roseaccent-500/80 rounded-lg transition-all duration-500" style="height: 76%"></div>
+                                            <span class="text-[10px] font-mono text-stone-400">Нед 3</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1 h-full justify-end">
+                                            <div id="bar-w4" class="w-full bg-roseaccent-500 rounded-lg transition-all duration-500" style="height: 96%"></div>
+                                            <span class="text-[10px] font-mono text-roseaccent-300 font-bold">Нед 4</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Карточка результата -->
+                        <div class="lg:col-span-5 bg-graphite-800 rounded-3xl p-6 sm:p-7 border border-roseaccent-500/35 space-y-5">
+                            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                                <span class="text-xs text-stone-400">Чистый профит за 30 дней:</span>
+                                <span class="px-2.5 py-1 rounded-md bg-roseaccent-500/15 text-roseaccent-300 font-mono text-xs font-bold" id="sim-roi-badge">ROI +1600%</span>
+                            </div>
+
+                            <div id="sim-net-profit" class="font-display text-3xl sm:text-4xl font-bold text-roseaccent-500">
+                                42 500 ₽
+                            </div>
+
+                            <div class="space-y-2 text-xs border-t border-white/10 pt-4">
+                                <div class="flex justify-between">
+                                    <span class="text-stone-400">Грязная выручка с партнерки:</span>
+                                    <span id="sim-gross" class="font-mono text-white font-semibold">45 000 ₽</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-stone-400">Окупаемость курса (1 000 ₽):</span>
+                                    <span class="font-mono text-emerald-400 font-semibold">С 1-го апрува</span>
+                                </div>
+                            </div>
+
+                            <a href="#catalog" class="block w-full py-3.5 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-display font-bold text-xs text-center uppercase tracking-wider transition-all">
+                                Забрать текстовый мануал
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================== -->
+        <!-- МИНИМАЛИСТИЧНЫЕ ФИШКИ: ВСТРОЕННЫЙ ТУЛБОКС АРБИТРАЖНИКА               -->
+        <!-- =================================================================== -->
+        <section id="tools" class="py-16 lg:py-20 border-t border-roseaccent-500/15 bg-graphite-900/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div>
+                        <span class="font-mono text-roseaccent-500 text-xs uppercase tracking-widest">БЕСПЛАТНЫЕ МИКРО-ИНСТРУМЕНТЫ</span>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Тулбокс для работы с трафиком</h2>
+                    </div>
+                    <p class="text-stone-400 text-xs sm:text-sm max-w-md">
+                        Полезные утилиты прямо на сайте, чтобы арбитражники возвращались сюда каждый день.
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-6">
+                    
+                    <!-- Утилита 1: Сборщик UTM и SubID ссылок для CPA -->
+                    <div class="bento-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg bg-roseaccent-500/15 text-roseaccent-300 font-mono text-xs font-semibold">UTM & SUB-ID BUILDER</span>
+                            <span class="text-xs text-stone-400">Для трекеров и партнерок</span>
+                        </div>
+                        <h3 class="font-display text-lg font-bold text-white">Генератор партнерской ссылки с SubID</h3>
+                        <div class="grid sm:grid-cols-3 gap-3">
+                            <input type="text" id="utm-base" oninput="buildUtmLink()" value="https://cpa-offer.ru/click" placeholder="URL оффера" class="sm:col-span-3 px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                            <input type="text" id="utm-source" oninput="buildUtmLink()" value="tiktok_ubt" placeholder="Источник (source)" class="px-3.5 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                            <input type="text" id="utm-creo" oninput="buildUtmLink()" value="creo_01" placeholder="Креатив (sub1)" class="px-3.5 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                            <input type="text" id="utm-geo" oninput="buildUtmLink()" value="ru" placeholder="ГЕО (sub2)" class="px-3.5 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-graphite-950 border border-roseaccent-500/25 flex items-center justify-between gap-3">
+                            <code id="utm-result" class="font-mono text-[11px] text-roseaccent-300 truncate">https://cpa-offer.ru/click?utm_source=tiktok_ubt&sub1=creo_01&sub2=ru</code>
+                            <button onclick="copyTextValue('utm-result', 'Готовая ссылка скопирована!')" class="shrink-0 px-3 py-1.5 rounded-lg bg-roseaccent-500 text-graphite-950 font-bold text-xs">
+                                Копировать
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Утилита 2: Быстрый чекер связки (EPC / CPA / CR) -->
+                    <div class="bento-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded-lg bg-roseaccent-500/15 text-roseaccent-300 font-mono text-xs font-semibold">CPA METRICS CHECKER</span>
+                            <span class="text-xs text-stone-400">Мгновенный просчет</span>
+                        </div>
+                        <h3 class="font-display text-lg font-bold text-white">Калькулятор EPC и цены лида</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[10px] text-stone-400 mb-1">Кликов (Переходов)</label>
+                                <input type="number" id="cpa-clicks" oninput="calcCpaMetrics()" value="1200" class="w-full px-3 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-stone-400 mb-1">Апрувов (Лидов)</label>
+                                <input type="number" id="cpa-leads" oninput="calcCpaMetrics()" value="18" class="w-full px-3 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-stone-400 mb-1">Выплата за лид (₽)</label>
+                                <input type="number" id="cpa-payout" oninput="calcCpaMetrics()" value="1500" class="w-full px-3 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-xs text-white font-mono">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 pt-1">
+                            <div class="p-3 rounded-xl bg-graphite-800/80 border border-white/5">
+                                <div class="text-[10px] text-stone-400">CR (Конверсия)</div>
+                                <div id="metric-cr" class="font-mono text-sm font-bold text-white mt-0.5">1.50%</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-graphite-800/80 border border-white/5">
+                                <div class="text-[10px] text-stone-400">EPC (Доход с клика)</div>
+                                <div id="metric-epc" class="font-mono text-sm font-bold text-roseaccent-400 mt-0.5">22.50 ₽</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-graphite-800/80 border border-white/5">
+                                <div class="text-[10px] text-stone-400">Выручка связки</div>
+                                <div id="metric-rev" class="font-mono text-sm font-bold text-emerald-400 mt-0.5">27 000 ₽</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================================= -->
+    <!-- ЛИЧНЫЙ КАБИНЕТ: ПРОФИЛЬ, ТЕКСТОВЫЙ РИДЕР, ПОДДЕРЖКА И БАЗА ДАННЫХ       -->
+    <!-- ======================================================================= -->
+    <section id="lk-view" class="hidden min-h-screen py-8 sm:py-12 bg-graphite-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-7">
+            
+            <!-- Карточка Профиля Ученика -->
+            <div class="bento-card rounded-3xl p-6 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-roseaccent-500 text-graphite-950 font-display font-extrabold text-xl flex items-center justify-center rose-glow">
+                        <span id="lk-avatar-initials">AR</span>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h1 id="lk-user-name" class="font-display text-lg sm:text-xl font-bold text-white">Арбитражник</h1>
+                            <span id="lk-user-rank" class="px-2.5 py-0.5 rounded-md bg-roseaccent-500/15 text-roseaccent-300 border border-roseaccent-500/30 font-mono text-[11px] font-semibold">LVL 1 • РЕСЁРЧЕР</span>
+                        </div>
+                        <p id="lk-user-tg" class="text-xs text-stone-400 mt-1 font-mono">@user • ID сессии синхронизирован с БД</p>
+                    </div>
+                </div>
+
+                <!-- Быстрая активация по ключу + Статистика -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="bg-graphite-900 px-4 py-2.5 rounded-2xl border border-white/5">
+                        <div class="text-[10px] text-stone-400">Куплено текстовиков</div>
+                        <div id="lk-stat-courses" class="font-mono text-sm font-bold text-white">0 из 6</div>
+                    </div>
+                    <div class="bg-graphite-900 px-4 py-2.5 rounded-2xl border border-white/5">
+                        <div class="text-[10px] text-stone-400">Опыт чтения</div>
+                        <div id="lk-stat-xp" class="font-mono text-sm font-bold text-roseaccent-500">0 XP</div>
+                    </div>
+                    <button onclick="switchMainView('landing')" class="px-4 py-3 rounded-2xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs transition-all">
+                        + В каталог курсов
+                    </button>
+                </div>
+            </div>
+
+            <!-- Вкладки Личного Кабинета -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-roseaccent-500/15">
+                <button onclick="switchLkTab('reader')" id="lktab-btn-reader" class="lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-roseaccent-500 text-graphite-950 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> Текстовый Ридер (Курсы)
+                </button>
+                <button onclick="switchLkTab('database')" id="lktab-btn-database" class="lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium bg-graphite-900 text-stone-300 hover:text-white border border-roseaccent-500/15 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-database mr-1.5 text-roseaccent-500"></i> База данных (Кто купил / продал)
+                </button>
+                <button onclick="switchLkTab('support')" id="lktab-btn-support" class="lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium bg-graphite-900 text-stone-300 hover:text-white border border-roseaccent-500/15 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-headset mr-1.5"></i> Поддержка 24/7
+                </button>
+                <button onclick="switchLkTab('profile')" id="lktab-btn-profile" class="lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium bg-graphite-900 text-stone-300 hover:text-white border border-roseaccent-500/15 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-user-gear mr-1.5"></i> Профиль и Рефералка
+                </button>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- ВКЛАДКА 1: ТЕКСТОВЫЙ РИДЕР КУРСОВ (БЕЗ ВИДЕО, NOTION-STYLE)      -->
+            <!-- =============================================================== -->
+            <div id="lktab-reader" class="space-y-6">
+                
+                <!-- Панель мгновенной активации курса по Лицензионному Ключу -->
+                <div class="bento-card rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-key text-roseaccent-500 text-xs"></i>
+                            <span class="text-xs font-bold text-white uppercase tracking-wide">Активация доступа по коду / пину</span>
+                        </div>
+                        <p class="text-xs text-stone-400 mt-0.5">
+                            Получил ключ после оплаты у администратора или сгенерировал его в «Базе данных»? Введи ниже для моментального открытия текстовика:
+                        </p>
+                    </div>
+                    <form onsubmit="redeemLicenseKey(event)" class="flex gap-2 w-full md:w-auto">
+                        <input 
+                            type="text" 
+                            id="license-key-input" 
+                            placeholder="Ключ (напр. ROSE-2026)" 
+                            class="flex-1 sm:w-56 px-3.5 py-2 rounded-xl bg-graphite-800 border border-roseaccent-500/30 font-mono text-xs text-white uppercase focus:outline-none focus:border-roseaccent-500"
+                        >
+                        <button type="submit" class="px-4 py-2 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs whitespace-nowrap">
+                            Активировать
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Переключатель всех 6 текстовых курсов -->
+                <div id="lk-courses-selector" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5"></div>
+
+                <!-- ОКНО ЧТЕНИЯ ТЕКСТОВОГО МАНУАЛА -->
+                <div class="bento-card rounded-3xl overflow-hidden border border-roseaccent-500/30">
+                    
+                    <!-- Верхняя панель Ридера -->
+                    <div class="p-5 sm:p-6 bg-graphite-950/80 border-b border-roseaccent-500/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span id="reader-status-badge" class="px-2.5 py-0.5 rounded bg-roseaccent-500 text-graphite-950 font-mono text-[10px] font-bold uppercase">ТЕКСТОВЫЙ МАНУАЛ</span>
+                                <span id="reader-course-name" class="text-xs text-stone-400 font-medium"></span>
+                            </div>
+                            <h3 id="reader-chapter-title" class="font-display text-base sm:text-xl font-bold text-white mt-1"></h3>
+                        </div>
+
+                        <!-- Управление размером шрифта и отметкой прочтения -->
+                        <div class="flex items-center gap-2 self-start sm:self-auto">
+                            <div class="flex items-center bg-graphite-800 rounded-xl p-1 border border-white/10 text-xs font-mono">
+                                <button onclick="setReaderFontSize('text-xs')" class="px-2.5 py-1 rounded-lg hover:bg-graphite-700 text-stone-300">S</button>
+                                <button onclick="setReaderFontSize('text-sm')" class="px-2.5 py-1 rounded-lg bg-roseaccent-500/20 text-roseaccent-300 font-bold">M</button>
+                                <button onclick="setReaderFontSize('text-base')" class="px-2.5 py-1 rounded-lg hover:bg-graphite-700 text-stone-300">L</button>
+                            </div>
+                            <button onclick="markChapterRead()" id="reader-complete-btn" class="px-3.5 py-2 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs transition-all">
+                                Прочитано (+50 XP)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Контент Ридера: Оглавление слева + Текст главы справа -->
+                    <div class="grid lg:grid-cols-12">
+                        
+                        <!-- Оглавление (Главы текстовика) -->
+                        <div class="lg:col-span-4 p-5 bg-graphite-900/70 border-b lg:border-b-0 lg:border-r border-roseaccent-500/15 flex flex-col justify-between space-y-6">
+                            <div>
+                                <div class="text-[11px] font-mono uppercase tracking-wider text-stone-400 mb-3">Оглавление мануала</div>
+                                <div id="reader-chapters-list" class="space-y-2"></div>
+                            </div>
+
+                            <!-- Личные заметки ученика по курсу -->
+                            <div class="p-4 rounded-2xl bg-graphite-800 border border-white/5 space-y-2">
+                                <div class="text-xs font-bold text-roseaccent-400 flex items-center justify-between">
+                                    <span><i class="fa-regular fa-note-sticky mr-1.5"></i>Твои заметки к связке</span>
+                                    <span class="text-[10px] font-mono text-stone-500">Автосохранение</span>
+                                </div>
+                                <textarea 
+                                    id="reader-user-notes" 
+                                    oninput="saveReaderNotes(this.value)"
+                                    rows="3" 
+                                    placeholder="Записывай сюда свои связки, логины или идеи..." 
+                                    class="w-full p-2.5 rounded-xl bg-graphite-900 border border-roseaccent-500/15 text-xs text-stone-200 focus:outline-none focus:border-roseaccent-500"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Основное текстовое полотно (Либо экран блокировки, если курс не оплачен) -->
+                        <div class="lg:col-span-8 p-6 sm:p-8 bg-graphite-800/40 flex flex-col justify-between">
+                            
+                            <!-- Экран, когда курс ОПЛАЧЕН -->
+                            <div id="reader-unlocked-body" class="space-y-6">
+                                <div id="reader-text-container" class="reader-content text-sm space-y-4"></div>
+
+                                <!-- Готовый шаблон / скрипт для копирования из главы -->
+                                <div class="p-4 rounded-2xl bg-graphite-950 border border-roseaccent-500/25 space-y-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-mono text-[11px] text-roseaccent-400 uppercase font-semibold">
+                                            <i class="fa-solid fa-terminal mr-1.5"></i>Прикладной шаблон / Чек-лист главы
+                                        </span>
+                                        <button onclick="copyChapterTemplate()" class="px-3 py-1 rounded-lg bg-roseaccent-500/20 hover:bg-roseaccent-500 text-roseaccent-300 hover:text-graphite-950 font-mono text-[11px] font-bold transition-colors">
+                                            Скопировать текст
+                                        </button>
+                                    </div>
+                                    <pre id="reader-template-box" class="font-mono text-xs text-stone-300 whitespace-pre-wrap leading-relaxed overflow-x-auto"></pre>
+                                </div>
+                            </div>
+
+                            <!-- Экран БЛОКИРОВКИ, когда курс НЕ оплачен (Исправление бага бесплатной выдачи!) -->
+                            <div id="reader-locked-body" class="hidden py-12 px-4 text-center max-w-md mx-auto space-y-4">
+                                <div class="w-14 h-14 rounded-2xl bg-roseaccent-500/15 border border-roseaccent-500/40 text-roseaccent-400 flex items-center justify-center mx-auto text-xl">
+                                    <i class="fa-solid fa-lock"></i>
+                                </div>
+                                <h4 class="font-display text-lg font-bold text-white">Доступ к полному тексту закрыт</h4>
+                                <p id="reader-locked-desc" class="text-xs text-stone-400 leading-relaxed">
+                                    Этот текстовый мануал еще не оплачен или твой платеж находится в статусе «На проверке» в Базе Данных.
+                                </p>
+                                <div class="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center">
+                                    <button id="reader-locked-buy-btn" class="px-5 py-3 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs uppercase tracking-wider">
+                                        Купить доступ
+                                    </button>
+                                    <button onclick="document.getElementById('license-key-input').focus()" class="px-4 py-3 rounded-xl bg-graphite-900 hover:bg-graphite-700 text-stone-200 border border-roseaccent-500/25 font-semibold text-xs">
+                                        Ввести ключ активации
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- ВКЛАДКА 2: БАЗА ДАННЫХ (КТО КУПИЛ, КТО ПРОДАЛ, ЧЕКИ И КЛЮЧИ)     -->
+            <!-- =============================================================== -->
+            <div id="lktab-database" class="hidden space-y-6">
+                
+                <!-- Сводка по БД -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="bento-card p-5 rounded-2xl">
+                        <div class="text-[11px] font-mono text-stone-400">ВСЕГО ЗАПИСЕЙ В БД</div>
+                        <div id="db-stat-total" class="font-display text-2xl font-bold text-white mt-1">0</div>
+                    </div>
+                    <div class="bento-card p-5 rounded-2xl">
+                        <div class="text-[11px] font-mono text-stone-400">ПОДТВЕРЖДЕННЫЙ ОБОРОТ</div>
+                        <div id="db-stat-revenue" class="font-display text-2xl font-bold text-roseaccent-500 mt-1">0 ₽</div>
+                    </div>
+                    <div class="bento-card p-5 rounded-2xl">
+                        <div class="text-[11px] font-mono text-stone-400">ОЖИДАЮТ ПРОВЕРКИ ЧЕКА</div>
+                        <div id="db-stat-pending" class="font-display text-2xl font-bold text-amber-400 mt-1">0</div>
+                    </div>
+                    <div class="bento-card p-5 rounded-2xl">
+                        <div class="text-[11px] font-mono text-stone-400">АКТИВНЫХ КЛЮЧЕЙ</div>
+                        <div id="db-stat-keys" class="font-display text-2xl font-bold text-emerald-400 mt-1">0</div>
+                    </div>
+                </div>
+
+                <!-- Блок 1: Добавление сделки вручную + Генератор ключей активации -->
+                <div class="grid lg:grid-cols-12 gap-6">
+                    
+                    <!-- Ручное добавление продажи в БД (Кто купил / Кто продал) -->
+                    <div class="lg:col-span-7 bento-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-mono text-[10px] text-roseaccent-400 uppercase">CRM РЕЕСТР СДЕЛОК</span>
+                                <h3 class="font-display text-base font-bold text-white">Записать продажу в Базу Данных</h3>
+                            </div>
+                            <button onclick="exportDatabaseCsv()" class="px-3 py-1.5 rounded-xl bg-graphite-800 hover:bg-graphite-700 border border-roseaccent-500/25 text-xs font-mono text-roseaccent-300">
+                                <i class="fa-solid fa-download mr-1"></i>CSV Экспорт
+                            </button>
+                        </div>
+
+                        <form onsubmit="addManualOrderToDb(event)" class="grid sm:grid-cols-2 gap-3 text-xs">
+                            <input type="text" id="db-buyer-name" required placeholder="Покупатель (Имя / Ник)" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500">
+                            <input type="text" id="db-buyer-tg" required placeholder="Telegram покупателя (@user)" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500">
+                            <select id="db-course-select" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500"></select>
+                            <input type="text" id="db-seller-name" value="Админ (@owner)" required placeholder="Кто продал (Менеджер / Касса)" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500">
+                            <input type="text" id="db-tx-code" required placeholder="Номер чека / Хэш оплаты" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                            <button type="submit" class="px-4 py-2.5 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold uppercase tracking-wider">
+                                + Внести в БД (Оплачено)
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Генератор одноразовых ключей для выдачи покупателям -->
+                    <div class="lg:col-span-5 bento-card rounded-3xl p-6 space-y-4">
+                        <div>
+                            <span class="font-mono text-[10px] text-roseaccent-400 uppercase">LICENSE GENERATOR</span>
+                            <h3 class="font-display text-base font-bold text-white">Сгенерировать ключ доступа</h3>
+                            <p class="text-xs text-stone-400 mt-0.5">Создай ключ и отправь покупателю в ТГ — он активирует курс сам.</p>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <select id="key-course-select" class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500"></select>
+                            <button onclick="generateNewLicenseKey()" class="w-full py-2.5 rounded-xl bg-roseaccent-500/20 hover:bg-roseaccent-500 text-roseaccent-300 hover:text-graphite-950 border border-roseaccent-500/40 font-bold transition-all">
+                                Создать лицензионный ключ
+                            </button>
+                        </div>
+
+                        <div id="keys-list-container" class="space-y-2 max-h-36 overflow-y-auto pr-1"></div>
+                    </div>
+
+                </div>
+
+                <!-- Таблица всех транзакций (Кто купил, кто продал, сумма, статус, управление доступом) -->
+                <div class="bento-card rounded-3xl p-6 overflow-hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="font-display text-base font-bold text-white">Журнал транзакций (Облачная БД)</h3>
+                            <p class="text-xs text-stone-400">Нажми «Подтвердить чек», чтобы выдать покупателю доступ к текстовому курсу.</p>
+                        </div>
+                        <span id="db-sync-indicator" class="font-mono text-[11px] text-emerald-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Realtime Sync
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="border-b border-roseaccent-500/20 text-stone-400 font-mono text-[11px]">
+                                    <th class="py-3 px-3">ID / Дата</th>
+                                    <th class="py-3 px-3">Кто купил (Клиент)</th>
+                                    <th class="py-3 px-3">Кто продал (Канал)</th>
+                                    <th class="py-3 px-3">Текстовый курс</th>
+                                    <th class="py-3 px-3">Сумма / Чек</th>
+                                    <th class="py-3 px-3">Статус</th>
+                                    <th class="py-3 px-3 text-right">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody id="db-orders-tbody" class="divide-y divide-white/5"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- ВКЛАДКА 3: ПОДДЕРЖКА И ТИКЕТЫ                                   -->
+            <!-- =============================================================== -->
+            <div id="lktab-support" class="hidden">
+                <div class="grid lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bento-card rounded-3xl p-6 space-y-4">
+                        <span class="font-mono text-xs text-roseaccent-500 uppercase">SUPPORT DESK</span>
+                        <h3 class="font-display text-xl font-bold text-white">Создать обращение в поддержку</h3>
+                        <p class="text-xs text-stone-400 leading-relaxed">
+                            Вопрос по настройке антидетекта, проверке чека или выбору оффера? Напиши сюда — тикет сохранится в БД, и куратор ответит.
+                        </p>
+                        <form onsubmit="submitSupportTicket(event)" class="space-y-3 text-xs">
+                            <input type="text" id="sup-topic" required placeholder="Тема (напр. Проверка чека #AR-102 / Вопрос по главе 2)" class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500">
+                            <textarea id="sup-message" rows="4" required placeholder="Опиши свой вопрос или вставь ссылку на скриншот..." class="w-full p-3.5 rounded-xl bg-graphite-800 border border-roseaccent-500/20 text-white focus:outline-none focus:border-roseaccent-500"></textarea>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold uppercase tracking-wider">
+                                Отправить тикет в саппорт
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-7 bento-card rounded-3xl p-6 space-y-4">
+                        <h3 class="font-display text-base font-bold text-white">Лента обращений и быстрые ответы</h3>
+                        <div id="support-tickets-list" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- ВКЛАДКА 4: НАСТРОЙКИ ПРОФИЛЯ И РЕФЕРАЛКА 30%                     -->
+            <!-- =============================================================== -->
+            <div id="lktab-profile" class="hidden">
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <div class="bento-card rounded-3xl p-6 space-y-4">
+                        <h3 class="font-display text-lg font-bold text-white">Данные твоего профиля</h3>
+                        <form onsubmit="saveUserProfile(event)" class="space-y-3.5 text-xs">
+                            <div>
+                                <label class="block text-stone-400 mb-1">Твой Никнейм / Имя</label>
+                                <input type="text" id="profile-name-input" required class="w-full px-4 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white focus:outline-none focus:border-roseaccent-500">
+                            </div>
+                            <div>
+                                <label class="block text-stone-400 mb-1">Твой Telegram (@username)</label>
+                                <input type="text" id="profile-tg-input" required class="w-full px-4 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                            </div>
+                            <button type="submit" class="px-6 py-3 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold uppercase tracking-wider">
+                                Сохранить изменения
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bento-card rounded-3xl p-6 space-y-4">
+                        <span class="px-2.5 py-1 rounded bg-roseaccent-500/15 text-roseaccent-300 font-mono text-[11px] font-bold">PARTNER PROGRAM 30%</span>
+                        <h3 class="font-display text-lg font-bold text-white">Реферальная ссылка</h3>
+                        <p class="text-xs text-stone-400 leading-relaxed">
+                            Рекомендуй наши текстовые мануалы (от 1 000 до 2 540 ₽) и забирай 30% с каждой подтвержденной продажи. Все продажи по твоей метке фиксируются в Базе Данных в колонке «Кто продал».
+                        </p>
+                        <div class="flex gap-2">
+                            <input type="text" id="ref-link-input" readonly value="https://antireverse.lab/?partner=ar_user" class="flex-1 px-3.5 py-2.5 rounded-xl bg-graphite-900 border border-roseaccent-500/25 font-mono text-xs text-roseaccent-300">
+                            <button onclick="copyTextValue('ref-link-input', 'Реферальная ссылка скопирована!', true)" class="px-4 py-2.5 rounded-xl bg-roseaccent-500 text-graphite-950 font-bold text-xs">
+                                Копировать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Плавающая минималистичная кнопка Поддержки -->
+    <button 
+        onclick="openSupportModal()" 
+        class="fixed bottom-5 left-5 z-40 px-4 py-2.5 rounded-2xl bg-graphite-900 hover:bg-graphite-700 border border-roseaccent-500/35 text-xs font-semibold text-stone-200 shadow-xl flex items-center gap-2 transition-all"
+    >
+        <span class="w-2 h-2 rounded-full bg-roseaccent-500 animate-ping"></span>
+        <span>Поддержка</span>
+    </button>
+
+    <!-- ПОДВАЛ -->
+    <footer class="bg-graphite-950 text-stone-500 py-10 border-t border-roseaccent-500/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-roseaccent-500 text-graphite-950 flex items-center justify-center font-display font-bold text-xs">AR</div>
+                <span class="text-stone-300 font-display font-semibold">ANTI.REVERSE // TEXT LAB</span>
+            </div>
+            <div id="footer-ip-info" class="font-mono text-[11px] text-stone-500"></div>
+            <div class="flex gap-4">
+                <button onclick="switchMainView('lk'); switchLkTab('database')" class="hover:text-roseaccent-400 transition-colors">База БД</button>
+                <button onclick="openSupportModal()" class="hover:text-roseaccent-400 transition-colors">Поддержка</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================= -->
+    <!-- МОДАЛЬНОЕ ОКНО: ОПИСАНИЕ И СОДЕРЖАНИЕ ТЕКСТОВОГО КУРСА                   -->
+    <!-- ======================================================================= -->
+    <div id="course-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div onclick="closeCourseModal()" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative w-full max-w-2xl rounded-3xl bg-graphite-900 border border-roseaccent-500/35 shadow-2xl overflow-hidden z-10">
+                
+                <div class="p-6 sm:p-7 bg-graphite-950 border-b border-roseaccent-500/15 relative">
+                    <button onclick="closeCourseModal()" class="absolute top-5 right-5 w-9 h-9 rounded-xl bg-graphite-800 hover:bg-graphite-700 text-stone-300 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span id="modal-category" class="px-2.5 py-0.5 rounded bg-roseaccent-500/15 text-roseaccent-300 font-mono text-[11px] font-semibold"></span>
+                        <span class="px-2.5 py-0.5 rounded bg-graphite-800 text-stone-300 font-mono text-[11px]">БЕЗ ВИДЕО • 100% ТЕКСТ</span>
+                    </div>
+                    <h3 id="modal-title" class="font-display text-xl sm:text-2xl font-bold text-white pr-8"></h3>
+                    <p id="modal-subtitle" class="text-stone-400 text-xs sm:text-sm mt-1"></p>
+                </div>
+
+                <div class="p-6 sm:p-7 max-h-[65vh] overflow-y-auto space-y-5 text-xs sm:text-sm">
+                    <div>
+                        <h4 class="font-mono text-xs uppercase text-roseaccent-400 mb-1.5">Описание товара</h4>
+                        <p id="modal-description" class="text-stone-300 leading-relaxed"></p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-mono text-xs uppercase text-roseaccent-400 mb-2">Содержание текстового мануала (Главы)</h4>
+                        <div id="modal-syllabus" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <div class="p-5 sm:px-7 bg-graphite-950 border-t border-roseaccent-500/15 flex items-center justify-between gap-4">
+                    <div>
+                        <span id="modal-old-price" class="text-xs text-stone-500 line-through block font-mono"></span>
+                        <span id="modal-price" class="font-display text-2xl font-bold text-roseaccent-500"></span>
+                    </div>
+                    <div class="flex gap-2.5">
+                        <button id="modal-read-btn" class="px-4 py-3 rounded-xl bg-graphite-800 hover:bg-graphite-700 text-stone-200 font-semibold text-xs">
+                            В ридер
+                        </button>
+                        <button id="modal-buy-now-btn" class="px-6 py-3 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs uppercase tracking-wider">
+                            Купить доступ
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- КОРЗИНА ЗАКАЗА                                                          -->
+    <!-- ======================================================================= -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleCart(false)" class="fixed inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-graphite-900 border-l border-roseaccent-500/25 shadow-2xl flex flex-col justify-between z-10">
+                
+                <div class="p-6 border-b border-roseaccent-500/15 flex items-center justify-between">
+                    <h3 class="font-display text-base font-bold text-white uppercase">Корзина текстовиков</h3>
+                    <button onclick="toggleCart(false)" class="w-8 h-8 rounded-xl bg-graphite-800 text-stone-300 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-5">
+                    <div id="cart-empty" class="text-center py-12 space-y-3">
+                        <i class="fa-solid fa-bag-shopping text-3xl text-stone-600"></i>
+                        <p class="text-xs text-stone-400">Корзина пуста. Выбери текстовый мануал от 1 000 ₽.</p>
+                    </div>
+
+                    <div id="cart-filled" class="hidden space-y-5">
+                        <div id="cart-items-list" class="space-y-2.5"></div>
+
+                        <div class="bg-graphite-800 p-4 rounded-2xl border border-white/5 space-y-2 text-xs">
+                            <div class="flex justify-between text-stone-400">
+                                <span>Количество курсов:</span>
+                                <span id="summary-count" class="font-mono text-white font-bold">0</span>
+                            </div>
+                            <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+                                <span class="font-bold text-white">Итого к оплате:</span>
+                                <span id="summary-total" class="font-display text-xl font-bold text-roseaccent-500">0 ₽</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openPaymentGateway()" class="w-full py-4 rounded-2xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-display font-bold text-xs uppercase tracking-wider rose-glow">
+                            Перейти к оплате
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- ЗАЩИЩЕННАЯ КАССА (БЕЗ БАГА БЕСПЛАТНОЙ ВЫДАЧИ! ПРОВЕРКА ЧЕКА ИЛИ КЛЮЧА)  -->
+    <!-- ======================================================================= -->
+    <div id="payment-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+        <div onclick="closePaymentGateway()" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative w-full max-w-lg rounded-3xl bg-graphite-900 border border-roseaccent-500/40 shadow-2xl overflow-hidden z-10">
+                
+                <div class="p-5 sm:p-6 bg-graphite-950 border-b border-roseaccent-500/15 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-roseaccent-500"></span>
+                            <span class="font-mono text-[11px] uppercase text-roseaccent-400">ЗАЩИЩЕННЫЙ ШЛЮЗ ОПЛАТЫ</span>
+                        </div>
+                        <div id="pay-modal-merchant" class="text-[11px] text-stone-400 font-mono mt-0.5"></div>
+                    </div>
+                    <button onclick="closePaymentGateway()" class="w-8 h-8 rounded-xl bg-graphite-800 text-stone-300 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Форма оплаты с защитой от бесплатного открытия -->
+                <div id="payment-form-step" class="p-6 space-y-4 text-xs">
+                    
+                    <div class="bg-graphite-800 p-4 rounded-2xl border border-roseaccent-500/20 flex items-center justify-between">
+                        <div>
+                            <div class="text-stone-400">Сумма к переводу:</div>
+                            <div id="pay-modal-amount" class="font-display text-2xl font-bold text-white mt-0.5">1 000 ₽</div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded bg-roseaccent-500/15 text-roseaccent-300 font-mono text-[10px]">
+                            Защита от фейк-оплат
+                        </span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-stone-400 mb-1">Твое Имя / Ник *</label>
+                            <input type="text" id="pay-client-name" required placeholder="Алексей" class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white focus:outline-none focus:border-roseaccent-500">
+                        </div>
+                        <div>
+                            <label class="block text-stone-400 mb-1">Твой Telegram (@ник) *</label>
+                            <input type="text" id="pay-client-tg" required placeholder="@username" class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white font-mono focus:outline-none focus:border-roseaccent-500">
+                        </div>
+                    </div>
+
+                    <!-- Выбор метода -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectPaymentMethod('sbp')" id="pm-btn-sbp" class="p-2.5 rounded-xl border border-roseaccent-500 bg-roseaccent-500/15 text-white font-bold flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-qrcode text-roseaccent-400 text-base"></i>
+                            <span>СБП QR</span>
+                        </button>
+                        <button type="button" onclick="selectPaymentMethod('card')" id="pm-btn-card" class="p-2.5 rounded-xl border border-white/10 bg-graphite-800 text-stone-300 font-medium flex flex-col items-center gap-1">
+                            <i class="fa-regular fa-credit-card text-roseaccent-400 text-base"></i>
+                            <span>Карта РФ</span>
+                        </button>
+                        <button type="button" onclick="selectPaymentMethod('crypto')" id="pm-btn-crypto" class="p-2.5 rounded-xl border border-white/10 bg-graphite-800 text-stone-300 font-medium flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-coins text-roseaccent-400 text-base"></i>
+                            <span>USDT</span>
+                        </button>
+                    </div>
+
+                    <!-- Реквизиты выбранного метода -->
+                    <div id="pm-requisites-box" class="p-3.5 rounded-2xl bg-graphite-950 border border-white/10 font-mono text-[11px] text-stone-300 space-y-1"></div>
+
+                    <!-- Обязательный ввод номера квитанции ИЛИ ключа активации -->
+                    <div class="p-4 rounded-2xl bg-graphite-800/90 border border-roseaccent-500/30 space-y-3">
+                        <div>
+                            <label class="block font-bold text-white mb-1">
+                                Шаг 2. Номер квитанции банка / Хэш транзакции (от 6 символов) *
+                            </label>
+                            <input 
+                                type="text" 
+                                id="pay-receipt-code" 
+                                placeholder="Напр.: SBP-9482041 или ключ ROSE-2026" 
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-900 border border-roseaccent-500/35 font-mono text-xs text-roseaccent-300 focus:outline-none focus:border-roseaccent-500"
+                            >
+                            <p class="text-[11px] text-stone-400 mt-1.5 leading-relaxed">
+                                • Если введешь <strong>номер чека перевода</strong> — заказ попадет в Базу Данных со статусом <span class="text-amber-300">«На проверке»</span> (бесплатно курс НЕ откроется, пока админ не нажмет «Подтвердить» в БД).<br>
+                                • Если введешь <strong>ключ активации</strong> — доступ откроется мгновенно.
+                            </p>
+                        </div>
+                    </div>
+
+                    <button onclick="submitStrictPayment()" class="w-full py-4 rounded-2xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-display font-bold text-xs uppercase tracking-wider rose-glow">
+                        Отправить чек в БД / Проверить оплату
+                    </button>
+                </div>
+
+                <!-- Шаг результата отправки платежа -->
+                <div id="payment-result-step" class="hidden p-7 text-center space-y-4">
+                    <div id="pay-result-icon" class="w-14 h-14 rounded-2xl bg-roseaccent-500/20 text-roseaccent-400 flex items-center justify-center mx-auto text-2xl">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 id="pay-result-title" class="font-display text-xl font-bold text-white">Заявка записана в Базу Данных</h3>
+                    <p id="pay-result-desc" class="text-xs text-stone-300 leading-relaxed"></p>
+                    <div class="pt-2 flex flex-col sm:flex-row gap-2.5">
+                        <button onclick="closePaymentGateway(); switchMainView('lk'); switchLkTab('database')" class="flex-1 py-3.5 rounded-xl bg-graphite-800 hover:bg-graphite-700 text-stone-200 border border-roseaccent-500/25 font-bold text-xs">
+                            Посмотреть в Базе Данных
+                        </button>
+                        <button onclick="closePaymentGateway(); switchMainView('lk'); switchLkTab('reader')" class="flex-1 py-3.5 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs">
+                            Открыть Ридер →
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО БЫСТРОЙ ПОДДЕРЖКИ -->
+    <div id="support-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeSupportModal()" class="fixed inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="relative w-full max-w-md rounded-3xl bg-graphite-900 border border-roseaccent-500/35 p-6 space-y-4 z-10">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display text-base font-bold text-white">Служба поддержки 24/7</h3>
+                <button onclick="closeSupportModal()" class="w-8 h-8 rounded-xl bg-graphite-800 text-stone-300 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-stone-400">Оставь сообщение куратору или перейди во вкладку тикетов в Личном кабинете.</p>
+            <form onsubmit="submitQuickSupport(event)" class="space-y-3 text-xs">
+                <input type="text" id="quick-sup-tg" required placeholder="Твой @telegram" class="w-full px-3.5 py-2.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white font-mono">
+                <textarea id="quick-sup-text" rows="3" required placeholder="Твой вопрос или номер квитанции..." class="w-full p-3.5 rounded-xl bg-graphite-800 border border-roseaccent-500/25 text-white"></textarea>
+                <button type="submit" class="w-full py-3 rounded-xl bg-roseaccent-500 text-graphite-950 font-bold uppercase">Отправить в саппорт</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- СКРИПТЫ: КОНФИГУРАЦИЯ, 6 ТЕКСТОВЫХ КУРСОВ, FIREBASE БД И ЛОГИКА         -->
+    <!-- ======================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        /**
+         * =====================================================================
+         * 1. КОНФИГУРАЦИЯ РЕКВИЗИТОВ И ПЛАТЕЖНОЙ СИСТЕМЫ (РЕДАКТИРУЕТСЯ ЗДЕСЬ)
+         * =====================================================================
+         */
+        const PAYMENT_CONFIG = {
+            ipName: "ИП Иванов Артём Сергеевич",
+            inn: "772485910421",
+            sbpRequisites: "СБП: +7 (999) 000-00-00 • Т-Банк / Альфа (Получатель: Артём С.)",
+            cardRequisites: "Карта МИР: 2200 7004 8291 0042 (Артём С.)",
+            usdtWallet: "TRC-20 (USDT): TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE",
+            ownerMasterKey: "ROSE-2026", // Мастер-ключ владельца для мгновенной проверки
+            externalPaymentUrl: ""       // Ссылка на ЮKassa / Robokassa / Т-Кассу (опционально)
+        };
+
+        /**
+         * =====================================================================
+         * 2. БАЗА ВСЕХ 6 ТЕКСТОВЫХ КУРСОВ (БЕЗ ВИДЕО, ЦЕНЫ 1 000 – 2 540 ₽)
+         * =====================================================================
+         */
+        const coursesData = [
+            {
+                id: 201,
+                title: "База в Арбитраже Трафика: Дефолтный Текстовый Мануал",
+                subtitle: "Полный базовый текстовик без воды и видео: термины, выбор оффера, антидетект, расходники и первый залив в плюс",
+                category: "База Арбитража",
+                price: 1000,
+                oldPrice: 2400,
+                badge: "БАЗА • 1 000 ₽",
+                readTime: "45 мин чтения",
+                description: "Дефолтный фундаментальный текстовый курс для старта в арбитраже трафика. Никаких часовых видеороликов — только структурированный текст, таблицы терминов (CPA, CPL, RevShare, EPC, ROI), пошаговая настройка антидетект-браузера с прокси и алгоритм запуска первой тестовой связки с минимальным бюджетом.",
+                chapters: [
+                    {
+                        title: "Глава 1. Анатомия Арбитража и словарь метрик (CPA, CPL, EPC, ROI)",
+                        contentHtml: `
+                            <h4>Как устроен рынок арбитража трафика</h4>
+                            <p>Арбитраж трафика — это покупка или бесплатная добыча внимания пользователей (трафика) на одной площадке и перенаправление его на страницу рекламодателя (оффер) с целью получения выплаты за целевое действие.</p>
+                            <ul>
+                                <li><strong>CPA (Cost Per Action)</strong> — оплата за конкретное действие (оформление карты, покупка товара, депозит).</li>
+                                <li><strong>CPL (Cost Per Lead)</strong> — оплата за простую регистрацию или анкету (самый легкий старт для новичка).</li>
+                                <li><strong>ROI (Return on Investment)</strong> — окупаемость инвестиций. Формула: <code>(Доход - Расход) / Расход * 100%</code>.</li>
+                                <li><strong>EPC (Earnings Per Click)</strong> — средний доход с одного перехода по твоей партнерской ссылке.</li>
+                            </ul>
+                            <p>Твоя главная задача на старте — найти связку, где стоимость привлечения одного клика ниже, чем твой EPC.</p>
+                        `,
+                        template: "ЧЕК-ЛИСТ ПЕРЕД ВЫБОРОМ ПАРТНЕРКИ (CPA-СЕТИ):\n1. Проверь холд для новичков (ищи сети с холдом до 7 дней).\n2. Уточни у личного менеджера ТОП-3 оффера по апруву за текущую неделю.\n3. Попроси готовые прелендинги и уточни разрешенные источники трафика."
+                    },
+                    {
+                        title: "Глава 2. Техническая база: Антидетект-браузеры, Прокси и Расходники",
+                        contentHtml: `
+                            <h4>Зачем нужна изоляция профилей</h4>
+                            <p>Любая рекламная площадка (TikTok, FB, Google, Авито) отслеживает цифровой отпечаток устройства (Canvas, WebGL, IP, MAC-адрес). Чтобы работать с 10+ аккаунтами одновременно без цепочки банов, используется связка: Антидетект + Мобильные/Резидентские прокси.</p>
+                            <ul>
+                                <li><strong>Антидетект-браузеры:</strong> Dolphin{anty} (до 10 профилей бесплатно), AdsPower или Octo Browser.</li>
+                                <li><strong>Правило 1 профиль = 1 прокси:</strong> Никогда не заходи в разные аккаунты с одного IP без смены отпечатка.</li>
+                                <li><strong>Куки-робот:</strong> Перед входом в рекламный кабинет нагуляй 30–50 сайтов с пикселем площадки.</li>
+                            </ul>
+                        `,
+                        template: "НАСТРОЙКА ПРОФИЛЯ В DOLPHIN{ANTY}:\n• OS: Windows 11 / macOS (под твою систему)\n• Тип прокси: SOCKS5 (мобильные с ротацией по ссылке)\n• WebRTC: Altered (Подменять)\n• Прогрев куки: 15 минут перед авторизацией"
+                    },
+                    {
+                        title: "Глава 3. Спай-сервисы и создание конвертящих креативов",
+                        contentHtml: `
+                            <h4>Как не выдумывать велосипед</h4>
+                            <p>Новички сливают бюджет, пытаясь придумать креатив с нуля. В арбитраже работает правило: найди то, что уже крутится больше 5 дней у конкурентов в Spy-сервисе (Tyver, AdHeart, PiPiAds), разбери структуру хука и сделай уникальную адаптацию.</p>
+                            <p>Формула идеального текстового или статичного креатива: <strong>Боль / Острая выгода в первые 2 секунды → Доказательство (скрин выплаты / результат) → Призыв к действию (CTA)</strong>.</p>
+                        `,
+                        template: "ШАБЛОН ХУКА ДЛЯ КРЕАТИВА:\n«Оказывается, при открытии [Оффер] по этой закрытой ссылке начисляют [Бонус] сразу на карту. Проверил лично вчера — вот скрин прихода. Инструкция в боте по кнопке ниже 👇»"
+                    },
+                    {
+                        title: "Глава 4. Тестовый пролив, отсечение минусовых объявлений и масштаб",
+                        contentHtml: `
+                            <h4>Правило тестового бюджета</h4>
+                            <p>Никогда не заливай весь бюджет в одно объявление. На тест одной гипотезы выделяется сумма, равная 1.5–2 выплатам по офферу, разбитая на 3–5 разных подходов в креативах.</p>
+                            <p>Если после открута стоимости 1 лида клики дорогие, а конверсий 0 — стопай адсет без жалости. Если зацепился ROI от +30% — дублируй связку на новые аккаунты.</p>
+                        `,
+                        template: "АЛГОРИТМ МАСШТАБИРОВАНИЯ:\n1. Нашел плюсовой адсет (ROI > 40%).\n2. Не поднимай бюджет резко в 5 раз — сделай 3 дубля кампании.\n3. Уникализируй креатив через смену метаданных и цветокоррекцию."
+                    }
+                ]
+            },
+            {
+                id: 202,
+                title: "РКО и Фин-Офферы: Текстовый регламент и скрипты",
+                subtitle: "Как забирать от 3 000 до 16 000 ₽ за каждую заявку на открытие ИП, РКО и карт без рекламного бюджета",
+                category: "РКО и Фин-офферы",
+                price: 1390,
+                oldPrice: 2900,
+                badge: "БЫСТРЫЙ ОКУП",
+                readTime: "35 мин чтения",
+                description: "Текстовое руководство по банковскому арбитражу. Список проверенных финансовых партнерок (Pampadu, Workle Pro, Leadgid, Saleads), легальные способы парсинга начинающих предпринимателей и селлеров маркетплейсов, а также готовые скрипты переписки.",
+                chapters: [
+                    {
+                        title: "Глава 1. Регистрация в фин-партнерках с максимальной ставкой",
+                        contentHtml: `
+                            <h4>Где брать прямые офферы банков</h4>
+                            <p>Банки платят вебмастерам за привлечение малого бизнеса (открытие расчетного счета РКО и регистрация ИП). Средняя выплата за 1 открытый счет составляет от 6 000 до 16 000 ₽.</p>
+                            <p>Мы подключаемся сразу к двум агрегаторам, чтобы сравнивать ставки: иногда один и тот же банк платит на 2 500 ₽ больше в соседней сетке.</p>
+                        `,
+                        template: "ТОП ОФФЕРОВ С БЫСТРЫМ АПРУВОМ:\n1. Регистрация ИП + РКО (Т-Бизнес / Альфа / Точка) — выплата 8 000 – 15 000 ₽.\n2. Дебетовые карты с целевым действием от 500 ₽ — выплата 1 400 – 2 200 ₽."
+                    },
+                    {
+                        title: "Глава 2. Поиск клиентов на РКО и скрипты закрытия в Telegram",
+                        contentHtml: `
+                            <h4>Где сидят люди, которым нужно открыть ИП</h4>
+                            <p>Самая горячая аудитория — чаты поставщиков Wildberries/Ozon, чаты фрилансеров, курсы по закупкам из Китая и локальные бизнес-сообщества. Им всё равно нужно открывать ИП, а через тебя они получают бесплатную подготовку документов и бонус.</p>
+                        `,
+                        template: "СКРИПТ ПЕРВОГО СООБЩЕНИЯ СЕЛЛЕРУ:\n«Привет! Увидел твой вопрос в чате по выходу на WB. Если еще не регистрировал ИП и счет — могу скинуть партнерскую ссылку банка: там сделают ЭЦП и отправят документы в налоговую за 0 ₽ (экономия 4 000 ₽ на госпошлине) + дадут 3 месяца обслуживания бесплатно. Скинуть?»"
+                    }
+                ]
+            },
+            {
+                id: 203,
+                title: "УБТ-Трафик: Алгоритмы Reels, Shorts и TikTok",
+                subtitle: "Текстовая база по условно-бесплатному трафику: прогрев, обход теневого бана и воронка в ТГ-бота",
+                category: "УБТ и Трафик",
+                price: 1590,
+                oldPrice: 3200,
+                badge: "БЕЗ ВЛОЖЕНИЙ",
+                readTime: "50 мин чтения",
+                description: "Пошаговый текстовый мануал по созданию сетки вертикальных аккаунтов. Разбираем формулы удержания внимания, пакетную уникализацию текста и перевод зрителей в монетизируемого Telegram-бота.",
+                chapters: [
+                    {
+                        title: "Глава 1. Подготовка телефона и прогрев алгоритмов рекомендаций",
+                        contentHtml: `
+                            <h4>Почему новые аккаунты набирают 0 просмотров</h4>
+                            <p>Алгоритмы считывают регион SIM-карты, язык системы и поведение пользователя в первые 48 часов. Если сразу после регистрации залить ролик со ссылкой — аккаунт улетает в фрод-фильтр.</p>
+                            <p>Первые 2 дня листай ленту по своей тематике по 15 минут, оставляй осмысленные комментарии и делай репосты.</p>
+                        `,
+                        template: "ЧЕК-ЛИСТ ЗАПУСКА АККАУНТА УБТ:\n• Сброс рекламного идентификатора устройства\n• Чистый IP (модем или резидентский прокси)\n• 48 часов органического прогрева без залива\n• Первые 5 публикаций без стоп-слов («заработок», «казино», «переходи»)"
+                    },
+                    {
+                        title: "Глава 2. Перелив трафика через переходник и монетизация",
+                        contentHtml: `
+                            <h4>Как перевести просмотры в деньги</h4>
+                            <p>Прямые партнерские ссылки в профиле часто режут охваты. Используй кастомный домен-прокладку или упоминание кодового слова в Telegram-боте.</p>
+                        `,
+                        template: "БАЙТ В КОНЦЕ ПУБЛИКАЦИИ:\n«Полный список из 5 сайтов с выплатами не поместился — забирай готовый текстовый файл по коду [707] в шапке профиля»."
+                    }
+                ]
+            },
+            {
+                id: 204,
+                title: "Дропшиппинг & Poizon: Контакты и текстовые схемы",
+                subtitle: "Текстовое руководство по продаже кроссовок, стритвира и техники без своего склада по предоплате",
+                category: "Дроп и AI",
+                price: 1890,
+                oldPrice: 3500,
+                badge: "ТОВАРКА 2.0",
+                readTime: "40 мин чтения",
+                description: "Как запустить магазин в Telegram и на Авито без закупа товара за свои деньги. Критерии отбора дроп-поставщиков, верификация Alipay для прямого выкупа с Poizon и скрипты работы с покупателями.",
+                chapters: [
+                    {
+                        title: "Глава 1. Схема дропшиппинга и проверка оптовика",
+                        contentHtml: `
+                            <h4>Как зарабатывать чужим складом</h4>
+                            <p>Ты размещаешь фотографии товара поставщика со своей наценкой 1 500 – 3 500 ₽. Когда клиент оплачивает заказ тебе, ты переводишь оптовую цену поставщику, и он отправляет посылку СДЭКом или Авито-доставкой напрямую твоему клиенту.</p>
+                        `,
+                        template: "ШАБЛОН ЗАПРОСА ДРОП-ПОСТАВЩИКУ:\n«Здравствуйте! Работаю по системе дропшиппинга (ТГ + Авито). Подскажите: 1) Отправляете ли заказы по Авито-доставке по моим трек-номерам? 2) Есть ли актуальная таблица наличия с живыми фото?»"
+                    }
+                ]
+            },
+            {
+                id: 205,
+                title: "Telegram Ads & Посевы: Закуп и аналитика",
+                subtitle: "Текстовый курс по проверке каналов на ботов в TGStat/Telemetr и написанию рекламных постов с ROI 120%+",
+                category: "УБТ и Трафик",
+                price: 2190,
+                oldPrice: 4200,
+                badge: "PRO ТРАФИК",
+                readTime: "55 мин чтения",
+                description: "Системный текстовик по закупке рекламы в Telegram. Как вычислять накрученные каналы за 30 секунд, сбивать цену у админов на 30% и писать нативные рекламные посты, которые приносят подписчика по 25–45 ₽.",
+                chapters: [
+                    {
+                        title: "Глава 1. Чек-лист проверки Telegram-канала перед закупом",
+                        contentHtml: `
+                            <h4>Как не слить бюджет в ботоводную сетку</h4>
+                            <p>В Telegram больше 60% каналов подкручивают охваты. Перед оплатой рекламы обязательно проверяй часовые графики просмотров в TGStat и индекс цитирования (ИЦ).</p>
+                            <ul>
+                                <li>В первый час после выхода поста должно набираться минимум 25–35% от суточных просмотров.</li>
+                                <li>Никаких «пилообразных» всплесков просмотров ночью.</li>
+                            </ul>
+                        `,
+                        template: "СКРИПТ ТОРГА С АДМИНОМ КАНАЛА:\n«Привет! Готов забрать 2 рекламных места сразу (на завтра и на четверг) с оплатой сейчас, если сделаешь пакетную скидку 25%. Рекламный пост нативный, без кликбейта. Работаем?»"
+                    }
+                ]
+            },
+            {
+                id: 206,
+                title: "AI-Фермы & Автоматизация Контента (Полный текстовик)",
+                subtitle: "Готовые промпты, пайплайны автогенерации статей и карточек товаров для монетизации нейросетей",
+                category: "Дроп и AI",
+                price: 2540,
+                oldPrice: 4900,
+                badge: "МАКСИМАЛЬНЫЙ • 2 540 ₽",
+                readTime: "65 мин чтения",
+                description: "Самый полный текстовый сборник по монетизации нейросетей. Готовые системные промпты для генерации рекламных связок, карточки для маркетплейсов за 10 минут и создание автономных контент-сеток.",
+                chapters: [
+                    {
+                        title: "Глава 1. Системные промпты для генерации арбитражных связок",
+                        contentHtml: `
+                            <h4>Нейросеть как личный копирайтер и креативщик</h4>
+                            <p>Вместо того чтобы писать посты вручную, используй структурные цепочки промптов (Chain-of-Thought). Одного системного шаблона достаточно, чтобы за 5 минут сгенерировать 20 разных углов захода под один оффер.</p>
+                        `,
+                        template: "СИСТЕМНЫЙ ПРОМПТ ДЛЯ СОЗДАНИЯ СВЯЗОК:\n«Ты — Senior Media Buyer с опытом 7 лет в CPA. Проанализируй оффер [Название] для аудитории [ЦА]. Выдай 5 триггерных заголовков по формуле AIDA и 3 варианта короткого поста для посева в Telegram без спам-слов»."
+                    }
+                ]
+            }
+        ];
+
+        /**
+         * =====================================================================
+         * 3. СОСТОЯНИЕ ПОЛЬЗОВАТЕЛЯ, КОРЗИНЫ И ОБЛАЧНОЙ БАЗЫ ДАННЫХ
+         * =====================================================================
+         * ВАЖНО: purchasedCourses по умолчанию ПУСТОЙ [] — никаких бесплатных
+         * выдач при попытке оплаты!
+         */
+        let activeCategory = 'Все';
+        let searchQuery = '';
+        let currentSort = 'price-asc';
+        let cart = [];
+        let selectedPayMethod = 'sbp';
+
+        let userState = {
+            name: "Арбитражник",
+            tg: "@arb_user",
+            xp: 0,
+            purchasedCourses: [], // Изначально 0 открытых курсов — доступ только после подтверждения оплаты!
+            completedChapters: [],
+            notes: {}
+        };
+
+        // Реестр Базы Данных (синхронизируется с Firestore + локальный бэкап)
+        let dbOrders = [
+            {
+                id: "AR-8901",
+                date: "15.10.2026, 14:20",
+                buyerName: "Максим В.",
+                buyerTg: "@max_traffic",
+                sellerName: "Касса СБП (Сайт)",
+                courseId: 201,
+                courseTitle: "База в Арбитраже Трафика: Дефолтный Текстовый Мануал",
+                amount: 1000,
+                receiptCode: "SBP-7841920",
+                status: "paid"
+            },
+            {
+                id: "AR-8904",
+                date: "15.10.2026, 16:05",
+                buyerName: "Денис К.",
+                buyerTg: "@den_rko",
+                sellerName: "Партнер @alex_ref",
+                courseId: 202,
+                courseTitle: "РКО и Фин-Офферы: Текстовый регламент и скрипты",
+                amount: 1390,
+                receiptCode: "CRD-491028",
+                status: "pending"
+            }
+        ];
+
+        let dbKeys = [
+            { code: "ROSE-2026", courseId: "ALL", courseTitle: "Мастер-ключ владельца (Все курсы)", used: false }
+        ];
+
+        let dbTickets = [
+            {
+                id: "TIC-101",
+                date: "Сегодня, 15:10",
+                userTg: "@den_rko",
+                topic: "Отправил чек CRD-491028 за курс по РКО",
+                message: "Привет! Оплатил 1 390 ₽ с карты, подтвердите в БД пожалуйста.",
+                reply: "Видим платеж в реестре, проверяем поступление по выписке!"
+            }
+        ];
+
+        let activeReaderCourseId = 201;
+        let activeReaderChapterIdx = 0;
+
+        // Переменные Firebase
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'antireverse-text-lab';
+
+        // Загрузка локального состояния
+        function loadLocalState() {
+            try {
+                const savedUser = localStorage.getItem('ar_textlab_user_v2');
+                if (savedUser) userState = { ...userState, ...JSON.parse(savedUser) };
+
+                const savedOrders = localStorage.getItem('ar_textlab_orders_v2');
+                if (savedOrders) dbOrders = JSON.parse(savedOrders);
+
+                const savedKeys = localStorage.getItem('ar_textlab_keys_v2');
+                if (savedKeys) dbKeys = JSON.parse(savedKeys);
+
+                const savedTickets = localStorage.getItem('ar_textlab_tickets_v2');
+                if (savedTickets) dbTickets = JSON.parse(savedTickets);
+            } catch (e) {
+                console.warn('Ошибка чтения состояния:', e);
+            }
+        }
+
+        function saveLocalState() {
+            try {
+                localStorage.setItem('ar_textlab_user_v2', JSON.stringify(userState));
+                localStorage.setItem('ar_textlab_orders_v2', JSON.stringify(dbOrders));
+                localStorage.setItem('ar_textlab_keys_v2', JSON.stringify(dbKeys));
+                localStorage.setItem('ar_textlab_tickets_v2', JSON.stringify(dbTickets));
+            } catch (e) {
+                console.warn('Ошибка сохранения:', e);
+            }
+        }
+
+        // Инициализация Firebase (согласно строгим правилам путей и авторизации)
+        async function initCloudDatabase() {
+            try {
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) return;
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                currentUser = auth.currentUser;
+                if (!currentUser) return;
+
+                // Подписка на коллекцию заказов
+                const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
+                onSnapshot(ordersRef, (snap) => {
+                    if (!snap.empty) {
+                        const cloudOrders = [];
+                        snap.forEach(d => cloudOrders.push({ docId: d.id, ...d.data() }));
+                        dbOrders = cloudOrders;
+                        // Синхронизируем открытые курсы для текущего пользователя по его Telegram, если статус === 'paid'
+                        syncUserPaidAccess();
+                        saveLocalState();
+                        renderDatabaseView();
+                        renderCourses();
+                        renderReaderView();
+                    }
+                }, (err) => console.warn('Firestore orders error:', err));
+
+                // Подписка на ключи лицензий
+                const keysRef = collection(db, 'artifacts', appId, 'public', 'data', 'license_keys');
+                onSnapshot(keysRef, (snap) => {
+                    if (!snap.empty) {
+                        const cloudKeys = [{ code: "ROSE-2026", courseId: "ALL", courseTitle: "Мастер-ключ владельца (Все курсы)", used: false }];
+                        snap.forEach(d => cloudKeys.push({ docId: d.id, ...d.data() }));
+                        dbKeys = cloudKeys;
+                        renderDatabaseView();
+                    }
+                }, (err) => console.warn('Firestore keys error:', err));
+
+                // Подписка на тикеты поддержки
+                const ticketsRef = collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets');
+                onSnapshot(ticketsRef, (snap) => {
+                    if (!snap.empty) {
+                        const cloudTickets = [];
+                        snap.forEach(d => cloudTickets.push({ docId: d.id, ...d.data() }));
+                        dbTickets = cloudTickets;
+                        renderSupportTickets();
+                    }
+                }, (err) => console.warn('Firestore tickets error:', err));
+
+            } catch (e) {
+                console.warn('Работаем в автономном режиме БД:', e);
+            }
+        }
+
+        function syncUserPaidAccess() {
+            const myTg = userState.tg.toLowerCase();
+            dbOrders.forEach(ord => {
+                if (ord.status === 'paid' && ord.buyerTg && ord.buyerTg.toLowerCase() === myTg) {
+                    const cId = Number(ord.courseId);
+                    if (cId && !userState.purchasedCourses.includes(cId)) {
+                        userState.purchasedCourses.push(cId);
+                    }
+                }
+            });
+            updateHeaderCounters();
+        }
+
+        function formatPrice(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+        }
+
+        function updateHeaderCounters() {
+            document.getElementById('lk-courses-count').textContent = userState.purchasedCourses.length;
+            document.getElementById('header-db-count').textContent = dbOrders.length;
+            document.getElementById('lk-stat-courses').textContent = `${userState.purchasedCourses.length} из ${coursesData.length}`;
+            document.getElementById('lk-stat-xp').textContent = `${userState.xp} XP`;
+            document.getElementById('lk-user-name').textContent = userState.name;
+            document.getElementById('lk-user-tg').textContent = `${userState.tg} • Защита доступа активна`;
+            document.getElementById('lk-avatar-initials').textContent = userState.name.slice(0, 2).toUpperCase();
+
+            const rankEl = document.getElementById('lk-user-rank');
+            if (userState.xp >= 200) rankEl.textContent = "LVL 3 • АРБИТРАЖНИК";
+            else if (userState.xp >= 100) rankEl.textContent = "LVL 2 • ПРАКТИК";
+            else rankEl.textContent = "LVL 1 • РЕСЁРЧЕР";
+        }
+
+        /**
+         * =====================================================================
+         * 4. АНИМАЦИЯ ПРОФИТА И ИНТЕРАКТИВНЫЕ ВИДЖЕТЫ
+         * =====================================================================
+         */
+        function animateHeroCounters() {
+            let currentRoi = 0;
+            const targetRoi = 184;
+            const roiEl = document.getElementById('counter-roi');
+            const timer = setInterval(() => {
+                currentRoi += 4;
+                if (currentRoi >= targetRoi) {
+                    currentRoi = targetRoi;
+                    clearInterval(timer);
+                }
+                if (roiEl) roiEl.textContent = currentRoi;
+            }, 25);
+
+            // Плавная ротация live-выплат
+            const payouts = [
+                "@mark_cpa закрыл +14 200 ₽ на Базе Арбитража",
+                "@nikita_rko получил +11 500 ₽ за 1 заявку ИП",
+                "@ira_ubt перелила 420 лидов с Reels (+9 600 ₽)",
+                "@vlad_drop закрыл 3 заказа по текстовику (+7 200 ₽)",
+                "@artem_ads окупил мануал за 1 вечер (+18 400 ₽)"
+            ];
+            let pIdx = 0;
+            const tickerEl = document.getElementById('live-payout-ticker');
+            setInterval(() => {
+                if (!tickerEl) return;
+                tickerEl.style.opacity = '0';
+                setTimeout(() => {
+                    pIdx = (pIdx + 1) % payouts.length;
+                    tickerEl.textContent = payouts[pIdx];
+                    tickerEl.style.opacity = '1';
+                }, 300);
+            }, 4200);
+        }
+
+        window.triggerProfitBoost = function() {
+            const el = document.getElementById('hero-animated-profit');
+            const path = document.getElementById('hero-chart-path');
+            const bonus = Math.floor(4820000 + Math.random() * 190000);
+            el.textContent = formatPrice(bonus);
+            path.classList.remove('animate-chart-line');
+            void path.offsetWidth;
+            path.classList.add('animate-chart-line');
+            showToast('Срез аналитики выплат обновлен в реальном времени', 'info');
+        };
+
+        window.updateProfitSimulator = function() {
+            const payout = parseInt(document.getElementById('sim-niche').value, 10);
+            const leads = parseInt(document.getElementById('sim-leads').value, 10);
+            const spend = parseInt(document.getElementById('sim-spend').value, 10);
+
+            document.getElementById('sim-leads-val').textContent = `${leads} лидов`;
+            document.getElementById('sim-spend-val').textContent = formatPrice(spend);
+
+            const gross = payout * leads;
+            const net = Math.max(0, gross - spend);
+            const baseCost = Math.max(1000, spend + 1000);
+            const roi = Math.round((net / baseCost) * 100);
+
+            document.getElementById('sim-gross').textContent = formatPrice(gross);
+            document.getElementById('sim-net-profit').textContent = formatPrice(net);
+            document.getElementById('sim-roi-badge').textContent = `ROI +${roi}%`;
+
+            // Анимация столбиков
+            const factor = Math.min(100, Math.max(25, Math.round((leads / 80) * 100)));
+            document.getElementById('bar-w1').style.height = `${Math.max(18, Math.round(factor * 0.35))}%`;
+            document.getElementById('bar-w2').style.height = `${Math.max(32, Math.round(factor * 0.58))}%`;
+            document.getElementById('bar-w3').style.height = `${Math.max(50, Math.round(factor * 0.80))}%`;
+            document.getElementById('bar-w4').style.height = `${Math.max(68, factor)}%`;
+        };
+
+        window.buildUtmLink = function() {
+            const base = document.getElementById('utm-base').value.trim() || 'https://cpa-offer.ru/click';
+            const src = encodeURIComponent(document.getElementById('utm-source').value.trim() || 'source');
+            const creo = encodeURIComponent(document.getElementById('utm-creo').value.trim() || 'creo1');
+            const geo = encodeURIComponent(document.getElementById('utm-geo').value.trim() || 'ru');
+            const sep = base.includes('?') ? '&' : '?';
+            document.getElementById('utm-result').textContent = `${base}${sep}utm_source=${src}&sub1=${creo}&sub2=${geo}`;
+        };
+
+        window.calcCpaMetrics = function() {
+            const clicks = Math.max(1, parseInt(document.getElementById('cpa-clicks').value, 10) || 1);
+            const leads = Math.max(0, parseInt(document.getElementById('cpa-leads').value, 10) || 0);
+            const payout = Math.max(0, parseInt(document.getElementById('cpa-payout').value, 10) || 0);
+
+            const cr = ((leads / clicks) * 100).toFixed(2);
+            const rev = leads * payout;
+            const epc = (rev / clicks).toFixed(2);
+
+            document.getElementById('metric-cr').textContent = `${cr}%`;
+            document.getElementById('metric-epc').textContent = `${epc} ₽`;
+            document.getElementById('metric-rev').textContent = formatPrice(rev);
+        };
+
+        /**
+         * =====================================================================
+         * 5. РЕНДЕР КАТАЛОГА КУРСОВ (1 000 – 2 540 ₽)
+         * =====================================================================
+         */
+        window.renderCourses = function() {
+            const grid = document.getElementById('courses-grid');
+            let filtered = coursesData.filter(c => {
+                const matchCat = activeCategory === 'Все' || c.category === activeCategory;
+                const q = searchQuery.trim().toLowerCase();
+                const matchSearch = !q || c.title.toLowerCase().includes(q) || c.subtitle.toLowerCase().includes(q);
+                return matchCat && matchSearch;
+            });
+
+            if (currentSort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            else if (currentSort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+
+            grid.innerHTML = filtered.map(course => {
+                const isPurchased = userState.purchasedCourses.includes(course.id);
+                const isPending = dbOrders.some(o => Number(o.courseId) === course.id && o.status === 'pending' && o.buyerTg.toLowerCase() === userState.tg.toLowerCase());
+
+                return `
+                <article class="bento-card rounded-3xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-graphite-800 border border-roseaccent-500/20 font-mono text-[11px] text-stone-300">
+                                ${course.category}
+                            </span>
+                            <span class="px-2.5 py-1 rounded-lg bg-roseaccent-500/15 text-roseaccent-300 font-mono text-[11px] font-bold">
+                                ${course.badge}
+                            </span>
+                        </div>
+
+                        <h3 onclick="openCourseModal(${course.id})" class="font-display text-base sm:text-lg font-bold text-white hover:text-roseaccent-400 transition-colors cursor-pointer leading-snug mb-2">
+                            ${course.title}
+                        </h3>
+
+                        <p class="text-stone-400 text-xs leading-relaxed mb-4">
+                            ${course.subtitle}
+                        </p>
+
+                        <div class="flex items-center gap-3 text-[11px] font-mono text-stone-400 mb-5 pt-3 border-t border-white/5">
+                            <span><i class="fa-regular fa-file-lines text-roseaccent-500 mr-1"></i>${course.chapters.length} глав текста</span>
+                            <span>•</span>
+                            <span>${course.readTime}</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-roseaccent-500/15 flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[11px] text-stone-500 line-through font-mono block">${formatPrice(course.oldPrice)}</span>
+                            <span class="font-display text-xl font-bold text-white">${formatPrice(course.price)}</span>
+                        </div>
+
+                        ${isPurchased ? `
+                            <button onclick="openCourseInReader(${course.id})" class="px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs">
+                                <i class="fa-solid fa-book-open mr-1"></i>Читать в ЛК
+                            </button>
+                        ` : isPending ? `
+                            <button onclick="switchMainView('lk'); switchLkTab('database')" class="px-4 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs">
+                                <i class="fa-solid fa-clock mr-1"></i>Чек на проверке
+                            </button>
+                        ` : `
+                            <div class="flex gap-2">
+                                <button onclick="openCourseModal(${course.id})" class="px-3.5 py-2.5 rounded-xl bg-graphite-800 hover:bg-graphite-700 text-stone-300 font-semibold text-xs">
+                                    Описание
+                                </button>
+                                <button onclick="buyCourseNow(${course.id})" class="px-4 py-2.5 rounded-xl bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-xs">
+                                    Купить
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                </article>
+                `;
+            }).join('');
+        };
+
+        window.setCategory = function(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = "cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap bg-roseaccent-500 text-graphite-950";
+                } else {
+                    btn.className = "cat-btn px-3.5 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap bg-graphite-800 text-stone-300 hover:text-white border border-roseaccent-500/15";
+                }
+            });
+            renderCourses();
+        };
+
+        window.handleSearch = function(val) {
+            searchQuery = val;
+            renderCourses();
+        };
+
+        window.handleSort = function(val) {
+            currentSort = val;
+            renderCourses();
+        };
+
+        /**
+         * =====================================================================
+         * 6. ТЕКСТОВЫЙ РИДЕР В ЛИЧНОМ КАБИНЕТЕ (ЗАЩИТА КОНТЕНТА + ЗАМЕТКИ)
+         * =====================================================================
+         */
+        window.openCourseInReader = function(courseId) {
+            activeReaderCourseId = courseId;
+            activeReaderChapterIdx = 0;
+            switchMainView('lk');
+            switchLkTab('reader');
+        };
+
+        function renderReaderView() {
+            const selector = document.getElementById('lk-courses-selector');
+            selector.innerHTML = coursesData.map(c => {
+                const isSelected = c.id === activeReaderCourseId;
+                const isUnlocked = userState.purchasedCourses.includes(c.id);
+                return `
+                <button onclick="selectReaderCourse(${c.id})" class="text-left p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                    isSelected 
+                    ? 'bg-graphite-900 border-roseaccent-500 shadow-lg' 
+                    : 'bg-graphite-900/50 border-white/10 hover:border-roseaccent-500/30'
+                }">
+                    <div class="min-w-0">
+                        <div class="font-mono text-[10px] ${isUnlocked ? 'text-emerald-400' : 'text-stone-400'}">
+                            ${isUnlocked ? '● ДОСТУП ОТКРЫТ' : `🔒 ЗАКРЫТО (${formatPrice(c.price)})`}
+                        </div>
+                        <div class="font-display text-xs font-bold text-white truncate mt-0.5">${c.title}</div>
+                    </div>
+                    <i class="fa-solid ${isUnlocked ? 'fa-book-open text-roseaccent-500' : 'fa-lock text-stone-500'} text-xs shrink-0"></i>
+                </button>
+                `;
+            }).join('');
+
+            const course = coursesData.find(c => c.id === activeReaderCourseId) || coursesData[0];
+            const chapter = course.chapters[activeReaderChapterIdx] || course.chapters[0];
+            const isUnlocked = userState.purchasedCourses.includes(course.id);
+
+            document.getElementById('reader-course-name').textContent = `${course.title} (${formatPrice(course.price)})`;
+            document.getElementById('reader-chapter-title').textContent = chapter.title;
+            document.getElementById('reader-user-notes').value = userState.notes[course.id] || '';
+
+            // Список глав слева
+            const listEl = document.getElementById('reader-chapters-list');
+            listEl.innerHTML = course.chapters.map((ch, idx) => {
+                const isCur = idx === activeReaderChapterIdx;
+                const isRead = userState.completedChapters.includes(`${course.id}-${idx}`);
+                return `
+                <button onclick="selectReaderChapter(${idx})" class="w-full text-left p-3 rounded-xl border text-xs transition-all flex items-center justify-between gap-2 ${
+                    isCur ? 'bg-roseaccent-500/15 border-roseaccent-500 text-white font-semibold' : 'bg-graphite-800/70 border-white/5 text-stone-300 hover:bg-graphite-800'
+                }">
+                    <span class="line-clamp-1">${ch.title}</span>
+                    <i class="fa-solid ${!isUnlocked ? 'fa-lock text-stone-500' : isRead ? 'fa-check-circle text-emerald-400' : 'fa-file-lines text-roseaccent-400'} shrink-0"></i>
+                </button>
+                `;
+            }).join('');
+
+            const unlockedBody = document.getElementById('reader-unlocked-body');
+            const lockedBody = document.getElementById('reader-locked-body');
+            const completeBtn = document.getElementById('reader-complete-btn');
+
+            if (isUnlocked) {
+                unlockedBody.classList.remove('hidden');
+                lockedBody.classList.add('hidden');
+                completeBtn.classList.remove('hidden');
+                document.getElementById('reader-text-container').innerHTML = chapter.contentHtml;
+                document.getElementById('reader-template-box').textContent = chapter.template;
+                document.getElementById('reader-status-badge').textContent = "ДОСТУП ОПЛАЧЕН";
+                document.getElementById('reader-status-badge').className = "px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold uppercase";
+            } else {
+                // Строгая блокировка неоплаченного курса!
+                unlockedBody.classList.add('hidden');
+                lockedBody.classList.remove('hidden');
+                completeBtn.classList.add('hidden');
+                document.getElementById('reader-status-badge').textContent = "ДОСТУП ЗАКРЫТ";
+                document.getElementById('reader-status-badge').className = "px-2.5 py-0.5 rounded bg-roseaccent-500/20 text-roseaccent-300 font-mono text-[10px] font-bold uppercase";
+                document.getElementById('reader-locked-buy-btn').textContent = `Купить за ${formatPrice(course.price)}`;
+                document.getElementById('reader-locked-buy-btn').onclick = () => buyCourseNow(course.id);
+            }
+        }
+
+        window.selectReaderCourse = function(courseId) {
+            activeReaderCourseId = courseId;
+            activeReaderChapterIdx = 0;
+            renderReaderView();
+        };
+
+        window.selectReaderChapter = function(idx) {
+            activeReaderChapterIdx = idx;
+            renderReaderView();
+        };
+
+        window.setReaderFontSize = function(sizeClass) {
+            const container = document.getElementById('reader-text-container');
+            container.className = `reader-content ${sizeClass} space-y-4`;
+        };
+
+        window.markChapterRead = function() {
+            if (!userState.purchasedCourses.includes(activeReaderCourseId)) {
+                showToast('Сначала оплати доступ к курсу!', 'info');
+                return;
+            }
+            const key = `${activeReaderCourseId}-${activeReaderChapterIdx}`;
+            if (!userState.completedChapters.includes(key)) {
+                userState.completedChapters.push(key);
+                userState.xp += 50;
+                saveLocalState();
+                updateHeaderCounters();
+                renderReaderView();
+                showToast('Глава прочитана! Начислено +50 XP', 'success');
+            } else {
+                showToast('Глава уже отмечена прочитанной', 'info');
+            }
+        };
+
+        window.copyChapterTemplate = function() {
+            const text = document.getElementById('reader-template-box').textContent;
+            copyRawText(text, 'Шаблон из главы скопирован в буфер обмена!');
+        };
+
+        window.saveReaderNotes = function(val) {
+            userState.notes[activeReaderCourseId] = val;
+            saveLocalState();
+        };
+
+        /**
+         * =====================================================================
+         * 7. ИСПРАВЛЕННАЯ ПЛАТЕЖНАЯ СИСТЕМА И ЛИЦЕНЗИОННЫЕ КЛЮЧИ
+         * =====================================================================
+         */
+        window.buyCourseNow = function(courseId) {
+            if (userState.purchasedCourses.includes(courseId)) {
+                openCourseInReader(courseId);
+                return;
+            }
+            if (!cart.includes(courseId)) cart = [courseId];
+            updateCartUI();
+            openPaymentGateway();
+        };
+
+        window.openPaymentGateway = function() {
+            if (cart.length === 0) return;
+            toggleCart(false);
+
+            if (PAYMENT_CONFIG.externalPaymentUrl) {
+                window.open(PAYMENT_CONFIG.externalPaymentUrl, '_blank');
+            }
+
+            let total = 0;
+            cart.forEach(id => {
+                const c = coursesData.find(x => x.id === id);
+                if (c) total += c.price;
+            });
+
+            document.getElementById('pay-modal-amount').textContent = formatPrice(total);
+            document.getElementById('pay-modal-merchant').textContent = `${PAYMENT_CONFIG.ipName} • ИНН ${PAYMENT_CONFIG.inn}`;
+            document.getElementById('pay-client-name').value = userState.name !== 'Арбитражник' ? userState.name : '';
+            document.getElementById('pay-client-tg').value = userState.tg !== '@arb_user' ? userState.tg : '';
+            document.getElementById('pay-receipt-code').value = '';
+
+            selectPaymentMethod('sbp');
+            document.getElementById('payment-form-step').classList.remove('hidden');
+            document.getElementById('payment-result-step').classList.add('hidden');
+            document.getElementById('payment-modal').classList.remove('hidden');
+        };
+
+        window.closePaymentGateway = function() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        };
+
+        window.selectPaymentMethod = function(method) {
+            selectedPayMethod = method;
+            ['sbp', 'card', 'crypto'].forEach(m => {
+                const btn = document.getElementById(`pm-btn-${m}`);
+                if (m === method) {
+                    btn.className = "p-2.5 rounded-xl border border-roseaccent-500 bg-roseaccent-500/15 text-white font-bold flex flex-col items-center gap-1";
+                } else {
+                    btn.className = "p-2.5 rounded-xl border border-white/10 bg-graphite-800 text-stone-300 font-medium flex flex-col items-center gap-1";
+                }
+            });
+
+            const box = document.getElementById('pm-requisites-box');
+            if (method === 'sbp') box.innerHTML = `<div class="text-roseaccent-300 font-bold">Перевод по СБП:</div><div>${PAYMENT_CONFIG.sbpRequisites}</div>`;
+            else if (method === 'card') box.innerHTML = `<div class="text-roseaccent-300 font-bold">Перевод на карту РФ:</div><div>${PAYMENT_CONFIG.cardRequisites}</div>`;
+            else box.innerHTML = `<div class="text-roseaccent-300 font-bold">Крипто-кошелек USDT:</div><div>${PAYMENT_CONFIG.usdtWallet}</div>`;
+        };
+
+        // СТРОГАЯ ПРОВЕРКА ОПЛАТЫ (Без бесплатной раздачи при нажатии кнопки!)
+        window.submitStrictPayment = async function() {
+            const clientName = document.getElementById('pay-client-name').value.trim();
+            const clientTg = document.getElementById('pay-client-tg').value.trim();
+            const receiptCode = document.getElementById('pay-receipt-code').value.trim().toUpperCase();
+
+            if (!clientName || !clientTg) {
+                showToast('Заполни свое Имя и @Telegram!', 'info');
+                return;
+            }
+            if (receiptCode.length < 6) {
+                showToast('Ошибка: введи реальный номер квитанции (от 6 символов) или ключ активации!', 'info');
+                return;
+            }
+
+            userState.name = clientName;
+            userState.tg = clientTg.startsWith('@') ? clientTg : '@' + clientTg;
+
+            // Проверяем, не ввел ли покупатель сразу валидный Ключ Активации
+            const matchedKey = dbKeys.find(k => k.code.toUpperCase() === receiptCode && !k.used);
+            const isInstantVerified = Boolean(matchedKey) || receiptCode === PAYMENT_CONFIG.ownerMasterKey;
+
+            const methodLabels = { sbp: 'Касса СБП', card: 'Карта РФ', crypto: 'USDT TRC-20' };
+
+            for (const cId of cart) {
+                const course = coursesData.find(x => x.id === cId);
+                if (!course) continue;
+
+                const newOrder = {
+                    id: 'AR-' + Math.floor(1000 + Math.random() * 9000),
+                    date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    buyerName: userState.name,
+                    buyerTg: userState.tg,
+                    sellerName: methodLabels[selectedPayMethod],
+                    courseId: course.id,
+                    courseTitle: course.title,
+                    amount: course.price,
+                    receiptCode: receiptCode,
+                    status: isInstantVerified ? 'paid' : 'pending' // БЕЗ КЛЮЧА СТАТУС СТРОГО PENDING!
+                };
+
+                dbOrders.unshift(newOrder);
+                if (db && currentUser) {
+                    try {
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), newOrder);
+                    } catch (e) { console.warn(e); }
+                }
+
+                if (isInstantVerified && !userState.purchasedCourses.includes(course.id)) {
+                    userState.purchasedCourses.push(course.id);
+                    activeReaderCourseId = course.id;
+                }
+            }
+
+            if (matchedKey && matchedKey.code !== PAYMENT_CONFIG.ownerMasterKey) {
+                matchedKey.used = true;
+            }
+
+            cart = [];
+            saveLocalState();
+            updateCartUI();
+            updateHeaderCounters();
+            renderCourses();
+            renderDatabaseView();
+            renderReaderView();
+
+            document.getElementById('payment-form-step').classList.add('hidden');
+            document.getElementById('payment-result-step').classList.remove('hidden');
+
+            const titleEl = document.getElementById('pay-result-title');
+            const descEl = document.getElementById('pay-result-desc');
+            const iconEl = document.getElementById('pay-result-icon');
+
+            if (isInstantVerified) {
+                iconEl.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i>`;
+                titleEl.textContent = "Ключ подтвержден! Доступ открыт";
+                descEl.innerHTML = `Твоя покупка верифицирована со статусом <strong class="text-emerald-400">«Оплачено»</strong>. Текстовый мануал уже доступен в Ридере.`;
+                showToast('Оплата верифицирована ключом! Курс открыт.', 'success');
+            } else {
+                iconEl.innerHTML = `<i class="fa-solid fa-shield-halved text-amber-400"></i>`;
+                titleEl.textContent = "Чек отправлен на проверку в БД";
+                descEl.innerHTML = `Заказ с чеком <code class="text-roseaccent-300 font-mono">${receiptCode}</code> сохранен в Базе Данных со статусом <strong class="text-amber-300">«На проверке»</strong>.<br><br>Курс <strong>НЕ выдается бесплатно</strong> до подтверждения: как только администратор проверит поступление денег и нажмет «Подтвердить» во вкладке «База данных», текст откроется в твоем Ридере.`;
+                showToast('Заказ записан со статусом «На проверке»', 'info');
+            }
+        };
+
+        // Активация по ключу прямо из Личного Кабинета
+        window.redeemLicenseKey = function(e) {
+            e.preventDefault();
+            const input = document.getElementById('license-key-input');
+            const code = input.value.trim().toUpperCase();
+            if (!code) return;
+
+            const foundKey = dbKeys.find(k => k.code.toUpperCase() === code && !k.used);
+            if (!foundKey && code !== PAYMENT_CONFIG.ownerMasterKey) {
+                showToast('Ключ не найден или уже был активирован ранее!', 'info');
+                return;
+            }
+
+            if (code === PAYMENT_CONFIG.ownerMasterKey || foundKey.courseId === 'ALL') {
+                coursesData.forEach(c => {
+                    if (!userState.purchasedCourses.includes(c.id)) userState.purchasedCourses.push(c.id);
+                });
+                showToast('Мастер-ключ активирован! Открыты все 6 текстовых мануалов.', 'success');
+            } else {
+                const cId = Number(foundKey.courseId);
+                if (!userState.purchasedCourses.includes(cId)) userState.purchasedCourses.push(cId);
+                foundKey.used = true;
+                activeReaderCourseId = cId;
+                showToast(`Ключ принят! Курс «${foundKey.courseTitle}» открыт в Ридере.`, 'success');
+            }
+
+            input.value = '';
+            saveLocalState();
+            updateHeaderCounters();
+            renderCourses();
+            renderReaderView();
+            renderDatabaseView();
+        };
+
+        /**
+         * =====================================================================
+         * 8. БАЗА ДАННЫХ (КТО КУПИЛ / ПРОДАЛ / ПОДТВЕРЖДЕНИЕ ОПЛАТ АДМИНОМ)
+         * =====================================================================
+         */
+        function renderDatabaseView() {
+            // Заполняем селекты курсов в БД
+            const dbSelect = document.getElementById('db-course-select');
+            const keySelect = document.getElementById('key-course-select');
+            if (dbSelect && dbSelect.options.length === 0) {
+                const opts = coursesData.map(c => `<option value="${c.id}">${c.title} (${c.price} ₽)</option>`).join('');
+                dbSelect.innerHTML = opts;
+                keySelect.innerHTML = opts;
+            }
+
+            // Считаем аналитику БД
+            const paidOrders = dbOrders.filter(o => o.status === 'paid');
+            const pendingOrders = dbOrders.filter(o => o.status === 'pending');
+            const revenue = paidOrders.reduce((acc, o) => acc + (Number(o.amount) || 0), 0);
+
+            document.getElementById('db-stat-total').textContent = dbOrders.length;
+            document.getElementById('db-stat-revenue').textContent = formatPrice(revenue);
+            document.getElementById('db-stat-pending').textContent = pendingOrders.length;
+            document.getElementById('db-stat-keys').textContent = dbKeys.filter(k => !k.used).length;
+
+            // Таблица транзакций
+            const tbody = document.getElementById('db-orders-tbody');
+            tbody.innerHTML = dbOrders.map((ord, index) => {
+                const isPaid = ord.status === 'paid';
+                return `
+                <tr class="hover:bg-graphite-800/60 transition-colors">
+                    <td class="py-3.5 px-3 font-mono text-[11px]">
+                        <div class="text-roseaccent-400 font-bold">#${ord.id}</div>
+                        <div class="text-stone-500">${ord.date}</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                        <div class="font-semibold text-white">${ord.buyerName}</div>
+                        <div class="font-mono text-[11px] text-stone-400">${ord.buyerTg}</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                        <span class="px-2 py-0.5 rounded bg-graphite-800 border border-white/10 text-stone-300 font-mono text-[11px]">
+                            ${ord.sellerName || 'Сайт'}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-3 text-stone-200 max-w-xs truncate">${ord.courseTitle}</td>
+                    <td class="py-3.5 px-3 font-mono">
+                        <div class="font-bold text-white">${formatPrice(ord.amount)}</div>
+                        <div class="text-[10px] text-stone-400">Чек: ${ord.receiptCode}</div>
+                    </td>
+                    <td class="py-3.5 px-3">
+                        ${isPaid ? `
+                            <span class="px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-mono text-[10px] font-bold">
+                                ● ОПЛАЧЕНО
+                            </span>
+                        ` : `
+                            <span class="px-2.5 py-1 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono text-[10px] font-bold">
+                                ⏳ НА ПРОВЕРКЕ
+                            </span>
+                        `}
+                    </td>
+                    <td class="py-3.5 px-3 text-right whitespace-nowrap">
+                        ${!isPaid ? `
+                            <button onclick="approveOrderInDb(${index})" class="px-3 py-1.5 rounded-lg bg-roseaccent-500 hover:bg-roseaccent-400 text-graphite-950 font-bold text-[11px] mr-1">
+                                Подтвердить чек
+                            </button>
+                        ` : `
+                            <button onclick="revokeOrderInDb(${index})" class="px-2.5 py-1.5 rounded-lg bg-graphite-800 hover:bg-rose-950 text-stone-400 hover:text-rose-300 text-[11px] mr-1">
+                                Отозвать
+                            </button>
+                        `}
+                    </td>
+                </tr>
+                `;
+            }).join('');
+
+            // Рендер ключей активации
+            const keysContainer = document.getElementById('keys-list-container');
+            keysContainer.innerHTML = dbKeys.map(k => `
+                <div class="p-2.5 rounded-xl bg-graphite-800 border border-white/5 flex items-center justify-between gap-2 text-xs">
+                    <div class="min-w-0">
+                        <span class="font-mono font-bold text-roseaccent-300">${k.code}</span>
+                        <span class="text-[11px] text-stone-400 block truncate">${k.courseTitle}</span>
+                    </div>
+                    <button onclick="copyRawText('${k.code}', 'Ключ ${k.code} скопирован!')" class="px-2.5 py-1 rounded bg-graphite-700 hover:bg-roseaccent-500 hover:text-graphite-950 text-[10px] font-mono font-bold">
+                        Копировать
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Подтверждение оплаты в БД администратором (открывает доступ покупателю)
+        window.approveOrderInDb = async function(idx) {
+            const ord = dbOrders[idx];
+            if (!ord) return;
+            ord.status = 'paid';
+
+            const cId = Number(ord.courseId);
+            if (cId && !userState.purchasedCourses.includes(cId)) {
+                userState.purchasedCourses.push(cId);
+            }
+
+            if (db && currentUser && ord.docId) {
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', ord.docId), { status: 'paid' });
+                } catch (e) { console.warn(e); }
+            }
+
+            saveLocalState();
+            updateHeaderCounters();
+            renderDatabaseView();
+            renderCourses();
+            renderReaderView();
+            showToast(`Заказ #${ord.id} подтвержден! Доступ к текстовику открыт.`, 'success');
+        };
+
+        window.revokeOrderInDb = async function(idx) {
+            const ord = dbOrders[idx];
+            if (!ord) return;
+            ord.status = 'pending';
+            const cId = Number(ord.courseId);
+            userState.purchasedCourses = userState.purchasedCourses.filter(id => id !== cId);
+
+            if (db && currentUser && ord.docId) {
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', ord.docId), { status: 'pending' });
+                } catch (e) { console.warn(e); }
+            }
+
+            saveLocalState();
+            updateHeaderCounters();
+            renderDatabaseView();
+            renderCourses();
+            renderReaderView();
+            showToast(`Доступ по заказу #${ord.id} переведен обратно на проверку`, 'info');
+        };
+
+        window.addManualOrderToDb = async function(e) {
+            e.preventDefault();
+            const buyerName = document.getElementById('db-buyer-name').value.trim();
+            const buyerTg = document.getElementById('db-buyer-tg').value.trim();
+            const sellerName = document.getElementById('db-seller-name').value.trim();
+            const courseId = Number(document.getElementById('db-course-select').value);
+            const txCode = document.getElementById('db-tx-code').value.trim().toUpperCase();
+            const course = coursesData.find(c => c.id === courseId);
+
+            if (!course) return;
+
+            const newOrd = {
+                id: 'AR-' + Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                buyerName,
+                buyerTg: buyerTg.startsWith('@') ? buyerTg : '@' + buyerTg,
+                sellerName,
+                courseId: course.id,
+                courseTitle: course.title,
+                amount: course.price,
+                receiptCode: txCode,
+                status: 'paid'
+            };
+
+            dbOrders.unshift(newOrd);
+            if (!userState.purchasedCourses.includes(course.id)) {
+                userState.purchasedCourses.push(course.id);
+            }
+
+            if (db && currentUser) {
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'orders'), newOrd);
+                } catch (err) { console.warn(err); }
+            }
+
+            document.getElementById('db-buyer-name').value = '';
+            document.getElementById('db-buyer-tg').value = '';
+            document.getElementById('db-tx-code').value = '';
+
+            saveLocalState();
+            updateHeaderCounters();
+            renderDatabaseView();
+            renderCourses();
+            renderReaderView();
+            showToast('Продажа записана в БД и курс открыт!', 'success');
+        };
+
+        window.generateNewLicenseKey = async function() {
+            const cId = Number(document.getElementById('key-course-select').value);
+            const course = coursesData.find(c => c.id === cId);
+            if (!course) return;
+
+            const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase() + '-' + Math.floor(100 + Math.random() * 900);
+            const newKey = {
+                code: `AR-${randomPart}`,
+                courseId: course.id,
+                courseTitle: course.title,
+                used: false
+            };
+
+            dbKeys.unshift(newKey);
+            if (db && currentUser) {
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'license_keys'), newKey);
+                } catch (e) { console.warn(e); }
+            }
+
+            saveLocalState();
+            renderDatabaseView();
+            showToast(`Сгенерирован ключ ${newKey.code}`, 'success');
+        };
+
+        window.exportDatabaseCsv = function() {
+            const headers = ["ID", "Date", "Buyer", "Telegram", "Seller", "Course", "Amount", "Receipt", "Status"];
+            const rows = dbOrders.map(o => [
+                o.id, `"${o.date}"`, `"${o.buyerName}"`, o.buyerTg, `"${o.sellerName}"`, `"${o.courseTitle}"`, o.amount, o.receiptCode, o.status
+            ]);
+            const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'antireverse_sales_db.csv';
+            a.click();
+            showToast('База данных экспортирована в CSV файл', 'success');
+        };
+
+        /**
+         * =====================================================================
+         * 9. ПОДДЕРЖКА, МОДАЛКИ И ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+         * =====================================================================
+         */
+        function renderSupportTickets() {
+            const container = document.getElementById('support-tickets-list');
+            if (!container) return;
+            container.innerHTML = dbTickets.map(t => `
+                <div class="p-4 rounded-2xl bg-graphite-800 border border-white/5 space-y-2 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-roseaccent-400 font-bold">#${t.id} • ${t.userTg}</span>
+                        <span class="text-[11px] text-stone-500">${t.date}</span>
+                    </div>
+                    <div class="font-bold text-white">${t.topic}</div>
+                    <p class="text-stone-300">${t.message}</p>
+                    ${t.reply ? `
+                        <div class="p-2.5 rounded-xl bg-roseaccent-500/10 border border-roseaccent-500/25 text-roseaccent-300">
+                            <strong>Ответ куратора:</strong> ${t.reply}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        window.submitSupportTicket = async function(e) {
+            e.preventDefault();
+            const topic = document.getElementById('sup-topic').value.trim();
+            const message = document.getElementById('sup-message').value.trim();
+            if (!topic || !message) return;
+
+            const newTicket = {
+                id: 'TIC-' + Math.floor(100 + Math.random() * 899),
+                date: "Только что",
+                userTg: userState.tg,
+                topic,
+                message,
+                reply: "Тикет зарегистрирован в БД. Дежурный саппорт проверит информацию в течение 10 минут."
+            };
+
+            dbTickets.unshift(newTicket);
+            if (db && currentUser) {
+                try {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'support_tickets'), newTicket);
+                } catch (err) { console.warn(err); }
+            }
+
+            document.getElementById('sup-topic').value = '';
+            document.getElementById('sup-message').value = '';
+            saveLocalState();
+            renderSupportTickets();
+            showToast('Тикет отправлен и сохранен в БД!', 'success');
+        };
+
+        window.openSupportModal = function() {
+            document.getElementById('support-modal').classList.remove('hidden');
+        };
+
+        window.closeSupportModal = function() {
+            document.getElementById('support-modal').classList.add('hidden');
+        };
+
+        window.submitQuickSupport = async function(e) {
+            e.preventDefault();
+            const tg = document.getElementById('quick-sup-tg').value.trim();
+            const text = document.getElementById('quick-sup-text').value.trim();
+            dbTickets.unshift({
+                id: 'TIC-' + Math.floor(100 + Math.random() * 899),
+                date: "Только что",
+                userTg: tg,
+                topic: "Быстрый вопрос с витрины",
+                message: text,
+                reply: "Принято в работу! Ответ придет в твой Telegram."
+            });
+            saveLocalState();
+            renderSupportTickets();
+            closeSupportModal();
+            showToast('Сообщение передано куратору!', 'success');
+        };
+
+        window.openCourseModal = function(courseId) {
+            const c = coursesData.find(x => x.id === courseId);
+            if (!c) return;
+            document.getElementById('modal-category').textContent = c.category;
+            document.getElementById('modal-title').textContent = c.title;
+            document.getElementById('modal-subtitle').textContent = c.subtitle;
+            document.getElementById('modal-description').textContent = c.description;
+            document.getElementById('modal-old-price').textContent = formatPrice(c.oldPrice);
+            document.getElementById('modal-price').textContent = formatPrice(c.price);
+
+            document.getElementById('modal-syllabus').innerHTML = c.chapters.map((ch, idx) => `
+                <div class="p-3.5 rounded-2xl bg-graphite-800 border border-white/5 flex items-center justify-between gap-3">
+                    <span class="font-medium text-white text-xs">${ch.title}</span>
+                    <span class="font-mono text-[10px] text-roseaccent-400 shrink-0">Текст + Шаблон</span>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-read-btn').onclick = () => {
+                closeCourseModal();
+                openCourseInReader(c.id);
+            };
+            document.getElementById('modal-buy-now-btn').onclick = () => {
+                closeCourseModal();
+                buyCourseNow(c.id);
+            };
+
+            document.getElementById('course-modal').classList.remove('hidden');
+        };
+
+        window.closeCourseModal = function() {
+            document.getElementById('course-modal').classList.add('hidden');
+        };
+
+        window.switchMainView = function(view) {
+            const landing = document.getElementById('landing-view');
+            const lk = document.getElementById('lk-view');
+            const label = document.getElementById('nav-lk-label');
+
+            if (view === 'lk') {
+                landing.classList.add('hidden');
+                lk.classList.remove('hidden');
+                label.textContent = "На витрину";
+                document.getElementById('nav-lk-btn').onclick = () => switchMainView('landing');
+                renderReaderView();
+                renderDatabaseView();
+                renderSupportTickets();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                lk.classList.add('hidden');
+                landing.classList.remove('hidden');
+                label.textContent = "Профиль & Ридер";
+                document.getElementById('nav-lk-btn').onclick = () => switchMainView('lk');
+            }
+        };
+
+        window.switchLkTab = function(tabId) {
+            ['reader', 'database', 'support', 'profile'].forEach(t => {
+                const el = document.getElementById(`lktab-${t}`);
+                const btn = document.getElementById(`lktab-btn-${t}`);
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    btn.className = "lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-roseaccent-500 text-graphite-950 whitespace-nowrap transition-all";
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = "lk-tab-btn px-4 py-2.5 rounded-xl text-xs font-medium bg-graphite-900 text-stone-300 hover:text-white border border-roseaccent-500/15 whitespace-nowrap transition-all";
+                }
+            });
+        };
+
+        window.toggleCart = function(open) {
+            const drawer = document.getElementById('cart-drawer');
+            if (open) {
+                updateCartUI();
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+        };
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            badge.textContent = cart.length;
+            badge.className = `absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-roseaccent-500 text-graphite-950 font-mono text-[10px] font-bold flex items-center justify-center transform transition-transform duration-200 ${cart.length > 0 ? 'scale-100' : 'scale-0'}`;
+
+            const emptyEl = document.getElementById('cart-empty');
+            const filledEl = document.getElementById('cart-filled');
+            if (cart.length === 0) {
+                emptyEl.classList.remove('hidden');
+                filledEl.classList.add('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+            filledEl.classList.remove('hidden');
+
+            let total = 0;
+            document.getElementById('cart-items-list').innerHTML = cart.map(id => {
+                const c = coursesData.find(x => x.id === id);
+                if (!c) return '';
+                total += c.price;
+                return `
+                <div class="p-3.5 rounded-2xl bg-graphite-800 border border-white/5 flex items-center justify-between gap-2 text-xs">
+                    <div class="min-w-0">
+                        <div class="font-bold text-white truncate">${c.title}</div>
+                        <div class="font-mono text-roseaccent-400 mt-0.5">${formatPrice(c.price)}</div>
+                    </div>
+                    <button onclick="removeFromCart(${c.id})" class="text-stone-500 hover:text-rose-400 px-2">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+                `;
+            }).join('');
+
+            document.getElementById('summary-count').textContent = cart.length;
+            document.getElementById('summary-total').textContent = formatPrice(total);
+        }
+
+        window.removeFromCart = function(id) {
+            cart = cart.filter(x => x !== id);
+            updateCartUI();
+        };
+
+        window.saveUserProfile = function(e) {
+            e.preventDefault();
+            userState.name = document.getElementById('profile-name-input').value.trim() || 'Арбитражник';
+            userState.tg = document.getElementById('profile-tg-input').value.trim() || '@user';
+            document.getElementById('ref-link-input').value = `https://antireverse.lab/?partner=${encodeURIComponent(userState.tg.replace('@', ''))}`;
+            saveLocalState();
+            updateHeaderCounters();
+            showToast('Профиль сохранен!', 'success');
+        };
+
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        };
+
+        window.copyTextValue = function(elementId, msg, isInput = false) {
+            const el = document.getElementById(elementId);
+            const text = isInput ? el.value : el.textContent;
+            copyRawText(text, msg);
+        };
+
+        window.copyRawText = function(text, msg) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(msg, 'success');
+        };
+
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const icon = type === 'success' ? 'fa-check-circle text-roseaccent-500' : 'fa-circle-info text-amber-400';
+            toast.className = "pointer-events-auto flex items-center gap-3 bg-graphite-950 text-white px-4 py-3 rounded-2xl shadow-2xl border border-roseaccent-500/40 text-xs font-medium transition-all duration-300";
+            toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3400);
+        };
+
+        // Запуск при загрузке
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLocalState();
+            document.getElementById('profile-name-input').value = userState.name;
+            document.getElementById('profile-tg-input').value = userState.tg;
+            document.getElementById('footer-ip-info').textContent = `${PAYMENT_CONFIG.ipName} • ИНН ${PAYMENT_CONFIG.inn}`;
+
+            renderCourses();
+            updateProfitSimulator();
+            updateHeaderCounters();
+            animateHeroCounters();
+            initCloudDatabase();
+        });
+    </script>
+</body>
+</html>
