@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiReverseSchool — Нешкола актуального заработка в сети</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Unbounded (акцентный) & Inter (основной) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Unbounded', 'sans-serif'],
+                    },
+                    colors: {
+                        acid: {
+                            300: '#bef264',
+                            400: '#a3e635',
+                            500: '#84cc16',
+                        },
+                        cyber: {
+                            800: '#13131d',
+                            900: '#0c0c14',
+                            950: '#06060a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #06060a;
+            color: #f8fafc;
+        }
+        .font-display {
+            font-family: 'Unbounded', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27273a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a3e635;
+        }
+        .glass-dark {
+            background: rgba(12, 12, 20, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .acid-glow {
+            box-shadow: 0 0 35px -5px rgba(163, 230, 53, 0.35);
+        }
+        .violet-glow {
+            box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.35);
+        }
+        .card-cyber {
+            background: linear-gradient(180deg, rgba(24, 24, 38, 0.9) 0%, rgba(12, 12, 20, 0.95) 100%);
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-cyber:hover {
+            transform: translateY(-6px);
+            border-color: rgba(163, 230, 53, 0.5);
+            box-shadow: 0 20px 40px -15px rgba(163, 230, 53, 0.15);
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+        .grid-bg {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-acid-400 selection:text-black overflow-x-hidden grid-bg">
+
+    <!-- Контейнер для уведомлений (Toasts) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- Бегущая строка сверху (Hustle Ticker) -->
+    <div class="bg-acid-400 text-black text-xs font-extrabold py-2 overflow-hidden border-b border-black/20 select-none">
+        <div class="animate-marquee flex items-center gap-8 uppercase tracking-wider">
+            <span>⚡ ПРОМОКОД <strong class="underline cursor-pointer" onclick="copyPromoCode()">ANTI20</strong> ДАЕТ СКИДКУ -20% НА ЛЮБУЮ СВЯЗКУ</span>
+            <span>•</span>
+            <span>💸 ВЫПЛАТЫ УЧЕНИКОВ ЗА ПОСЛЕДНИЕ 30 ДНЕЙ: 18 420 000 ₽</span>
+            <span>•</span>
+            <span>🔥 ДОСТУП К ЗАКРЫТОМУ ЧАТУ И БОТАМ СРАЗУ В ЛИЧНОМ КАБИНЕТЕ</span>
+            <span>•</span>
+            <span>🚀 БЕЗ ВОДЫ И СКУЧНЫХ ЛЕКЦИЙ — ТОЛЬКО РАБОЧИЕ МАНУАЛЫ И ПРАКТИКА</span>
+            <span>•</span>
+            <span>⚡ ПРОМОКОД <strong class="underline cursor-pointer" onclick="copyPromoCode()">ANTI20</strong> ДАЕТ СКИДКУ -20% НА ЛЮБУЮ СВЯЗКУ</span>
+            <span>•</span>
+            <span>💸 ВЫПЛАТЫ УЧЕНИКОВ ЗА ПОСЛЕДНИЕ 30 ДНЕЙ: 18 420 000 ₽</span>
+            <span>•</span>
+            <span>🔥 ДОСТУП К ЗАКРЫТОМУ ЧАТУ И БОТАМ СРАЗУ В ЛИЧНОМ КАБИНЕТЕ</span>
+        </div>
+    </div>
+
+    <!-- Навигационная панель -->
+    <header class="sticky top-0 z-40 glass-dark border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+            <!-- Логотип AntiReverseSchool -->
+            <button onclick="switchMainView('landing')" class="flex items-center gap-3 group focus:outline-none text-left">
+                <div class="w-11 h-11 rounded-2xl bg-acid-400 text-black flex items-center justify-center font-display font-black text-lg shadow-lg acid-glow group-hover:rotate-6 transition-transform">
+                    AR
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-display text-base sm:text-lg font-black tracking-tight text-white">ANTI<span class="text-acid-400">REVERSE</span></span>
+                        <span class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/40 rounded-md">SCHOOL</span>
+                    </div>
+                    <span class="block text-[11px] font-medium text-zinc-400 -mt-0.5">Комьюнити & Мануалы по кэшу</span>
+                </div>
+            </button>
+
+            <!-- Десктопное меню -->
+            <nav id="landing-nav-links" class="hidden lg:flex items-center gap-7 text-sm font-semibold text-zinc-300">
+                <a href="#catalog" onclick="switchMainView('landing')" class="hover:text-acid-400 transition-colors">Ниши и Связки</a>
+                <a href="#calculator" onclick="switchMainView('landing')" class="hover:text-acid-400 transition-colors">Калькулятор профита</a>
+                <a href="#proofs" onclick="switchMainView('landing')" class="hover:text-acid-400 transition-colors">Пруфы учеников</a>
+                <a href="#faq" onclick="switchMainView('landing')" class="hover:text-acid-400 transition-colors">FAQ</a>
+            </nav>
+
+            <!-- Правая панель: Корзина + Кнопка ЛК -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <!-- Переключатель Витрина / ЛК -->
+                <button 
+                    id="nav-lk-btn"
+                    onclick="switchMainView('lk')" 
+                    class="flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-acid-400/40 text-white text-xs sm:text-sm font-bold transition-all"
+                >
+                    <div class="w-6 h-6 rounded-lg bg-acid-400 text-black flex items-center justify-center font-black text-xs">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <span id="nav-lk-label">Личный кабинет</span>
+                    <span id="lk-courses-count" class="px-1.5 py-0.5 rounded-md bg-acid-400/20 text-acid-300 text-[11px] font-extrabold">1</span>
+                </button>
+
+                <!-- Кнопка корзины -->
+                <button onclick="toggleCart(true)" class="relative p-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-200 hover:text-acid-400 transition-colors focus:outline-none" aria-label="Открыть корзину">
+                    <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 min-w-[22px] h-[22px] px-1.5 rounded-full bg-acid-400 text-black text-xs font-black flex items-center justify-center shadow-sm transform scale-0 transition-transform duration-200">
+                        0
+                    </span>
+                </button>
+
+                <!-- Мобильное меню (кнопка) -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-3 rounded-xl bg-zinc-900 border border-white/10 text-zinc-200 hover:bg-zinc-800 transition-colors" aria-label="Меню">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Выпадающее мобильное меню -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-cyber-900 px-4 pt-3 pb-6 space-y-2">
+            <a href="#catalog" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-200 hover:bg-white/5 hover:text-acid-400">🔥 Ниши и Связки (Каталог)</a>
+            <a href="#calculator" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-200 hover:bg-white/5 hover:text-acid-400">💸 Калькулятор профита</a>
+            <a href="#proofs" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-200 hover:bg-white/5 hover:text-acid-400">📸 Пруфы и выплаты</a>
+            <a href="#faq" onclick="switchMainView('landing'); toggleMobileMenu()" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-zinc-200 hover:bg-white/5 hover:text-acid-400">❓ Вопросы и ответы</a>
+            <div class="pt-2">
+                <button onclick="switchMainView('lk'); toggleMobileMenu()" class="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-acid-400 text-black font-extrabold text-sm">
+                    <i class="fa-solid fa-bolt"></i> Войти в Личный Кабинет
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================================= -->
+    <!-- ОСНОВНАЯ ВИТРИНА САЙТА (LANDING VIEW)                                   -->
+    <!-- ======================================================================= -->
+    <main id="landing-view">
+
+        <!-- ГЛАВНЫЙ ЭКРАН (HERO SECTION) -->
+        <section class="relative overflow-hidden pt-10 pb-20 lg:pt-16 lg:pb-24">
+            <!-- Неоновые пятна на фоне -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-acid-400/15 rounded-full blur-[120px] pointer-events-none"></div>
+            <div class="absolute top-1/3 right-0 w-96 h-96 bg-violet-600/20 rounded-full blur-[130px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+                    
+                    <!-- Левая колонка -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/90 border border-acid-400/30 text-acid-300 text-xs sm:text-sm font-bold">
+                            <span class="flex h-2.5 w-2.5 rounded-full bg-acid-400 animate-ping"></span>
+                            <span>Забудь про скучный ВУЗ и найм за 30к • Забирай связки 2026</span>
+                        </div>
+
+                        <h1 class="font-display text-3xl sm:text-5xl lg:text-[54px] font-black tracking-tight text-white leading-[1.12] uppercase">
+                            Делай кэш на <span class="text-transparent bg-clip-text bg-gradient-to-r from-acid-300 via-acid-400 to-emerald-400">РКО, Трафике</span> и Дропшиппинге
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            <strong class="text-white">AntiReverseSchool</strong> — закрытая платформа для тех, кому 14–20+ лет и кто хочет делать от 50 000 до 300 000 ₽/мес с телефона или ноута. Пошаговые мануалы, готовые боты, контакты поставщиков и личный кабинет с кураторами.
+                        </p>
+
+                        <!-- Чипсы ниш -->
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
+                            <span class="px-3 py-1.5 rounded-xl bg-zinc-900 border border-white/10 text-xs font-bold text-zinc-300">💳 РКО и Фин-офферы</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-zinc-900 border border-white/10 text-xs font-bold text-zinc-300">📱 УБТ TikTok / Reels</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-zinc-900 border border-white/10 text-xs font-bold text-zinc-300">📦 Дропшиппинг & Poizon</span>
+                            <span class="px-3 py-1.5 rounded-xl bg-zinc-900 border border-white/10 text-xs font-bold text-zinc-300">🚀 Арбитраж Трафика</span>
+                        </div>
+
+                        <!-- Кнопки CTA -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#catalog" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-acid-400 hover:bg-acid-300 text-black font-display font-extrabold text-sm uppercase tracking-wide acid-glow transition-all flex items-center justify-center gap-3">
+                                <span>Выбрать нишу (от 3 990 ₽)</span>
+                                <i class="fa-solid fa-fire"></i>
+                            </a>
+                            <button onclick="switchMainView('lk')" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-sm border border-white/15 transition-all flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-play text-acid-400"></i>
+                                <span>Тест-драйв ЛК (Бесплатно)</span>
+                            </button>
+                        </div>
+
+                        <!-- Статистика в цифрах -->
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-white/10 max-w-xl mx-auto lg:mx-0">
+                            <div>
+                                <div class="font-display text-xl sm:text-2xl font-black text-white">4–9к ₽</div>
+                                <div class="text-xs text-zinc-400 mt-0.5">Доступный вход окупается с 1-2 лидов</div>
+                            </div>
+                            <div>
+                                <div class="font-display text-xl sm:text-2xl font-black text-acid-400">12 400+</div>
+                                <div class="text-xs text-zinc-400 mt-0.5">Участников в закрытом комьюнити</div>
+                            </div>
+                            <div>
+                                <div class="font-display text-xl sm:text-2xl font-black text-white">24/7</div>
+                                <div class="text-xs text-zinc-400 mt-0.5">Саппорт кураторов и проверка связок</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка с карточкой-витриной -->
+                    <div class="lg:col-span-5 relative">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="card-cyber rounded-3xl p-6 sm:p-7 border border-acid-400/40 relative overflow-hidden">
+                                <div class="absolute -right-10 -top-10 w-40 h-40 bg-acid-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                                
+                                <div class="flex items-center justify-between mb-5">
+                                    <span class="px-3 py-1 rounded-full bg-acid-400 text-black text-xs font-extrabold uppercase">
+                                        🔥 Топ-1 для старта без бюджета
+                                    </span>
+                                    <span class="text-zinc-400 text-xs font-bold flex items-center gap-1">
+                                        <i class="fa-solid fa-star text-acid-400"></i> 4.99 (940)
+                                    </span>
+                                </div>
+
+                                <h3 class="font-display text-xl sm:text-2xl font-black text-white mb-2">
+                                    РКО & Фин-Офферы: Быстрый кэш на банках
+                                </h3>
+                                <p class="text-zinc-400 text-sm mb-5 leading-relaxed">
+                                    Зарабатывай от 3 000 до 18 000 ₽ за каждую оформленную карту или счет для ИП. Даем прямые партнерки, скрипты поиска клиентов и схемы масштабирования.
+                                </p>
+
+                                <!-- Живой лог выплат -->
+                                <div class="bg-black/60 rounded-2xl p-4 mb-6 border border-white/10 space-y-2.5">
+                                    <div class="flex items-center justify-between text-xs text-zinc-400 pb-1 border-b border-white/10">
+                                        <span class="font-bold text-white flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Live-выплаты учеников
+                                        </span>
+                                        <span>Сегодня</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-zinc-300">@dima_flx (16 лет) • 2 РКО лида</span>
+                                        <span class="font-extrabold text-acid-400">+24 500 ₽</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-zinc-300">@kris_traffic (18 лет) • УБТ Reels</span>
+                                        <span class="font-extrabold text-acid-400">+9 800 ₽</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-zinc-300">@maks_drop (17 лет) • Кроссовки Poizon</span>
+                                        <span class="font-extrabold text-acid-400">+6 400 ₽</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-1">
+                                    <div>
+                                        <span class="text-xs text-zinc-500 line-through block">9 900 ₽</span>
+                                        <span class="font-display text-2xl font-black text-white">4 490 ₽</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="openCourseModal(101)" class="px-4 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold text-xs transition-all">
+                                            Мануал
+                                        </button>
+                                        <button onclick="buyCourseNow(101)" class="px-5 py-3 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs uppercase transition-all">
+                                            Забрать доступ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- КАТАЛОГ СВЯЗОК И КУРСОВ -->
+        <section id="catalog" class="py-16 lg:py-24 border-t border-white/10 bg-cyber-900/60">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                    <div>
+                        <span class="text-acid-400 font-extrabold text-xs uppercase tracking-widest">Все курсы по 4 000 – 9 000 ₽</span>
+                        <h2 class="font-display text-2xl sm:text-4xl font-black text-white mt-1 uppercase">Выбери свою нишу для кэша</h2>
+                    </div>
+                    <p class="text-zinc-400 max-w-md text-sm">
+                        После оплаты курс моментально открывается в твоем <button onclick="switchMainView('lk')" class="text-acid-400 underline font-bold">Личном кабинете</button> вместе с таблицами, ботами и чатом.
+                    </p>
+                </div>
+
+                <!-- Панель фильтрации и поиска -->
+                <div class="bg-cyber-950/90 p-4 sm:p-5 rounded-3xl border border-white/10 mb-10 space-y-4">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        
+                        <!-- Кнопки категорий -->
+                        <div id="category-filters" class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0">
+                            <button onclick="setCategory('Все')" data-cat="Все" class="cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all whitespace-nowrap bg-acid-400 text-black">
+                                🔥 Все связки
+                            </button>
+                            <button onclick="setCategory('РКО и Абуз')" data-cat="РКО и Абуз" class="cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10">
+                                💳 РКО и Фин-офферы
+                            </button>
+                            <button onclick="setCategory('Трафик и УБТ')" data-cat="Трафик и УБТ" class="cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10">
+                                📱 Трафик и УБТ
+                            </button>
+                            <button onclick="setCategory('Дропшиппинг')" data-cat="Дропшиппинг" class="cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10">
+                                📦 Дропшиппинг и Ресейл
+                            </button>
+                            <button onclick="setCategory('Крипта и AI')" data-cat="Крипта и AI" class="cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10">
+                                🤖 Крипта и AI-фермы
+                            </button>
+                        </div>
+
+                        <!-- Поиск и Сортировка -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <div class="relative flex-grow sm:w-64">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-sm"></i>
+                                <input 
+                                    type="text" 
+                                    id="search-input" 
+                                    oninput="handleSearch(this.value)"
+                                    placeholder="РКО, TikTok, дропшиппинг..." 
+                                    class="w-full pl-10 pr-9 py-2.5 bg-zinc-900 border border-white/10 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-acid-400 transition-all"
+                                >
+                                <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+
+                            <select id="sort-select" onchange="handleSort(this.value)" class="px-4 py-2.5 bg-zinc-900 border border-white/10 rounded-xl text-sm font-semibold text-zinc-200 focus:outline-none focus:border-acid-400 cursor-pointer">
+                                <option value="popular">По популярности</option>
+                                <option value="price-asc">Сначала дешевле (от 4к)</option>
+                                <option value="price-desc">Сначала мощнее (до 9к)</option>
+                                <option value="rating">По рейтингу</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Сетка карточек курсов -->
+                <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+
+                <!-- Пустой результат поиска -->
+                <div id="empty-catalog" class="hidden text-center py-16 px-4 bg-zinc-900/50 rounded-3xl border border-dashed border-white/15">
+                    <div class="w-16 h-16 rounded-2xl bg-zinc-800 text-acid-400 flex items-center justify-center mx-auto mb-4 text-2xl">
+                        <i class="fa-solid fa-ghost"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Такой связки пока нет</h3>
+                    <p class="text-zinc-400 text-sm max-w-md mx-auto mb-6">
+                        Попробуй сбросить фильтр или напиши другое слово в поиск.
+                    </p>
+                    <button onclick="resetCatalogFilters()" class="px-6 py-2.5 rounded-xl bg-acid-400 text-black text-sm font-extrabold hover:bg-acid-300 transition-colors">
+                        Показать все курсы
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ИНТЕРАКТИВНЫЙ КАЛЬКУЛЯТОР ПРОФИТА -->
+        <section id="calculator" class="py-16 lg:py-24 relative overflow-hidden border-t border-white/10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="card-cyber rounded-3xl p-6 sm:p-10 border border-white/15">
+                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-6">
+                            <div>
+                                <span class="text-acid-400 text-xs font-extrabold uppercase tracking-wider">Посчитай свой выхлоп</span>
+                                <h2 class="font-display text-2xl sm:text-3xl font-black text-white mt-1 uppercase">Калькулятор заработка</h2>
+                                <p class="text-zinc-400 text-sm mt-2">Выбери направление и посмотри, сколько реально делать, уделяя 2–3 часа после учебы или вечером.</p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-zinc-400 uppercase mb-2">1. Выбери нишу:</label>
+                                    <select id="calc-niche" onchange="updateCalculator()" class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/15 text-white font-bold text-sm focus:outline-none focus:border-acid-400">
+                                        <option value="8500">💳 РКО и Банковские офферы (~8 500 ₽ за клиента)</option>
+                                        <option value="2200">📦 Дропшиппинг кроссовок и техники (~2 200 ₽ чистыми с заказа)</option>
+                                        <option value="3500">📱 УБТ Трафик Reels / TikTok (~3 500 ₽ за день с перелива)</option>
+                                        <option value="5000">🚀 Авитолог / Лидген (~5 000 ₽ за пачку лидов)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-2">
+                                        <span class="text-zinc-400 uppercase">2. Количество сделок / лидов в месяц:</span>
+                                        <span id="calc-deals-label" class="text-acid-400 text-sm font-extrabold">15 сделок</span>
+                                    </div>
+                                    <input type="range" id="calc-deals" min="3" max="50" value="15" oninput="updateCalculator()" class="w-full accent-lime-400 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-5 bg-black/70 rounded-2xl p-6 border border-acid-400/30 text-center space-y-4">
+                            <div class="text-xs font-bold text-zinc-400 uppercase">Твой потенциальный доход за месяц:</div>
+                            <div id="calc-result" class="font-display text-3xl sm:text-4xl font-black text-acid-400">127 500 ₽</div>
+                            <div class="text-xs text-zinc-400">
+                                Окупаемость любого курса <strong class="text-white">с 1–2 выполненных действий</strong> по мануалу.
+                            </div>
+                            <a href="#catalog" class="block w-full py-3.5 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs uppercase tracking-wider transition-all">
+                                Начать делать кэш
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПРУФЫ И ОТЗЫВЫ УЧЕНИКОВ -->
+        <section id="proofs" class="py-16 lg:py-24 bg-cyber-900/50 border-t border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="text-acid-400 font-extrabold text-xs uppercase tracking-widest">Реальные кейсы пацанов и девчонок</span>
+                    <h2 class="font-display text-2xl sm:text-4xl font-black text-white mt-1 uppercase">Пруфы из нашего чата</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Кейс 1 -->
+                    <div class="card-cyber p-6 rounded-3xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-lg bg-acid-400/15 text-acid-300 text-xs font-extrabold">+84 000 ₽ за 3 недели</span>
+                                <span class="text-xs text-zinc-500">Ниша: РКО</span>
+                            </div>
+                            <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+                                «Мне 17, учусь в колледже. Взял курс по РКО за 4 490 ₽. В первый же вечер по шаблону из 3-го урока нашел 2 селлеров на ВБ, которые открывали ИП. За каждого партнерка начислила по 11к! За неполный месяц вышло 84к чистыми».
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-10 h-10 rounded-xl bg-acid-400 text-black font-black flex items-center justify-center text-sm">ДМ</div>
+                            <div>
+                                <div class="font-bold text-white text-sm">Даня Морозов, 17 лет</div>
+                                <div class="text-xs text-zinc-400">@danya_rko • Екатеринбург</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кейс 2 -->
+                    <div class="card-cyber p-6 rounded-3xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-lg bg-violet-500/20 text-violet-300 text-xs font-extrabold">+115 000 ₽ за месяц</span>
+                                <span class="text-xs text-zinc-500">Ниша: УБТ Трафик</span>
+                            </div>
+                            <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+                                «Думала, что в Reels и TikTok уже поздно залетать. В ЛК взяла связку по нарезкам + нейро-озвучке. Одно видео залетело на 1.2 млн просмотров, перелила трафик в ТГ-бота партнерки и сняла 115к без копейки вложений в рекламу!»
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-10 h-10 rounded-xl bg-violet-500 text-white font-black flex items-center justify-center text-sm">АЛ</div>
+                            <div>
+                                <div class="font-bold text-white text-sm">Алина К., 19 лет</div>
+                                <div class="text-xs text-zinc-400">@alina_ubt • Казань</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кейс 3 -->
+                    <div class="card-cyber p-6 rounded-3xl border border-white/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-extrabold">+142 000 ₽ на дропе</span>
+                                <span class="text-xs text-zinc-500">Ниша: Дропшиппинг</span>
+                            </div>
+                            <p class="text-zinc-300 text-sm leading-relaxed mb-6">
+                                «Топовая база поставщиков внутри ЛК! Не нужно закупать товар на склад: клиент платит мне, я заказываю у оптовика из курса с отправкой напрямую клиенту, разницу 2–3к с пары кроссовок оставляю себе».
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-400 text-black font-black flex items-center justify-center text-sm">РТ</div>
+                            <div>
+                                <div class="font-bold text-white text-sm">Руслан Т., 16 лет</div>
+                                <div class="text-xs text-zinc-400">@rus_drop • Краснодар</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="py-16 lg:py-20 border-t border-white/10">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span class="text-acid-400 font-extrabold text-xs uppercase tracking-widest">Честные ответы</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-black text-white mt-1 uppercase">Частые вопросы</h2>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="border border-white/10 bg-cyber-900 rounded-2xl overflow-hidden">
+                        <button onclick="toggleFaq(0)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-white/5 transition-colors">
+                            <span class="font-bold text-white text-sm sm:text-base">Можно ли работать, если мне 14–17 лет?</span>
+                            <i id="faq-icon-0" class="fa-solid fa-chevron-down text-acid-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq-content-0" class="px-6 py-4 text-zinc-400 text-sm leading-relaxed border-t border-white/10">
+                            Да! В УБТ-трафике, дропшиппинге, ресейле и РКО возраст не мешает. Внутри курсов мы показываем, как легально принимать выплаты на карту с 14 лет или оформлять самозанятость.
+                        </div>
+                    </div>
+
+                    <div class="border border-white/10 bg-cyber-900 rounded-2xl overflow-hidden">
+                        <button onclick="toggleFaq(1)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-white/5 transition-colors">
+                            <span class="font-bold text-white text-sm sm:text-base">Как открывается доступ после оплаты?</span>
+                            <i id="faq-icon-1" class="fa-solid fa-chevron-down text-acid-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq-content-1" class="hidden px-6 py-4 text-zinc-400 text-sm leading-relaxed border-t border-white/10">
+                            Автоматически за 1 секунду! Сразу после оплаты по СБП или карте курс появляется в твоем <strong>Личном кабинете</strong> прямо на этом сайте, а на почту приходит чек.
+                        </div>
+                    </div>
+
+                    <div class="border border-white/10 bg-cyber-900 rounded-2xl overflow-hidden">
+                        <button onclick="toggleFaq(2)" class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-white/5 transition-colors">
+                            <span class="font-bold text-white text-sm sm:text-base">Нужен ли стартовый бюджет после покупки курса?</span>
+                            <i id="faq-icon-2" class="fa-solid fa-chevron-down text-acid-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq-content-2" class="hidden px-6 py-4 text-zinc-400 text-sm leading-relaxed border-t border-white/10">
+                            В курсах по РКО, УБТ-трафику и Дропшиппингу можно стартовать с 0 ₽ вложений — вы получаете деньги от клиентов или партнерок без закупа товара за свои средства.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================================= -->
+    <!-- ЛИЧНЫЙ КАБИНЕТ УЧЕНИКА (ЛК VIEW — ПОЛНОЦЕННАЯ ПЛАТФОРМА ОБУЧЕНИЯ)        -->
+    <!-- ======================================================================= -->
+    <section id="lk-view" class="hidden min-h-screen py-8 sm:py-12 bg-cyber-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            <!-- Верхняя шапка ЛК с профилем и статистикой -->
+            <div class="card-cyber rounded-3xl p-6 sm:p-8 border border-white/15 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-acid-400 to-emerald-500 text-black font-display font-black text-2xl flex items-center justify-center shadow-lg acid-glow">
+                        <span id="lk-avatar-initials">AR</span>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h1 id="lk-user-name" class="font-display text-xl sm:text-2xl font-black text-white">Хаслер #1042</h1>
+                            <span id="lk-user-rank" class="px-2.5 py-0.5 rounded-lg bg-acid-400/20 text-acid-300 border border-acid-400/30 text-xs font-extrabold">LVL 2 • ПРАКТИК</span>
+                        </div>
+                        <p id="lk-user-tg" class="text-xs sm:text-sm text-zinc-400 mt-1">@antireverse_student • ID: 849201</p>
+                    </div>
+                </div>
+
+                <!-- Виджеты баланса, XP и возврата в каталог -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div class="bg-black/60 px-4 py-3 rounded-2xl border border-white/10">
+                        <div class="text-[11px] text-zinc-400 font-semibold">Доступно курсов</div>
+                        <div id="lk-stat-courses" class="font-display text-lg font-black text-white mt-0.5">1 курс</div>
+                    </div>
+                    <div class="bg-black/60 px-4 py-3 rounded-2xl border border-white/10">
+                        <div class="text-[11px] text-zinc-400 font-semibold">Опыт / Прогресс</div>
+                        <div id="lk-stat-xp" class="font-display text-lg font-black text-acid-400 mt-0.5">250 XP</div>
+                    </div>
+                    <button onclick="switchMainView('landing')" class="col-span-2 sm:col-span-1 px-4 py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 border border-white/15 text-xs font-extrabold text-white flex items-center justify-center gap-2 transition-colors">
+                        <i class="fa-solid fa-plus text-acid-400"></i>
+                        <span>Докупить связки</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Навигация по вкладкам ЛК -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10">
+                <button onclick="switchLkTab('courses')" id="lktab-btn-courses" class="lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-acid-400 text-black whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1.5"></i> Мои обучения и Плеер
+                </button>
+                <button onclick="switchLkTab('orders')" id="lktab-btn-orders" class="lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-receipt mr-1.5"></i> Финансы и Чеки
+                </button>
+                <button onclick="switchLkTab('referral')" id="lktab-btn-referral" class="lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-sack-dollar mr-1.5 text-acid-400"></i> Рефералка (30% кэшбэк)
+                </button>
+                <button onclick="switchLkTab('profile')" id="lktab-btn-profile" class="lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10 whitespace-nowrap transition-all">
+                    <i class="fa-solid fa-sliders mr-1.5"></i> Настройки профиля
+                </button>
+            </div>
+
+            <!-- ВКЛАДКА 1: МОИ ОБУЧЕНИЯ + ИНТЕРАКТИВНЫЙ ПЛЕЕР УРОКОВ -->
+            <div id="lktab-courses" class="space-y-8">
+                
+                <!-- Сетка моих купленных курсов -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-display text-lg sm:text-xl font-black text-white uppercase">Твои открытые доступы</h2>
+                        <span class="text-xs text-zinc-400">Нажми на курс, чтобы открыть видеоплеер и секретные ссылки</span>
+                    </div>
+                    <div id="lk-my-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+
+                <!-- ИНТЕРАКТИВНЫЙ ПЛЕЕР КУРСА ВНУТРИ ЛК -->
+                <div id="lk-course-player" class="card-cyber rounded-3xl border border-acid-400/40 overflow-hidden">
+                    <!-- Шапка плеера -->
+                    <div class="p-5 sm:p-6 bg-black/60 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-md bg-acid-400 text-black text-[11px] font-extrabold uppercase">Активный урок</span>
+                                <span id="player-course-title" class="text-xs font-bold text-zinc-400"></span>
+                            </div>
+                            <h3 id="player-lesson-title" class="font-display text-lg sm:text-xl font-black text-white mt-1"></h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="completeCurrentLesson()" id="player-complete-btn" class="px-4 py-2.5 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>Урок пройден (+50 XP)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Тело плеера: Видео слева + Список уроков справа -->
+                    <div class="grid lg:grid-cols-12">
+                        <!-- Экран плеера и конспект -->
+                        <div class="lg:col-span-8 p-5 sm:p-6 space-y-6 border-b lg:border-b-0 lg:border-r border-white/10">
+                            
+                            <!-- Симулятор Видео-Плеера -->
+                            <div class="relative rounded-2xl overflow-hidden bg-black aspect-video border border-white/15 flex flex-col justify-between p-6 group">
+                                <div class="absolute inset-0 bg-gradient-to-br from-violet-900/40 via-cyber-950 to-emerald-900/30 pointer-events-none"></div>
+                                
+                                <div class="relative z-10 flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded-lg bg-black/70 border border-white/10 text-xs font-bold text-acid-400">
+                                        <i class="fa-solid fa-shield-halved mr-1"></i> Защищенный поток AntiReverse
+                                    </span>
+                                    <span id="player-speed-badge" onclick="cyclePlaybackSpeed()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white cursor-pointer select-none">
+                                        Скорость: 1.0x
+                                    </span>
+                                </div>
+
+                                <!-- Кнопка Play по центру -->
+                                <div class="relative z-10 text-center my-auto">
+                                    <button onclick="toggleVideoPlay()" id="video-play-btn" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-acid-400 hover:scale-105 text-black flex items-center justify-center mx-auto text-2xl shadow-2xl acid-glow transition-transform">
+                                        <i id="video-play-icon" class="fa-solid fa-play ml-1"></i>
+                                    </button>
+                                    <p id="video-status-text" class="text-xs sm:text-sm font-bold text-zinc-300 mt-3">Нажми Play для запуска видеоразбора</p>
+                                </div>
+
+                                <!-- Таймлайн плеера -->
+                                <div class="relative z-10 space-y-2">
+                                    <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden cursor-pointer" onclick="seekVideo(event)">
+                                        <div id="video-progress-bar" class="w-1/3 h-full bg-acid-400 transition-all duration-300"></div>
+                                    </div>
+                                    <div class="flex justify-between text-[11px] font-mono text-zinc-400">
+                                        <span id="video-time-current">04:12</span>
+                                        <span id="video-time-total">14:35 • 1080p 60FPS</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Мануал, ссылки и домашка к уроку -->
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="bg-black/50 p-4 rounded-2xl border border-white/10 space-y-2">
+                                    <div class="text-xs font-extrabold text-acid-400 uppercase flex items-center gap-1.5">
+                                        <i class="fa-solid fa-folder-open"></i> Секретные материалы к уроку
+                                    </div>
+                                    <p id="player-lesson-notes" class="text-xs text-zinc-300 leading-relaxed"></p>
+                                    <div class="pt-2 flex flex-wrap gap-2">
+                                        <button onclick="showToast('Таблица со связками и контактами открыта!', 'success')" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white flex items-center gap-1.5">
+                                            <i class="fa-solid fa-table text-emerald-400"></i> База контактов / Офферов
+                                        </button>
+                                        <button onclick="showToast('Шаблон скрипта скопирован в буфер!', 'success')" class="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white flex items-center gap-1.5">
+                                            <i class="fa-brands fa-telegram text-sky-400"></i> Бот-помощник
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Отправка домашки куратору -->
+                                <div class="bg-black/50 p-4 rounded-2xl border border-white/10 space-y-2">
+                                    <div class="text-xs font-extrabold text-violet-400 uppercase flex items-center gap-1.5">
+                                        <i class="fa-solid fa-comment-dots"></i> Отчет куратору (Проверка ДЗ)
+                                    </div>
+                                    <p class="text-xs text-zinc-400">Скинь ссылку на свой результат или вопрос по связке:</p>
+                                    <form onsubmit="submitHomework(event)" class="flex gap-2 pt-1">
+                                        <input type="text" id="hw-input" required placeholder="Ссылка на ТГ / Скрин..." class="flex-1 px-3 py-2 rounded-xl bg-zinc-900 border border-white/10 text-xs text-white focus:outline-none focus:border-acid-400">
+                                        <button type="submit" class="px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold">
+                                            Сдать
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Список уроков выбранного курса -->
+                        <div class="lg:col-span-4 p-5 sm:p-6 bg-black/40 flex flex-col justify-between">
+                            <div>
+                                <div class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-3">Модули и уроки курса</div>
+                                <div id="player-lessons-list" class="space-y-2.5"></div>
+                            </div>
+
+                            <div class="mt-6 p-4 rounded-2xl bg-acid-400/10 border border-acid-400/30">
+                                <div class="text-xs font-extrabold text-acid-300 mb-1">💬 Закрытый чат потока</div>
+                                <p class="text-[11px] text-zinc-400 mb-3">Общайся с ребятами, находи напарников и смотри свежие выплаты.</p>
+                                <button onclick="showToast('Инвайт-ссылка в закрытый Telegram-чат скопирована!', 'success')" class="w-full py-2 rounded-xl bg-acid-400 text-black font-extrabold text-xs">
+                                    Войти в TG-чат учеников
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ВКЛАДКА 2: ФИНАНСЫ И ЧЕКИ -->
+            <div id="lktab-orders" class="hidden space-y-6">
+                <div class="card-cyber rounded-3xl p-6 sm:p-8 border border-white/15">
+                    <h2 class="font-display text-xl font-black text-white uppercase mb-2">История покупок и фискальные чеки</h2>
+                    <p class="text-zinc-400 text-sm mb-6">Все оплаты проходят официально. Здесь хранятся твои чеки и открытые доступы.</p>
+                    <div id="lk-orders-list" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 3: РЕФЕРАЛКА -->
+            <div id="lktab-referral" class="hidden space-y-6">
+                <div class="card-cyber rounded-3xl p-6 sm:p-8 border border-acid-400/30">
+                    <div class="max-w-2xl space-y-4">
+                        <span class="px-3 py-1 rounded-full bg-acid-400 text-black text-xs font-extrabold uppercase">Партнерская программа 30%</span>
+                        <h2 class="font-display text-2xl font-black text-white uppercase">Зови кентов — забирай до 2 700 ₽ с каждой оплаты</h2>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Скопируй свою личную реферальную ссылку, закинь её в свой ТГ-канал, TikTok или отправь другу. Как только он купит любой курс, тебе моментально капает <strong class="text-white">30% на вывод</strong>.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <input type="text" id="ref-link-input" readonly value="https://antireverse.school/?ref=849201" class="flex-1 px-4 py-3 rounded-xl bg-black border border-white/15 text-acid-400 font-mono text-xs sm:text-sm">
+                            <button onclick="copyRefLink()" class="px-6 py-3 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs uppercase">
+                                Скопировать ссылку
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ВКЛАДКА 4: НАСТРОЙКИ ПРОФИЛЯ -->
+            <div id="lktab-profile" class="hidden">
+                <div class="card-cyber rounded-3xl p-6 sm:p-8 border border-white/15 max-w-xl">
+                    <h2 class="font-display text-xl font-black text-white uppercase mb-4">Настройки твоего аккаунта</h2>
+                    <form onsubmit="saveUserProfile(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 mb-1">Твой Никнейм или Имя</label>
+                            <input type="text" id="profile-name-input" required class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/15 text-white text-sm focus:outline-none focus:border-acid-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-400 mb-1">Твой Telegram (@username)</label>
+                            <input type="text" id="profile-tg-input" required class="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/15 text-white text-sm focus:outline-none focus:border-acid-400">
+                        </div>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button type="submit" class="px-6 py-3 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs uppercase">
+                                Сохранить профиль
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ (FOOTER) -->
+    <footer class="bg-black text-zinc-500 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+                <div class="md:col-span-2 space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-acid-400 text-black flex items-center justify-center font-display font-black text-sm">AR</div>
+                        <span class="font-display text-lg font-black text-white">ANTI<span class="text-acid-400">REVERSE</span> SCHOOL</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-zinc-400 max-w-sm leading-relaxed">
+                        Практическая онлайн-платформа по заработку на РКО, УБТ-трафике, дропшиппинге, товарке и нейросетях.
+                    </p>
+                    <!-- Блок реквизитов ИП (автоматически подтягивается из PAYMENT_CONFIG в JS) -->
+                    <div id="footer-ip-info" class="text-xs text-zinc-500 pt-1 font-mono"></div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-4">Направления</h4>
+                    <ul class="space-y-2 text-xs sm:text-sm">
+                        <li><a href="#catalog" onclick="switchMainView('landing'); setCategory('РКО и Абуз')" class="hover:text-acid-400 transition-colors">РКО и Банковские офферы</a></li>
+                        <li><a href="#catalog" onclick="switchMainView('landing'); setCategory('Трафик и УБТ')" class="hover:text-acid-400 transition-colors">УБТ TikTok / Reels / Shorts</a></li>
+                        <li><a href="#catalog" onclick="switchMainView('landing'); setCategory('Дропшиппинг')" class="hover:text-acid-400 transition-colors">Дропшиппинг и Ресейл Poizon</a></li>
+                        <li><a href="#catalog" onclick="switchMainView('landing'); setCategory('Крипта и AI')" class="hover:text-acid-400 transition-colors">Крипто-активности и AI</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase tracking-wider mb-4">Кабинет и Саппорт</h4>
+                    <ul class="space-y-2 text-xs sm:text-sm">
+                        <li><button onclick="switchMainView('lk')" class="hover:text-acid-400 transition-colors">Личный кабинет ученика</button></li>
+                        <li class="flex items-center gap-2"><i class="fa-brands fa-telegram text-acid-400"></i> @antireverse_support</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-acid-400"></i> pay@antireverse.school</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-600 gap-4">
+                <div>© 2026 AntiReverseSchool. Все права защищены.</div>
+                <div class="flex gap-6">
+                    <span>Прием платежей: СБП / Карты РФ / USDT</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================= -->
+    <!-- МОДАЛЬНОЕ ОКНО: ПОДРОБНЫЙ МАНУАЛ КУРСА                                  -->
+    <!-- ======================================================================= -->
+    <div id="course-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div onclick="closeCourseModal()" class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4 sm:p-6">
+            <div class="relative w-full max-w-3xl rounded-3xl bg-cyber-900 shadow-2xl border border-white/15 overflow-hidden z-10">
+                
+                <div id="modal-header-bg" class="p-6 sm:p-8 text-white relative">
+                    <button onclick="closeCourseModal()" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span id="modal-category" class="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs font-extrabold uppercase"></span>
+                        <span id="modal-level" class="px-3 py-1 rounded-full bg-white/15 text-xs font-bold"></span>
+                        <span id="modal-rating" class="px-3 py-1 rounded-full bg-black/40 text-acid-300 text-xs font-bold"></span>
+                    </div>
+
+                    <h3 id="modal-title" class="font-display text-xl sm:text-3xl font-black leading-tight mb-2"></h3>
+                    <p id="modal-subtitle" class="text-white/90 text-sm"></p>
+                </div>
+
+                <div class="p-6 sm:p-8 max-h-[68vh] overflow-y-auto space-y-6">
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-black/50 p-4 rounded-2xl border border-white/10">
+                        <div>
+                            <div class="text-[11px] text-zinc-400">Старт первых денег</div>
+                            <div id="modal-duration" class="font-extrabold text-acid-400 text-sm mt-0.5"></div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-zinc-400">Внутри ЛК</div>
+                            <div id="modal-lessons" class="font-bold text-white text-sm mt-0.5"></div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-zinc-400">Вложения на старте</div>
+                            <div class="font-bold text-white text-sm mt-0.5">Можно с 0 ₽</div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-zinc-400">Доступ</div>
+                            <div class="font-bold text-white text-sm mt-0.5">Навсегда + Чат</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-display text-sm uppercase font-black text-white mb-2">В чем суть связки</h4>
+                        <p id="modal-description" class="text-zinc-300 text-sm leading-relaxed"></p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-display text-sm uppercase font-black text-white mb-3">Что заберешь внутри ЛК</h4>
+                        <div id="modal-skills" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-display text-sm uppercase font-black text-white mb-3">Модули обучения</h4>
+                        <div id="modal-syllabus" class="space-y-2.5"></div>
+                    </div>
+
+                    <div class="bg-black/50 p-4 rounded-2xl border border-white/10 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-acid-400 text-black font-black flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-zinc-400">Куратор направления</div>
+                            <div id="modal-instructor" class="font-bold text-white text-sm"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="px-6 py-4 sm:px-8 sm:py-5 bg-black/80 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <span id="modal-old-price" class="text-xs text-zinc-500 line-through block"></span>
+                        <span id="modal-price" class="font-display text-2xl font-black text-acid-400"></span>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <button id="modal-add-btn" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-bold text-xs sm:text-sm transition-all">
+                            В корзину
+                        </button>
+                        <button id="modal-buy-now-btn" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs sm:text-sm uppercase transition-all">
+                            Купить в 1 клик
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- БОКОВАЯ КОРЗИНА И ПЕРЕХОД К ОПЛАТЕ                                      -->
+    <!-- ======================================================================= -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleCart(false)" class="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-cyber-900 border-l border-white/15 shadow-2xl flex flex-col justify-between z-10">
+                
+                <div class="p-6 border-b border-white/10 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-bag-shopping text-acid-400 text-xl"></i>
+                        <h3 class="font-display text-lg font-black text-white uppercase">Твой заказ</h3>
+                    </div>
+                    <button onclick="toggleCart(false)" class="w-9 h-9 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                    
+                    <div id="cart-empty" class="text-center py-12">
+                        <div class="w-20 h-20 rounded-3xl bg-zinc-800/80 text-zinc-500 flex items-center justify-center mx-auto mb-4 text-3xl">
+                            <i class="fa-solid fa-basket-shopping"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white mb-1">В корзине пока пусто</h4>
+                        <p class="text-zinc-400 text-xs sm:text-sm mb-6">
+                            Добавь связку по РКО, трафику или дропшиппингу, чтобы открыть доступ в ЛК.
+                        </p>
+                        <button onclick="toggleCart(false)" class="px-6 py-3 rounded-xl bg-acid-400 text-black text-xs font-extrabold uppercase">
+                            Смотреть связки
+                        </button>
+                    </div>
+
+                    <div id="cart-filled" class="hidden space-y-6">
+                        <div id="cart-items-list" class="space-y-3"></div>
+
+                        <!-- Промокод -->
+                        <div class="bg-black/50 p-4 rounded-2xl border border-white/10">
+                            <label class="block text-[11px] font-extrabold text-zinc-400 uppercase tracking-wider mb-2">
+                                Промокод на скидку -20% (введи ANTI20)
+                            </label>
+                            <div class="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    id="promo-input" 
+                                    placeholder="Промокод" 
+                                    class="flex-1 px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white uppercase focus:outline-none focus:border-acid-400"
+                                >
+                                <button onclick="applyPromoCode()" class="px-4 py-2.5 rounded-xl bg-acid-400 hover:bg-acid-300 text-black text-xs font-extrabold uppercase transition-colors">
+                                    ОК
+                                </button>
+                            </div>
+                            <p id="promo-status" class="text-xs mt-2 hidden"></p>
+                        </div>
+
+                        <!-- Итог -->
+                        <div class="bg-black/50 p-4 rounded-2xl border border-white/10 space-y-2 text-sm">
+                            <div class="flex justify-between text-zinc-400">
+                                <span>Выбрано курсов:</span>
+                                <span id="summary-count" class="font-bold text-white">0</span>
+                            </div>
+                            <div class="flex justify-between text-zinc-400">
+                                <span>Сумма:</span>
+                                <span id="summary-subtotal" class="font-bold text-white">0 ₽</span>
+                            </div>
+                            <div id="summary-discount-row" class="hidden justify-between text-acid-400 font-bold">
+                                <span>Скидка ANTI20 (-20%):</span>
+                                <span id="summary-discount">-0 ₽</span>
+                            </div>
+                            <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+                                <span class="font-bold text-white">К оплате:</span>
+                                <span id="summary-total" class="font-display text-2xl font-black text-acid-400">0 ₽</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openPaymentGateway()" class="w-full py-4 rounded-2xl bg-acid-400 hover:bg-acid-300 text-black font-display font-black text-xs sm:text-sm uppercase tracking-wider acid-glow transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>Перейти к оплате (СБП / Карта)</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- МОДУЛЬ ОПЛАТЫ (ШЛЮЗ ИП: СБП QR, КАРТА РФ, USDT)                          -->
+    <!-- ======================================================================= -->
+    <div id="payment-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto">
+        <div onclick="closePaymentGateway()" class="fixed inset-0 bg-black/85 backdrop-blur-md"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative w-full max-w-lg rounded-3xl bg-cyber-900 border border-acid-400/40 shadow-2xl overflow-hidden z-10">
+                
+                <!-- Шапка кассы -->
+                <div class="p-6 bg-black/70 border-b border-white/10 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-acid-400 animate-pulse"></span>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-acid-400">Защищенная касса AntiReverse Pay</span>
+                        </div>
+                        <div id="pay-modal-merchant" class="text-xs text-zinc-400 mt-0.5 font-mono"></div>
+                    </div>
+                    <button onclick="closePaymentGateway()" class="w-9 h-9 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Контент кассы -->
+                <div id="payment-form-step" class="p-6 space-y-5">
+                    
+                    <!-- Сумма к оплате -->
+                    <div class="bg-black/50 p-4 rounded-2xl border border-white/10 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-zinc-400">Итого к оплате:</div>
+                            <div id="pay-modal-amount" class="font-display text-2xl font-black text-white">0 ₽</div>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold">
+                                <i class="fa-solid fa-bolt mr-1"></i>Автовыдача в ЛК
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Контакты покупателя для чека и ЛК -->
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Твой Ник / Имя *</label>
+                            <input type="text" id="pay-client-name" required placeholder="Например: Даня" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white focus:outline-none focus:border-acid-400">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Твой Telegram (@ник) *</label>
+                            <input type="text" id="pay-client-tg" required placeholder="@username" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white focus:outline-none focus:border-acid-400">
+                        </div>
+                    </div>
+
+                    <!-- Выбор способа оплаты -->
+                    <div>
+                        <label class="block text-[11px] font-bold text-zinc-400 uppercase mb-2">Выбери способ оплаты:</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" onclick="selectPaymentMethod('sbp')" id="pm-btn-sbp" class="pm-btn p-3 rounded-xl border border-acid-400 bg-acid-400/15 text-white text-xs font-extrabold flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-qrcode text-acid-400 text-lg"></i>
+                                <span>СБП (QR)</span>
+                            </button>
+                            <button type="button" onclick="selectPaymentMethod('card')" id="pm-btn-card" class="pm-btn p-3 rounded-xl border border-white/10 bg-zinc-900 text-zinc-300 text-xs font-bold flex flex-col items-center gap-1">
+                                <i class="fa-regular fa-credit-card text-violet-400 text-lg"></i>
+                                <span>Карта РФ</span>
+                            </button>
+                            <button type="button" onclick="selectPaymentMethod('crypto')" id="pm-btn-crypto" class="pm-btn p-3 rounded-xl border border-white/10 bg-zinc-900 text-zinc-300 text-xs font-bold flex flex-col items-center gap-1">
+                                <i class="fa-solid fa-coins text-emerald-400 text-lg"></i>
+                                <span>USDT / TON</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Блок 1: СБП QR -->
+                    <div id="pm-panel-sbp" class="bg-black/60 p-4 rounded-2xl border border-white/10 flex items-center gap-4">
+                        <div class="w-24 h-24 rounded-xl bg-white p-2 shrink-0 flex items-center justify-center">
+                            <!-- Векторный QR-код СБП -->
+                            <svg viewBox="0 0 100 100" class="w-full h-full text-black fill-current">
+                                <path d="M10,10 h25 v25 h-25 z M15,15 v15 h15 v-15 z M20,20 h5 v5 h-5 z M65,10 h25 v25 h-25 z M70,15 v15 h15 v-15 z M75,20 h5 v5 h-5 z M10,65 h25 v25 h-25 z M15,70 v15 h15 v-15 z M20,75 h5 v5 h-5 z M45,10 h10 v10 h-10 z M45,30 h10 v15 h-10 z M10,45 h20 v10 h-20 z M40,50 h20 v10 h-20 z M70,45 h20 v10 h-20 z M45,70 h15 v20 h-15 z M70,65 h10 v10 h-10 z M80,75 h10 v15 h-10 z"/>
+                            </svg>
+                        </div>
+                        <div class="text-xs space-y-1.5">
+                            <div class="font-extrabold text-white">Мгновенная оплата через СБП</div>
+                            <p class="text-zinc-400 leading-relaxed">Отсканируй QR-код камерой или нажми кнопку ниже для подтверждения платежа на расчетный счет ИП.</p>
+                            <div id="pay-sbp-requisites" class="text-[11px] text-acid-400 font-mono"></div>
+                        </div>
+                    </div>
+
+                    <!-- Блок 2: Банковская карта -->
+                    <div id="pm-panel-card" class="hidden bg-black/60 p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div>
+                            <label class="block text-[11px] text-zinc-400 mb-1">Номер карты (МИР / Visa / Mastercard)</label>
+                            <input type="text" maxlength="19" placeholder="2200 •••• •••• ••••" class="w-full px-3.5 py-2 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white font-mono focus:outline-none focus:border-acid-400">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" maxlength="5" placeholder="ММ / ГГ" class="px-3.5 py-2 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white font-mono focus:outline-none focus:border-acid-400">
+                            <input type="password" maxlength="3" placeholder="CVC" class="px-3.5 py-2 rounded-xl bg-zinc-900 border border-white/15 text-sm text-white font-mono focus:outline-none focus:border-acid-400">
+                        </div>
+                    </div>
+
+                    <!-- Блок 3: Крипта -->
+                    <div id="pm-panel-crypto" class="hidden bg-black/60 p-4 rounded-2xl border border-white/10 space-y-2 text-xs">
+                        <div class="font-bold text-white">Перевод USDT (TRC-20 / TON):</div>
+                        <div id="pay-crypto-wallet" class="p-2.5 rounded-xl bg-zinc-900 font-mono text-acid-400 break-all border border-white/10"></div>
+                        <p class="text-zinc-400">После перевода нажми кнопку подтверждения ниже — система автоматически проверит хэш транзакции.</p>
+                    </div>
+
+                    <button onclick="processIpPayment()" id="confirm-pay-btn" class="w-full py-4 rounded-2xl bg-acid-400 hover:bg-acid-300 text-black font-display font-black text-xs sm:text-sm uppercase tracking-wider acid-glow transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>Подтвердить оплату и открыть курсы в ЛК</span>
+                    </button>
+                </div>
+
+                <!-- Шаг успешной оплаты -->
+                <div id="payment-success-step" class="hidden p-8 text-center space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-acid-400 text-black flex items-center justify-center mx-auto text-3xl shadow-lg acid-glow">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="font-display text-2xl font-black text-white uppercase">Оплата прошла успешно!</h3>
+                    <p id="pay-success-details" class="text-zinc-300 text-sm leading-relaxed"></p>
+                    <div class="pt-2">
+                        <button onclick="finishPaymentAndGoToLK()" class="w-full py-4 rounded-2xl bg-acid-400 hover:bg-acid-300 text-black font-display font-black text-xs sm:text-sm uppercase tracking-wider acid-glow">
+                            Войти в Личный Кабинет к урокам →
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- JAVASCRIPT: КОНФИГУРАЦИЯ ИП, БАЗА КУРСОВ И ЛОГИКА ЛИЧНОГО КАБИНЕТА      -->
+    <!-- ======================================================================= -->
+    <script>
+        /**
+         * =====================================================================
+         * БЛОК НАСТРОЙКИ ОПЛАТЫ ПОД ВАШЕ ИП (МЕНЯЕТСЯ ЗА 1 МИНУТУ)
+         * =====================================================================
+         * Замените поля ниже на реквизиты своего ИП и ссылку эквайринга
+         * (Тинькофф Касса, ЮKassa, Robokassa, Точка или СБП).
+         */
+        const PAYMENT_CONFIG = {
+            ipName: "ИП Иванов Артём Сергеевич",       // Ваше ФИО ИП
+            inn: "772485910421",                      // Ваш ИНН
+            ogrnip: "325774600192841",                // Ваш ОГРНИП
+            bankName: "АО «ТБанк» / СБП Бизнес",      // Банк получателя
+            sbpPhoneOrId: "Мерчант СБП #AR-9402",     // Идентификатор СБП
+            usdtWallet: "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE", // Кошелек для крипто-оплат
+            externalPaymentUrl: ""                    // Если вставить ссылку эквайринга, откроет ее
+        };
+
+        // Актуальная база курсов AntiReverseSchool (4 000 – 9 000 ₽)
+        const coursesData = [
+            {
+                id: 100,
+                title: "База Хаслера: Быстрый старт с 0 ₽ (Бонус в ЛК)",
+                subtitle: "Вводный практический курс, который уже открыт в твоем Личном кабинете бесплатно",
+                category: "РКО и Абуз",
+                level: "Бесплатно в ЛК",
+                duration: "Сразу сегодня",
+                lessons: "4 видеоурока • Схемы",
+                rating: 5.0,
+                reviewsCount: 2150,
+                price: 0,
+                oldPrice: 3990,
+                badge: "Открыто в ЛК",
+                gradient: "from-zinc-800 via-zinc-900 to-black",
+                icon: "fa-solid fa-unlock-keyhole",
+                instructor: "Команда основателей AntiReverseSchool",
+                description: "Стартовый модуль для знакомства с нашей платформой. Разбираем, как выбрать нишу в 14–20 лет, как не слить первые деньги и как подготовить аккаунты и карты для приема профита.",
+                skills: ["Выбор связки", "Безопасность карт", "База партнерских сетей", "Тайм-менеджмент"],
+                syllabus: [
+                    { title: "Урок 1. Карта ниш 2026: Где лежат легкие деньги", topics: "Разбор РКО, УБТ-трафика и дропшиппинга. Что дает выхлоп в первые 48 часов." },
+                    { title: "Урок 2. Подготовка инструментов: ТГ, прокси и партнерки", topics: "Регистрация в закрытых CPA-сетях без холда и модерации." },
+                    { title: "Урок 3. Первые 5 000 ₽ на микро-связке", topics: "Пошаговый алгоритм действий, который можно выполнить прямо с телефона." }
+                ],
+                isFreeStarter: true
+            },
+            {
+                id: 101,
+                title: "РКО & Фин-Офферы: Быстрый кэш на банках",
+                subtitle: "Заработок от 3 000 до 18 000 ₽ за каждого клиента на открытие ИП, РКО и карт",
+                category: "РКО и Абуз",
+                level: "Без вложений",
+                duration: "Профит за 2 дня",
+                lessons: "18 уроков • Таблицы офферов",
+                rating: 4.99,
+                reviewsCount: 940,
+                price: 4490,
+                oldPrice: 8900,
+                badge: "Хит №1 по кэшу",
+                gradient: "from-lime-500/30 via-emerald-900/60 to-cyber-900",
+                icon: "fa-solid fa-building-columns",
+                instructor: "Кирилл @rko_king — Топ-агент с оборотом 1.4 млн ₽/мес на фин-офферах",
+                description: "Банки платят огромные комиссии за каждого нового предпринимателя (ИП/ООО), который открывает у них расчетный счет (РКО), и за выдачу карт. Мы даем прямые выходы на партнерки с повышенными ставками и готовые связки поиска селлеров WB/Ozon и фрилансеров.",
+                skills: ["Выплаты до 18 000 ₽ за лид", "Парсинг новых ИП", "Скрипты закрытия в ТГ", "Мотивированный трафик", "Масштабирование"],
+                syllabus: [
+                    { title: "Модуль 1. Подключение к закрытым банковским партнеркам", topics: "Как получить максимальные ставки по ТБанк, Альфа, Точка и Сбер без статуса юрлица." },
+                    { title: "Модуль 2. Бесплатный поиск клиентов на РКО (3 рабочие схемы)", topics: "Автоматический парсинг тех, кто только что подал заявку на ИП или выходит на маркетплейсы." },
+                    { title: "Модуль 3. Скрипты переписки с конверсией 65%", topics: "Готовые шаблоны диалогов в Telegram и WhatsApp: как предлагать помощь, чтобы клиент соглашался сам." },
+                    { title: "Модуль 4. Команда и масштабирование до 200к+/мес", topics: "Как нанять школьников и студентов на поиск лидов за процент и забирать пассивную маржу." }
+                ]
+            },
+            {
+                id: 102,
+                title: "УБТ-Трафик Мафия: Reels, Shorts & TikTok",
+                subtitle: "Условно-бесплатный трафик на миллионы просмотров без вложений в рекламу",
+                category: "Трафик и УБТ",
+                level: "С телефона / ПК",
+                duration: "Старт за 24 часа",
+                lessons: "24 урока • Пак исходников",
+                rating: 4.98,
+                reviewsCount: 1180,
+                price: 4990,
+                oldPrice: 9500,
+                badge: "Топ для 14–20 лет",
+                gradient: "from-violet-600/40 via-fuchsia-900/50 to-cyber-900",
+                icon: "fa-solid fa-mobile-screen-button",
+                instructor: "Макс @ubt_mafia — 45 млн просмотров в месяц на сетке аккаунтов",
+                description: "Учись заливать короткие ролики (нарезки стримеров, AI-истории, люкс-эстетика, темки) так, чтобы алгоритмы сами давали сотни тысяч просмотров. Переливай бесплатный трафик в Telegram-ботов, казино/беттинг/крипто или продавай рекламу.",
+                skills: ["Прогрев аккаунтов", "Обход теневого бана", "Уникализация через софт", "CapCut & AI-монтаж", "Монетизация через CPA"],
+                syllabus: [
+                    { title: "Модуль 1. Подготовка сим-карт, прокси и прогрев алгоритмов", topics: "Как настроить телефон, чтобы каждый ролик залетал в рекомендации на РФ и бурж (Tier-1)." },
+                    { title: "Модуль 2. Конвейер вирусных роликов за 15 минут", topics: "Триггерные хуки первых 2 секунд, субтитры, удержание внимания 120% и пакетная уникализация." },
+                    { title: "Модуль 3. Схемы перелива трафика и монетизация", topics: "Байты на комментарии, переходник в био, подключение офферов с оплатой за подписку (до 120 ₽ за подписчика)." }
+                ]
+            },
+            {
+                id: 103,
+                title: "Дропшиппинг 2.0: Товарка без закупа и склада",
+                subtitle: "Продавай трендовый шмот, кроссовки и гаджеты, получая маржу до 3 500 ₽ с заказа",
+                category: "Дропшиппинг",
+                level: "Без своего склада",
+                duration: "Первая продажа за 3 дня",
+                lessons: "21 урок • 40+ поставщиков",
+                rating: 4.96,
+                reviewsCount: 830,
+                price: 6490,
+                oldPrice: 11900,
+                badge: "База поставщиков",
+                gradient: "from-emerald-600/40 via-teal-900/50 to-cyber-900",
+                icon: "fa-solid fa-boxes-stacked",
+                instructor: "Тимур @drop_boss — Владелец сети ТГ-шопов",
+                description: "Тебе не нужны деньги на закуп товара! Мы даем закрытую базу проверенных дроп-поставщиков в РФ (Москва/СПб) с живыми фото и видео. Ты выставляешь товар в свой ТГ-шоп или Авито, берешь оплату с клиента, а поставщик сам отправляет посылку.",
+                skills: ["Закрытая база 40+ оптовиков", "Упаковка Telegram-шопа", "Массовый постинг Авито", "Автоворонка продаж", "Скрипты дожима"],
+                syllabus: [
+                    { title: "Модуль 1. Доступ к проверенным дроп-поставщикам", topics: "Кроссовки, стритвир (Stussy, Bape, Carhartt), часы, наушники и парфюм с отправкой в день заказа." },
+                    { title: "Модуль 2. Запуск продающего магазина в Telegram за 1 вечер", topics: "Оформление, живые кружочки, отзывы, подключение бота-каталога." },
+                    { title: "Модуль 3. Трафик на товарку: Авито + Reels + Посевы", topics: "Как получать по 10–30 горячих диалогов в день и закрывать каждого третьего в оплату." }
+                ]
+            },
+            {
+                id: 104,
+                title: "Арбитраж Трафика: Telegram Ads & Посевы",
+                subtitle: "Закуп рекламы с ROI 120%+, связки под ключ и залив на высокодоходные офферы",
+                category: "Трафик и УБТ",
+                level: "Для быстрого роста",
+                duration: "Запуск за 4 дня",
+                lessons: "28 уроков • Готовые креативы",
+                rating: 4.97,
+                reviewsCount: 620,
+                price: 8490,
+                oldPrice: 14900,
+                badge: "Высокий чек",
+                gradient: "from-amber-500/35 via-orange-900/50 to-cyber-900",
+                icon: "fa-solid fa-rocket",
+                instructor: "Влад @arb_vlad — Арбитражник с профитом 600к+/мес",
+                description: "Полное руководство по платному и гибридному арбитражу трафика в Telegram. Научишься находить каналы без ботов через Telemetr/TGStat, писать разрывные рекламные посты и окупать вложения в рекламу в 2–3 раза уже в первую неделю.",
+                skills: ["Закуп рекламы в ТГ", "TGStat & Telemetr", "Высококонверсионные крео", "Связки с ROI 120%+", "Работа с заказчиками"],
+                syllabus: [
+                    { title: "Модуль 1. Выбор жирного оффера и просчет экономики", topics: "Финтех, инфобиз, крипто-проекты и E-com: где платят больше всего за лид." },
+                    { title: "Модуль 2. Создание убойных рекламных креативов", topics: "Формулы продающих постов, кликбейтные заходы без бана и тестирование связок на 1 000 ₽." },
+                    { title: "Модуль 3. Профессия закупщик трафика (доход без своего бюджета)", topics: "Как брать рекламные бюджеты у владельцев каналов за 15–20% комиссии." }
+                ]
+            },
+            {
+                id: 105,
+                title: "Ресейл Хайп-Шмота и Техники с Poizon / 1688",
+                subtitle: "Заказывай оригинал в 2 раза дешевле РФ через Китай и перепродавай с наценкой",
+                category: "Дропшиппинг",
+                level: "С нуля",
+                duration: "Быстрый старт",
+                lessons: "16 уроков • Контакты карго",
+                rating: 4.95,
+                reviewsCount: 540,
+                price: 5490,
+                oldPrice: 9900,
+                badge: "Секретное карго",
+                gradient: "from-cyan-500/35 via-blue-900/50 to-cyber-900",
+                icon: "fa-solid fa-plane-arrival",
+                instructor: "Никита @poizon_dealer — Основатель сервиса выкупа",
+                description: "Пошаговый мануал по прямому выкупу с китайских площадок Poizon (Dewu), 1688 и Taobao без посредников. Ты сможешь как возить вещи на перепродажу с маржой 40–80%, так и зарабатывать на комиссии за выкуп для клиентов по предоплате.",
+                skills: ["Регистрация Alipay", "Пополнение юаней без комиссии", "Прямое Карго до Москвы за 9 дней", "Бизнес на выкупе под заказ"],
+                syllabus: [
+                    { title: "Модуль 1. Верификация Alipay и покупка юаней по биржевому курсу", topics: "Обход лимитов и блокировок для граждан РФ и СНГ." },
+                    { title: "Модуль 2. Прямые склады и дешевое Карго", topics: "Контакты проверенных логистов с тарифом от 3.5$ за кг и страховкой груза." },
+                    { title: "Модуль 3. Сервис доставки с Poizon под заказ", topics: "Как брать 1 500 – 2 500 ₽ комиссии с каждого заказа чужими деньгами." }
+                ]
+            },
+            {
+                id: 106,
+                title: "AI-Ферма & Монетизация Нейросетей 2026",
+                subtitle: "Заработок на AI-инфлюенсерах, авто-каналах и генерации контента под ключ",
+                category: "Крипта и AI",
+                level: "Новинка",
+                duration: "Профит за 3 дня",
+                lessons: "19 уроков • Промты и Боты",
+                rating: 4.97,
+                reviewsCount: 710,
+                price: 5990,
+                oldPrice: 10500,
+                badge: "Тренд 2026",
+                gradient: "from-fuchsia-500/35 via-purple-900/50 to-cyber-900",
+                icon: "fa-solid fa-wand-magic-sparkles",
+                instructor: "Артем @ai_cash — Создатель сетки AI-моделей",
+                description: "Нейросети делают 90% рутины за тебя. В курсе мы разбираем 4 конкретные схемы монетизации: создание виртуальных AI-моделей для соцсетей, автоматические контент-фермы на бурж YouTube/TikTok с монетизацией и продажа AI-креативов бизнесу.",
+                skills: ["Генерация AI-моделей", "Клонирование голоса и LipSync", "Автоматизация через Make/Ботов", "Бурж монетизация YouTube/TikTok"],
+                syllabus: [
+                    { title: "Модуль 1. Стек бесплатных и безлимитных нейросетей", topics: "Где генерировать фото, видео и озвучку студийного качества без дорогих подписок." },
+                    { title: "Модуль 2. Создание и монетизация AI-инфлюенсера", topics: "Удержание одного лица на всех фото/видео и продажа подписок в закрытый фан-клуб." },
+                    { title: "Модуль 3. Продажа нейро-услуг селлерам и блогерам", topics: "Инфографика, AI-фотосессии товаров для WB за 15 минут с чеком 5 000 ₽." }
+                ]
+            },
+            {
+                id: 107,
+                title: "Крипто-Хасл: P2P, Ретродропы и Мемкоины",
+                subtitle: "Ончейн-снайпинг мемкоинов на Solana/TON, абуз аирдропов и веб3-темки",
+                category: "Крипта и AI",
+                level: "От 0 до Профи",
+                duration: "Постоянные связки",
+                lessons: "26 уроков • Сигнальный бот",
+                rating: 4.96,
+                reviewsCount: 890,
+                price: 8990,
+                oldPrice: 15900,
+                badge: "X10 Потенциал",
+                gradient: "from-indigo-500/40 via-blue-950 to-cyber-900",
+                icon: "fa-brands fa-bitcoin",
+                instructor: "Дэн @crypto_reverse — Web3-ресёрчер и основатель пула",
+                description: "Никаких скучных графиков с завода. Учим находить смарт-кошельки инсайдеров в сети Solana и TON, заходить в мемкоины на старте, а также запускать фермы из 20–50 аккаунтов под жирные ретродропы и тестнеты без вложений.",
+                skills: ["Антидетект и мультиаккинг", "Снайпинг мемкоинов", "Копитрейдинг смарт-мани", "Тестнеты без вложений", "Безопасный вывод в рубли"],
+                syllabus: [
+                    { title: "Модуль 1. База Web3, кошельки и безопасный обнал", topics: "Как покупать и выводить USDT на карту РФ без блокировок по 115-ФЗ." },
+                    { title: "Модуль 2. Ферма ретродропов и промки бирж (Bybit, OKX, BingX)", topics: "Настройка антидетект-браузера и получение гарантированных выплат по 50–300$ с промок." },
+                    { title: "Модуль 3. Охота на мемкоины и отслеживание китов", topics: "Работа с DexScreener, торговыми ботами и защита от скам-токенов (Honeypot)." }
+                ]
+            },
+            {
+                id: 108,
+                title: "Авитолог + Лидген: Продажа заявок за %",
+                subtitle: "Настраивай поток звонков для стройки, ремонта и товарки, забирая от 15 000 ₽ с клиента",
+                category: "Трафик и УБТ",
+                level: "Легкий вход",
+                duration: "Окупаемость 2 дня",
+                lessons: "15 уроков • Шаблоны таблиц",
+                rating: 4.94,
+                reviewsCount: 470,
+                price: 3990,
+                oldPrice: 7500,
+                badge: "Самый доступный",
+                gradient: "from-rose-500/35 via-red-950/50 to-cyber-900",
+                icon: "fa-solid fa-headset",
+                instructor: "Роман @avito_shark — Владелец агентства лидогенерации",
+                description: "На Авито сидят миллионы людей с деньгами, а предприниматели не умеют правильно постить объявления. Ты научишься делать масспостинг и либо продавать готовые заявки (лиды) за 500–2000 ₽/штука, либо вести аккаунты под ключ за 20 000 ₽/мес.",
+                skills: ["Масспостинг без блокировок", "SEO-ключи Авито", "Автозагрузка", "Продажа лидов за %", "Поиск заказчиков за 1 вечер"],
+                syllabus: [
+                    { title: "Модуль 1. Алгоритмы Авито 2026 и обход банов", topics: "Как выкладывать десятки объявлений в одной нише и занимать весь ТОП выдачи." },
+                    { title: "Модуль 2. Схема Лидгена без своего ИП и бюджета", topics: "Договариваемся с бригадой или магазином на процент с каждого приведенного клиента." },
+                    { title: "Модуль 3. Выход на 100 000 ₽/мес на ведении 5 клиентов", topics: "Скрипт закрытия заказчика на абонентскую плату." }
+                ]
+            }
+        ];
+
+        // Состояние пользователя и корзины (сохраняется в localStorage)
+        let activeCategory = 'Все';
+        let searchQuery = '';
+        let currentSort = 'popular';
+        let cart = [];
+        let isPromoApplied = false;
+        let selectedPayMethod = 'sbp';
+
+        // Данные Личного Кабинета
+        let userState = {
+            name: "Хаслер #1042",
+            tg: "@antireverse_student",
+            xp: 250,
+            purchasedCourses: [100], // Курс 100 открыт бесплатно по умолчанию!
+            completedLessons: ["100-0"],
+            orders: [
+                {
+                    id: "AR-7701",
+                    date: "Сегодня",
+                    title: "Бонус при регистрации: База Хаслера",
+                    amount: 0,
+                    method: "Подарок платформы"
+                }
+            ]
+        };
+
+        let activePlayerCourseId = 100;
+        let activePlayerLessonIdx = 0;
+        let isVideoPlaying = false;
+        let playbackSpeed = 1.0;
+
+        // Загрузка сохраненных данных из localStorage
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('antireverse_user_v1');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    userState = { ...userState, ...parsed };
+                    if (!userState.purchasedCourses.includes(100)) {
+                        userState.purchasedCourses.unshift(100);
+                    }
+                }
+            } catch (e) {
+                console.warn('Не удалось прочитать сохраненный профиль', e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('antireverse_user_v1', JSON.stringify(userState));
+            } catch (e) {
+                console.warn('Не удалось сохранить профиль', e);
+            }
+        }
+
+        function formatPrice(num) {
+            if (num === 0) return "БЕСПЛАТНО";
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+        }
+
+        // Переключение между главным лендингом и Личным Кабинетом (ЛК)
+        function switchMainView(viewName) {
+            const landing = document.getElementById('landing-view');
+            const lk = document.getElementById('lk-view');
+            const navLabel = document.getElementById('nav-lk-label');
+
+            if (viewName === 'lk') {
+                landing.classList.add('hidden');
+                lk.classList.remove('hidden');
+                navLabel.textContent = "В каталог";
+                document.getElementById('nav-lk-btn').onclick = () => switchMainView('landing');
+                renderPersonalCabinet();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                lk.classList.add('hidden');
+                landing.classList.remove('hidden');
+                navLabel.textContent = "Личный кабинет";
+                document.getElementById('nav-lk-btn').onclick = () => switchMainView('lk');
+            }
+        }
+
+        // Переключение вкладок внутри ЛК
+        function switchLkTab(tabId) {
+            const tabs = ['courses', 'orders', 'referral', 'profile'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`lktab-${t}`);
+                const btn = document.getElementById(`lktab-btn-${t}`);
+                if (t === tabId) {
+                    content.classList.remove('hidden');
+                    btn.className = "lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-extrabold bg-acid-400 text-black whitespace-nowrap transition-all";
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = "lk-tab-btn px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10 whitespace-nowrap transition-all";
+                }
+            });
+        }
+
+        // Отрисовка всего содержимого Личного Кабинета
+        function renderPersonalCabinet() {
+            // Шапка профиля
+            document.getElementById('lk-user-name').textContent = userState.name;
+            document.getElementById('lk-user-tg').textContent = `${userState.tg} • Статус: Активен`;
+            document.getElementById('lk-avatar-initials').textContent = userState.name.slice(0, 2).toUpperCase();
+            document.getElementById('lk-stat-courses').textContent = `${userState.purchasedCourses.length} шт.`;
+            document.getElementById('lk-stat-xp').textContent = `${userState.xp} XP`;
+            document.getElementById('lk-courses-count').textContent = userState.purchasedCourses.length;
+
+            const rankEl = document.getElementById('lk-user-rank');
+            if (userState.xp >= 500) {
+                rankEl.textContent = "LVL 4 • ТОП ХАСЛЕР";
+            } else if (userState.xp >= 350) {
+                rankEl.textContent = "LVL 3 • АРБИТРАЖНИК";
+            }
+
+            // Поля настроек профиля
+            document.getElementById('profile-name-input').value = userState.name;
+            document.getElementById('profile-tg-input').value = userState.tg;
+
+            // Мои курсы в ЛК
+            const myGrid = document.getElementById('lk-my-courses-grid');
+            const myCourses = coursesData.filter(c => userState.purchasedCourses.includes(c.id));
+
+            myGrid.innerHTML = myCourses.map(course => {
+                const isSelected = course.id === activePlayerCourseId;
+                const totalLessons = course.syllabus.length;
+                let doneCount = 0;
+                course.syllabus.forEach((_, idx) => {
+                    if (userState.completedLessons.includes(`${course.id}-${idx}`)) doneCount++;
+                });
+                const pct = Math.round((doneCount / totalLessons) * 100);
+
+                return `
+                <div onclick="selectCourseInPlayer(${course.id})" class="cursor-pointer rounded-3xl p-5 border transition-all ${
+                    isSelected 
+                    ? 'bg-zinc-900 border-acid-400 shadow-lg acid-glow' 
+                    : 'bg-cyber-900 border-white/10 hover:border-white/30'
+                }">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-acid-400/15 text-acid-300 text-[11px] font-extrabold uppercase">
+                            ${course.category}
+                        </span>
+                        <span class="text-xs font-bold text-zinc-400">${pct}% пройдено</span>
+                    </div>
+                    <h4 class="font-display text-base font-black text-white mb-2 line-clamp-1">${course.title}</h4>
+                    <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mb-4">
+                        <div class="h-full bg-acid-400 transition-all" style="width: ${pct}%"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-zinc-400">${doneCount}/${totalLessons} модулей</span>
+                        <span class="font-extrabold ${isSelected ? 'text-acid-400' : 'text-white'}">
+                            ${isSelected ? '▶ Сейчас открыт' : 'Открыть уроки →'}
+                        </span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Рендер активного курса в плеере
+            renderCoursePlayer();
+
+            // Рендер истории чеков
+            const ordersContainer = document.getElementById('lk-orders-list');
+            ordersContainer.innerHTML = userState.orders.map(ord => `
+                <div class="p-4 rounded-2xl bg-black/50 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-mono text-acid-400 font-bold">#${ord.id}</span>
+                            <span class="text-xs text-zinc-500">• ${ord.date}</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Оплачено</span>
+                        </div>
+                        <div class="font-bold text-white text-sm mt-1">${ord.title}</div>
+                        <div class="text-xs text-zinc-400">Получатель: ${PAYMENT_CONFIG.ipName} (ИНН ${PAYMENT_CONFIG.inn}) • ${ord.method}</div>
+                    </div>
+                    <div class="text-left sm:text-right">
+                        <div class="font-display text-base font-black text-white">${formatPrice(ord.amount)}</div>
+                        <button onclick="showToast('Электронный чек ФНС скачан', 'success')" class="text-xs text-acid-400 underline font-semibold mt-0.5">
+                            Скачать чек
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectCourseInPlayer(courseId) {
+            activePlayerCourseId = courseId;
+            activePlayerLessonIdx = 0;
+            renderPersonalCabinet();
+            document.getElementById('lk-course-player').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderCoursePlayer() {
+            const course = coursesData.find(c => c.id === activePlayerCourseId) || coursesData[0];
+            const lesson = course.syllabus[activePlayerLessonIdx] || course.syllabus[0];
+
+            document.getElementById('player-course-title').textContent = course.title;
+            document.getElementById('player-lesson-title').textContent = lesson.title;
+            document.getElementById('player-lesson-notes').textContent = lesson.topics;
+
+            const key = `${course.id}-${activePlayerLessonIdx}`;
+            const isDone = userState.completedLessons.includes(key);
+            const completeBtn = document.getElementById('player-complete-btn');
+            if (isDone) {
+                completeBtn.className = "px-4 py-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold text-xs flex items-center gap-2";
+                completeBtn.innerHTML = `<i class="fa-solid fa-check"></i><span>Урок уже зачтен</span>`;
+            } else {
+                completeBtn.className = "px-4 py-2.5 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs transition-all flex items-center gap-2";
+                completeBtn.innerHTML = `<i class="fa-solid fa-check-double"></i><span>Урок пройден (+50 XP)</span>`;
+            }
+
+            // Список модулей справа
+            const listEl = document.getElementById('player-lessons-list');
+            listEl.innerHTML = course.syllabus.map((mod, idx) => {
+                const modDone = userState.completedLessons.includes(`${course.id}-${idx}`);
+                const isCurrent = idx === activePlayerLessonIdx;
+                return `
+                <button onclick="switchLessonInPlayer(${idx})" class="w-full text-left p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
+                    isCurrent 
+                    ? 'bg-acid-400/15 border-acid-400 text-white' 
+                    : 'bg-zinc-900/80 border-white/10 text-zinc-300 hover:bg-zinc-800'
+                }">
+                    <div class="text-xs font-bold leading-snug">${mod.title}</div>
+                    <span class="shrink-0 mt-0.5 text-xs ${modDone ? 'text-acid-400' : 'text-zinc-500'}">
+                        <i class="fa-solid ${modDone ? 'fa-circle-check' : 'fa-circle-play'}"></i>
+                    </span>
+                </button>
+                `;
+            }).join('');
+        }
+
+        function switchLessonInPlayer(idx) {
+            activePlayerLessonIdx = idx;
+            isVideoPlaying = false;
+            updateVideoPlayerUI();
+            renderCoursePlayer();
+        }
+
+        function completeCurrentLesson() {
+            const key = `${activePlayerCourseId}-${activePlayerLessonIdx}`;
+            if (!userState.completedLessons.includes(key)) {
+                userState.completedLessons.push(key);
+                userState.xp += 50;
+                saveState();
+                renderPersonalCabinet();
+                showToast('Модуль пройден! Тебе начислено +50 XP', 'success');
+            } else {
+                showToast('Этот урок уже отмечен как пройденный', 'info');
+            }
+        }
+
+        function toggleVideoPlay() {
+            isVideoPlaying = !isVideoPlaying;
+            updateVideoPlayerUI();
+        }
+
+        function updateVideoPlayerUI() {
+            const icon = document.getElementById('video-play-icon');
+            const status = document.getElementById('video-status-text');
+            const bar = document.getElementById('video-progress-bar');
+            if (isVideoPlaying) {
+                icon.className = "fa-solid fa-pause";
+                status.textContent = "Воспроизведение HD-потока... Смотри внимательно и повторяй по шагам";
+                bar.style.width = "68%";
+            } else {
+                icon.className = "fa-solid fa-play ml-1";
+                status.textContent = "На паузе • Нажми Play для продолжения";
+            }
+        }
+
+        function cyclePlaybackSpeed() {
+            const speeds = [1.0, 1.25, 1.5, 2.0];
+            playbackSpeed = speeds[(speeds.indexOf(playbackSpeed) + 1) % speeds.length];
+            document.getElementById('player-speed-badge').textContent = `Скорость: ${playbackSpeed}x`;
+        }
+
+        function seekVideo(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const pct = Math.max(5, Math.min(98, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+            document.getElementById('video-progress-bar').style.width = `${pct}%`;
+        }
+
+        function submitHomework(e) {
+            e.preventDefault();
+            document.getElementById('hw-input').value = '';
+            userState.xp += 25;
+            saveState();
+            renderPersonalCabinet();
+            showToast('Отчет отправлен куратору! Начислено +25 XP', 'success');
+        }
+
+        function saveUserProfile(e) {
+            e.preventDefault();
+            userState.name = document.getElementById('profile-name-input').value.trim() || "Хаслер";
+            userState.tg = document.getElementById('profile-tg-input').value.trim() || "@student";
+            saveState();
+            renderPersonalCabinet();
+            showToast('Профиль успешно обновлен!', 'success');
+        }
+
+        function copyRefLink() {
+            const input = document.getElementById('ref-link-input');
+            input.select();
+            document.execCommand('copy');
+            showToast('Реферальная ссылка скопирована! Делись с друзьями и получай 30%.', 'success');
+        }
+
+        // Отрисовка каталога курсов на главной странице
+        function renderCourses() {
+            const grid = document.getElementById('courses-grid');
+            const emptyState = document.getElementById('empty-catalog');
+
+            // Скрываем бесплатный стартовый курс из платной витрины (он уже в ЛК)
+            let filtered = coursesData.filter(c => !c.isFreeStarter).filter(course => {
+                const matchCat = activeCategory === 'Все' || course.category === activeCategory;
+                const q = searchQuery.trim().toLowerCase();
+                const matchSearch = !q || 
+                    course.title.toLowerCase().includes(q) || 
+                    course.subtitle.toLowerCase().includes(q) ||
+                    course.skills.some(skill => skill.toLowerCase().includes(q));
+                return matchCat && matchSearch;
+            });
+
+            if (currentSort === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (currentSort === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else {
+                filtered.sort((a, b) => b.reviewsCount - a.reviewsCount);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(course => {
+                const inCart = cart.includes(course.id);
+                const isPurchased = userState.purchasedCourses.includes(course.id);
+
+                return `
+                <article class="card-cyber rounded-3xl border border-white/10 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-40 bg-gradient-to-br ${course.gradient} p-6 text-white relative flex flex-col justify-between overflow-hidden border-b border-white/10">
+                            <i class="${course.icon} absolute -right-3 -bottom-3 text-7xl text-white/10 pointer-events-none"></i>
+                            
+                            <div class="flex items-center justify-between gap-2 relative z-10">
+                                <span class="px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-xs font-extrabold text-zinc-200">
+                                    ${course.category}
+                                </span>
+                                ${course.badge ? `
+                                    <span class="px-3 py-1 rounded-full bg-acid-400 text-black text-xs font-black uppercase">
+                                        ${course.badge}
+                                    </span>
+                                ` : ''}
+                            </div>
+
+                            <div class="relative z-10 flex items-center gap-3 text-xs text-acid-300 font-bold">
+                                <span><i class="fa-solid fa-bolt mr-1"></i>${course.duration}</span>
+                                <span>•</span>
+                                <span class="text-zinc-300">${course.level}</span>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex items-center justify-between text-xs text-zinc-400 mb-3">
+                                <span class="inline-flex items-center gap-1 font-bold text-white bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg">
+                                    <i class="fa-solid fa-star text-acid-400"></i> ${course.rating}
+                                    <span class="text-zinc-500">(${course.reviewsCount})</span>
+                                </span>
+                                <span>${course.lessons}</span>
+                            </div>
+
+                            <h3 onclick="openCourseModal(${course.id})" class="font-display text-lg font-black text-white hover:text-acid-400 transition-colors cursor-pointer leading-snug mb-2">
+                                ${course.title}
+                            </h3>
+
+                            <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2 mb-4 leading-relaxed">
+                                ${course.subtitle}
+                            </p>
+
+                            <div class="flex flex-wrap gap-1.5">
+                                ${course.skills.slice(0, 3).map(skill => `
+                                    <span class="px-2.5 py-1 rounded-lg bg-black/60 border border-white/10 text-zinc-300 text-[11px] font-semibold">${skill}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-4 border-t border-white/10 bg-black/30">
+                        <div class="flex items-baseline justify-between mb-4">
+                            <div>
+                                <span class="text-xs text-zinc-500 line-through block">${formatPrice(course.oldPrice)}</span>
+                                <span class="font-display text-2xl font-black text-white">${formatPrice(course.price)}</span>
+                            </div>
+                            <span class="text-[11px] font-bold text-acid-400 bg-acid-400/10 border border-acid-400/20 px-2.5 py-1 rounded-lg">
+                                Доступ в ЛК сразу
+                            </span>
+                        </div>
+
+                        ${isPurchased ? `
+                            <button onclick="selectCourseInPlayer(${course.id}); switchMainView('lk')" class="w-full py-3 rounded-xl bg-emerald-500 text-black font-extrabold text-xs uppercase flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> Открыть в Личном Кабинете
+                            </button>
+                        ` : `
+                            <div class="grid grid-cols-2 gap-2.5">
+                                <button onclick="openCourseModal(${course.id})" class="px-3 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs transition-colors">
+                                    Подробнее
+                                </button>
+                                <button onclick="buyCourseNow(${course.id})" class="px-3 py-3 rounded-xl bg-acid-400 hover:bg-acid-300 text-black font-extrabold text-xs uppercase transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid ${inCart ? 'fa-check' : 'fa-bolt'}"></i>
+                                    <span>${inCart ? 'Оформить' : 'Забрать'}</span>
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // Калькулятор профита
+        function updateCalculator() {
+            const perDeal = parseInt(document.getElementById('calc-niche').value, 10);
+            const deals = parseInt(document.getElementById('calc-deals').value, 10);
+            document.getElementById('calc-deals-label').textContent = `${deals} сделок / лидов`;
+            document.getElementById('calc-result').textContent = formatPrice(perDeal * deals);
+        }
+
+        function setCategory(category) {
+            activeCategory = category;
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-cat') === category) {
+                    btn.className = "cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all whitespace-nowrap bg-acid-400 text-black";
+                } else {
+                    btn.className = "cat-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-zinc-900 text-zinc-300 hover:bg-zinc-800 border border-white/10";
+                }
+            });
+            renderCourses();
+        }
+
+        function handleSearch(value) {
+            searchQuery = value;
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (value.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderCourses();
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            handleSearch('');
+        }
+
+        function handleSort(value) {
+            currentSort = value;
+            renderCourses();
+        }
+
+        function resetCatalogFilters() {
+            clearSearch();
+            document.getElementById('sort-select').value = 'popular';
+            currentSort = 'popular';
+            setCategory('Все');
+        }
+
+        // Открытие модального окна курса
+        function openCourseModal(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+
+            document.getElementById('modal-header-bg').className = `p-6 sm:p-8 text-white relative bg-gradient-to-br ${course.gradient} border-b border-white/10`;
+            document.getElementById('modal-category').textContent = course.category;
+            document.getElementById('modal-level').textContent = course.level;
+            document.getElementById('modal-rating').innerHTML = `<i class="fa-solid fa-star mr-1"></i>${course.rating} (${course.reviewsCount})`;
+            document.getElementById('modal-title').textContent = course.title;
+            document.getElementById('modal-subtitle').textContent = course.subtitle;
+            document.getElementById('modal-duration').textContent = course.duration;
+            document.getElementById('modal-lessons').textContent = course.lessons;
+            document.getElementById('modal-description').textContent = course.description;
+            document.getElementById('modal-instructor').textContent = course.instructor;
+
+            document.getElementById('modal-skills').innerHTML = course.skills.map(skill => `
+                <span class="px-3 py-1.5 rounded-xl bg-acid-400/10 text-acid-300 text-xs font-bold border border-acid-400/30">
+                    <i class="fa-solid fa-check text-acid-400 mr-1.5"></i>${skill}
+                </span>
+            `).join('');
+
+            document.getElementById('modal-syllabus').innerHTML = course.syllabus.map(mod => `
+                <div class="p-4 rounded-2xl bg-black/50 border border-white/10">
+                    <div class="font-bold text-white text-sm mb-1">${mod.title}</div>
+                    <p class="text-zinc-400 text-xs leading-relaxed">${mod.topics}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-old-price').textContent = formatPrice(course.oldPrice);
+            document.getElementById('modal-price').textContent = formatPrice(course.price);
+
+            const addBtn = document.getElementById('modal-add-btn');
+            const buyNowBtn = document.getElementById('modal-buy-now-btn');
+
+            addBtn.onclick = () => {
+                toggleCourseInCart(course.id);
+                closeCourseModal();
+            };
+            buyNowBtn.onclick = () => {
+                closeCourseModal();
+                buyCourseNow(course.id);
+            };
+
+            document.getElementById('course-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCourseModal() {
+            document.getElementById('course-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Быстрая покупка в 1 клик
+        function buyCourseNow(courseId) {
+            if (!cart.includes(courseId)) {
+                cart.push(courseId);
+            }
+            updateCartUI();
+            renderCourses();
+            openPaymentGateway();
+        }
+
+        function toggleCourseInCart(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            const idx = cart.indexOf(courseId);
+            if (idx === -1) {
+                cart.push(courseId);
+                showToast(`«${course.title}» добавлен в заказ`, 'success');
+            } else {
+                cart.splice(idx, 1);
+            }
+            updateCartUI();
+            renderCourses();
+        }
+
+        function removeFromCart(courseId) {
+            const idx = cart.indexOf(courseId);
+            if (idx !== -1) {
+                cart.splice(idx, 1);
+                updateCartUI();
+                renderCourses();
+            }
+        }
+
+        function getCartTotals() {
+            let subtotal = 0;
+            cart.forEach(id => {
+                const c = coursesData.find(item => item.id === id);
+                if (c) subtotal += c.price;
+            });
+            const discount = isPromoApplied ? Math.round(subtotal * 0.2) : 0;
+            return { subtotal, discount, total: subtotal - discount };
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            badge.textContent = cart.length;
+            if (cart.length > 0) {
+                badge.classList.remove('scale-0');
+                badge.classList.add('scale-100');
+            } else {
+                badge.classList.remove('scale-100');
+                badge.classList.add('scale-0');
+            }
+
+            const emptyBlock = document.getElementById('cart-empty');
+            const filledBlock = document.getElementById('cart-filled');
+
+            if (cart.length === 0) {
+                emptyBlock.classList.remove('hidden');
+                filledBlock.classList.add('hidden');
+                return;
+            }
+
+            emptyBlock.classList.add('hidden');
+            filledBlock.classList.remove('hidden');
+
+            const itemsContainer = document.getElementById('cart-items-list');
+            itemsContainer.innerHTML = cart.map(id => {
+                const c = coursesData.find(item => item.id === id);
+                return `
+                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/10 flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <div class="font-bold text-white text-xs sm:text-sm truncate">${c.title}</div>
+                        <div class="text-acid-400 font-extrabold text-sm mt-0.5">${formatPrice(c.price)}</div>
+                    </div>
+                    <button onclick="removeFromCart(${c.id})" class="w-8 h-8 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center shrink-0">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+                `;
+            }).join('');
+
+            const { subtotal, discount, total } = getCartTotals();
+            document.getElementById('summary-count').textContent = cart.length;
+            document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
+
+            const discountRow = document.getElementById('summary-discount-row');
+            if (isPromoApplied) {
+                discountRow.classList.remove('hidden');
+                discountRow.classList.add('flex');
+                document.getElementById('summary-discount').textContent = `-${formatPrice(discount)}`;
+            } else {
+                discountRow.classList.add('hidden');
+                discountRow.classList.remove('flex');
+            }
+
+            document.getElementById('summary-total').textContent = formatPrice(total);
+        }
+
+        function applyPromoCode() {
+            const input = document.getElementById('promo-input');
+            const status = document.getElementById('promo-status');
+            const code = input.value.trim().toUpperCase();
+
+            status.classList.remove('hidden');
+            if (code === 'ANTI20' || code === 'SKILL20') {
+                isPromoApplied = true;
+                status.textContent = '🔥 Промокод ANTI20 активирован (-20% на весь заказ)!';
+                status.className = 'text-xs mt-2 text-acid-400 font-bold';
+                updateCartUI();
+                showToast('Скидка 20% успешно применена!', 'success');
+            } else {
+                isPromoApplied = false;
+                status.textContent = 'Неверный код. Используй промокод ANTI20';
+                status.className = 'text-xs mt-2 text-rose-400 font-medium';
+                updateCartUI();
+            }
+        }
+
+        function copyPromoCode() {
+            const tempInput = document.createElement('input');
+            tempInput.value = 'ANTI20';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Промокод ANTI20 скопирован! Вставь его при оплате.', 'success');
+        }
+
+        function toggleCart(open) {
+            const drawer = document.getElementById('cart-drawer');
+            if (open) {
+                updateCartUI();
+                drawer.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Открытие шлюза оплаты ИП
+        function openPaymentGateway() {
+            if (cart.length === 0) return;
+            toggleCart(false);
+
+            // Если в PAYMENT_CONFIG задана внешняя ссылка на кассу ИП, можно перенаправить
+            if (PAYMENT_CONFIG.externalPaymentUrl) {
+                window.open(PAYMENT_CONFIG.externalPaymentUrl, '_blank');
+            }
+
+            const { total } = getCartTotals();
+            document.getElementById('pay-modal-amount').textContent = formatPrice(total);
+            document.getElementById('pay-modal-merchant').textContent = `${PAYMENT_CONFIG.ipName} • ИНН ${PAYMENT_CONFIG.inn}`;
+            document.getElementById('pay-sbp-requisites').textContent = `${PAYMENT_CONFIG.bankName} • ${PAYMENT_CONFIG.sbpPhoneOrId}`;
+            document.getElementById('pay-crypto-wallet').textContent = PAYMENT_CONFIG.usdtWallet;
+
+            document.getElementById('pay-client-name').value = userState.name !== "Хаслер #1042" ? userState.name : "";
+            document.getElementById('pay-client-tg').value = userState.tg !== "@antireverse_student" ? userState.tg : "";
+
+            document.getElementById('payment-form-step').classList.remove('hidden');
+            document.getElementById('payment-success-step').classList.add('hidden');
+            document.getElementById('payment-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentGateway() {
+            document.getElementById('payment-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPayMethod = method;
+            const methods = ['sbp', 'card', 'crypto'];
+            methods.forEach(m => {
+                const btn = document.getElementById(`pm-btn-${m}`);
+                const panel = document.getElementById(`pm-panel-${m}`);
+                if (m === method) {
+                    btn.className = "pm-btn p-3 rounded-xl border border-acid-400 bg-acid-400/15 text-white text-xs font-extrabold flex flex-col items-center gap-1";
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.className = "pm-btn p-3 rounded-xl border border-white/10 bg-zinc-900 text-zinc-300 text-xs font-bold flex flex-col items-center gap-1";
+                    panel.classList.add('hidden');
+                }
+            });
+        }
+
+        function processIpPayment() {
+            const clientName = document.getElementById('pay-client-name').value.trim();
+            const clientTg = document.getElementById('pay-client-tg').value.trim();
+
+            if (!clientName || !clientTg) {
+                showToast('Укажи своё Имя и @Telegram для выдачи доступа в ЛК!', 'info');
+                return;
+            }
+
+            const { total } = getCartTotals();
+            const boughtTitles = [];
+
+            cart.forEach(id => {
+                if (!userState.purchasedCourses.includes(id)) {
+                    userState.purchasedCourses.push(id);
+                }
+                const c = coursesData.find(item => item.id === id);
+                if (c) boughtTitles.push(c.title);
+                activePlayerCourseId = id;
+            });
+
+            userState.name = clientName;
+            userState.tg = clientTg.startsWith('@') ? clientTg : '@' + clientTg;
+            userState.xp += 150 * cart.length;
+
+            const methodNames = { sbp: 'СБП QR', card: 'Банковская карта РФ', crypto: 'USDT / TON' };
+            const receiptId = 'AR-' + Math.floor(1000 + Math.random() * 9000);
+
+            userState.orders.unshift({
+                id: receiptId,
+                date: new Date().toLocaleDateString('ru-RU'),
+                title: boughtTitles.join(' + '),
+                amount: total,
+                method: methodNames[selectedPayMethod]
+            });
+
+            saveState();
+
+            // Очищаем корзину
+            cart = [];
+            isPromoApplied = false;
+            updateCartUI();
+            renderCourses();
+
+            // Показываем экран успеха
+            document.getElementById('payment-form-step').classList.add('hidden');
+            document.getElementById('payment-success-step').classList.remove('hidden');
+            document.getElementById('pay-success-details').innerHTML = `
+                Чек <strong>#${receiptId}</strong> от <strong>${PAYMENT_CONFIG.ipName}</strong> сформирован.<br>
+                Доступ к курсам (<strong>${boughtTitles.join(', ')}</strong>) уже открыт в твоем Личном кабинете!
+            `;
+
+            showToast('Оплата подтверждена! Курсы добавлены в твой ЛК.', 'success');
+        }
+
+        function finishPaymentAndGoToLK() {
+            closePaymentGateway();
+            switchMainView('lk');
+            switchLkTab('courses');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = 'fa-solid fa-xmark text-lg';
+            } else {
+                menu.classList.add('hidden');
+                icon.className = 'fa-solid fa-bars text-lg';
+            }
+        }
+
+        function toggleFaq(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const iconClass = type === 'success' ? 'fa-bolt text-acid-400' : 'fa-circle-info text-violet-400';
+
+            toast.className = "pointer-events-auto flex items-center gap-3 bg-zinc-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl border border-acid-400/40 text-xs sm:text-sm font-bold transform transition-all duration-300 translate-y-2 opacity-0";
+            toast.innerHTML = `
+                <i class="fa-solid ${iconClass} text-base shrink-0"></i>
+                <span class="leading-snug">${message}</span>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Инициализация платформы
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedState();
+            renderCourses();
+            updateCalculator();
+            document.getElementById('lk-courses-count').textContent = userState.purchasedCourses.length;
+            document.getElementById('footer-ip-info').textContent = `${PAYMENT_CONFIG.ipName} • ИНН ${PAYMENT_CONFIG.inn} • ОГРНИП ${PAYMENT_CONFIG.ogrnip}`;
+        });
+    </script>
+</body>
+</html>
